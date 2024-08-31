@@ -273,3 +273,255 @@ Returns all the tags of a specific question based on its id.
       ]
     }
     ```
+
+### Get all questions
+* Require Authentication: false
+* Request
+  * Method: GET
+  * URL: /api/questions
+  * Body: none
+
+* Successful Response 
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"questions":[
+		{
+			"id": 1,
+			"question": "How do I write API's?",
+			"subject": "How do you make a readme",
+			"User": {
+				"username": "testUser"
+			}
+		},
+		{
+			"id": 2,
+			"question": "How do I finish a project?",
+			"subject": "What should I do?",
+			"User": {
+				"username": "testUser"
+			}
+		}
+	]
+    }
+    ```
+
+### Get question
+* Require Authentication: false
+* Request
+  * Method: GET
+  * URL: /api/questions/:id
+  * Body: none
+
+* Successful Response 
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"id": 1,
+	"question": "How do I write API's?",
+	"subject": "How do you make a readme",
+	"User": {
+		"username": "testUser",
+	},
+	"QuestionComments": [
+		{
+			"id": 3,
+			"comment": "This is a comment under the question",
+			"User":{
+				"username": "commentUser"
+			}
+	]
+
+    }
+    ```
+* Error response: Couldn't find question
+* Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	     "message": "Question couldn't be found"
+    }
+    ```
+
+### Edit Question
+* Require Authentication: true
+* Request
+  * Method: PUT
+  * URL: /api/questions/:id/edit
+  * Body:     
+    ```json
+    {
+        "id": 1,
+	"question": "How do I write API's?",
+	"subject": "How do you make a readme",
+	"userId": 1
+    }
+    ```
+
+* Successful Response 
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+   ```json
+   {
+	"message": "Question update"
+   }
+    ```
+
+* Error response: Couldn't find question
+* Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"message": "Question couldn't be found"
+    }
+    ```
+
+* Error response: User not logged in 
+* Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"message": "User must be logged in
+    }
+    ```
+
+* Error response: User unauthorized
+* Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"message": "Unauthorized"
+    }
+    ```
+
+### DELETE QUESTION
+* Require Authentication: true
+* Request
+  * Method: DELETE
+  * URL: /api/questions/:id/delete
+  * Body: none
+
+* Successful Response 
+  * Status Code: 204
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "Question deleted"
+    }
+    ```
+
+* Error response: Couldn't find question
+* Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"message": "Question couldn't be found"
+    }
+    ```
+
+* Error response: User not logged in 
+* Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"message": "User must be logged in
+    }
+    ```
+
+* Error response: User unauthorized
+* Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"message": "Unauthorized"
+    }
+    ```
+
+### CREATE QUESTION
+* Require Authentication: true
+* Request
+  * Method: CREATE
+  * URL: /api/questions/new
+  * Body: 
+ ```json
+    {
+	"id": 1,
+	"question": "How do I write API's?",
+	"subject": "How do you make a readme",
+	"user_id": 2
+    }
+ ```
+
+* Successful Response 
+  * Status Code: 204
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+ ```json
+    {
+	"message": "Question created"
+    }
+ ```
+
+* Error response: Couldn't find question
+* Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"message": "Question couldn't be found"
+    }
+    ```
+
+* Error response: User not logged in 
+* Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"message": "User must be logged in
+    }
+    ```
+
+
+
+
