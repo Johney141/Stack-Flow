@@ -1,7 +1,6 @@
 # Stack-Flow
 
 ## BACKEND API
-
 ## Questions
 
 ### Delete a Tag of a Question Based on the Question's id
@@ -323,8 +322,9 @@ Returns all the tags of a specific question based on its id.
     * Content-Type: application/json
   * Body:
 
-    ```json
+```json
     {
+ {
 	"id": 1,
 	"question": "How do I write API's?",
 	"subject": "How do you make a readme",
@@ -338,10 +338,27 @@ Returns all the tags of a specific question based on its id.
 			"User":{
 				"username": "commentUser"
 			}
+	],
+	"Answers":[
+		{
+			"id": 3,
+			"answer": "By writing a backend"
+			"User":{
+				"username": "answerUser"
+			},
+			"AnswerComments":[
+				{
+					"comment": "This is the right answer",
+					"User":{
+						"username": "answerCommentUser"
+					}
+				}
+			]
+		}	
 	]
 
     }
-    ```
+ ```
 * Error response: Couldn't find question
 * Status Code: 404
   * Headers:
