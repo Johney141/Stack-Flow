@@ -1,131 +1,969 @@
-# Flask React Project
+# Stack-Flow
 
-This is the starter for the Flask React project.
+## BACKEND API
+## Questions
 
-## Getting started
+### Delete a Tag of a Question Based on the Question's id
 
-1. Clone this repository (only this branch).
+Remove a tag from a question's tags.
 
-2. Install dependencies.
+* Require Authentication: true
+* Require proper authorization: Question must belong to the logged in user
+* Request
+  * Method: DELETE
+  * URL: /questions/tags/:questionId/:tagId
+  * Body: none
 
-   ```bash
-   pipenv install -r requirements.txt
-   ```
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 
-3. Create a __.env__ file based on the example with proper settings for your
-   development environment.
+    ```json
+    {
+      "message": "Successfully Removed"
+    }
+    ```
 
-4. Make sure the SQLite3 database connection URL is in the __.env__ file.
+* Error response: Couldn't find a Question with the specified id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 
-5. This starter organizes all tables inside the `flask_schema` schema, defined
-   by the `SCHEMA` environment variable.  Replace the value for
-   `SCHEMA` with a unique name, **making sure you use the snake_case
-   convention.**
+    ```json
+    {
+      "message": "Question couldn't be found"
+    }
+    ```
 
-6. Get into your pipenv, migrate your database, seed your database, and run your
-   Flask app:
+* Error response: Couldn't find the specified Tag under the Question
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 
-   ```bash
-   pipenv shell
-   ```
+    ```json
+    {
+      "message": "Tag couldn't be found"
+    }
+    ```
 
-   ```bash
-   flask db upgrade
-   ```
+## Follow/Save for Later
 
-   ```bash
-   flask seed all
-   ```
+### Get all Saved Questions
 
-   ```bash
-   flask run
-   ```
+Return all the questions saved by the current user.
 
-7. The React frontend has no styling applied. Copy the __.css__ files from your
-   Authenticate Me project into the corresponding locations in the
-   __react-vite__ folder to give your project a unique look.
+* Require Authentication: true
+* Request
+  * Method: GET
+  * URL: /api/saved/current
+  * Body: none
 
-8. To run the React frontend in development, `cd` into the __react-vite__
-   directory and run `npm i` to install dependencies. Next, run `npm run build`
-   to create the `dist` folder. The starter has modified the `npm run build`
-   command to include the `--watch` flag. This flag will rebuild the __dist__
-   folder whenever you change your code, keeping the production version up to
-   date.
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 
-## Deployment through Render.com
+    ```json
+    {
+      "Saved": [
+        {
+          "id": 1,
+          "userId": 1,
+          "question": "How can I do x, y and z?",
+          "subject": "Python is crazy!",
+          "createdAt": "2021-11-19 20:39:36",
+          "updatedAt": "2021-11-19 20:39:36" ,
+        }
+      ]
+    }
+    ```
 
-First, recall that Vite is a development dependency, so it will not be used in
-production. This means that you must already have the __dist__ folder located in
-the root of your __react-vite__ folder when you push to GitHub. This __dist__
-folder contains your React code and all necessary dependencies minified and
-bundled into a smaller footprint, ready to be served from your Python API.
+### Save a Question for Later
 
-Begin deployment by running `npm run build` in your __react-vite__ folder and
-pushing any changes to GitHub.
+Save a question for later specified by id.
 
-Refer to your Render.com deployment articles for more detailed instructions
-about getting started with [Render.com], creating a production database, and
-deployment debugging tips.
+* Require Authentication: true
+* Request
+  * Method: POST
+  * URL: /api/questions/:questionId/saved
+  * Headers:
+    * Content-Type: application/json
 
-From the Render [Dashboard], click on the "New +" button in the navigation bar,
-and click on "Web Service" to create the application that will be deployed.
+* Successful Response
+  * Status Code: 201
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 
-Select that you want to "Build and deploy from a Git repository" and click
-"Next". On the next page, find the name of the application repo you want to
-deploy and click the "Connect" button to the right of the name.
+    ```json
+    {
+      "message": "Saved for later"
+    }
+    ```
 
-Now you need to fill out the form to configure your app. Most of the setup will
-be handled by the __Dockerfile__, but you do need to fill in a few fields.
+* Error response: Couldn't find a question with the specified id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 
-Start by giving your application a name.
+    ```json
+    {
+      "message": "Question couldn't be found"
+    }
+    ```
 
-Make sure the Region is set to the location closest to you, the Branch is set to
-"main", and Runtime is set to "Docker". You can leave the Root Directory field
-blank. (By default, Render will run commands from the root directory.)
+* Error response: The current user has already saved this question
+  * Status Code: 500
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 
-Select "Free" as your Instance Type.
+    ```json
+    {
+      "message": "This question has already been saved"
+    }
+    ```
+### Unsave a Question
 
-### Add environment variables
+Unsaves a question.
 
-In the development environment, you have been securing your environment
-variables in a __.env__ file, which has been removed from source control (i.e.,
-the file is gitignored). In this step, you will need to input the keys and
-values for the environment variables you need for production into the Render
-GUI.
+* Require Authentication: true
+* Require proper authorization: Question must be saved by the current user
+* Request
+  * Method: DELETE
+  * URL: /api/saved/:questionId
+  * Body: none
 
-Add the following keys and values in the Render GUI form:
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 
-- SECRET_KEY (click "Generate" to generate a secure secret for production)
-- FLASK_ENV production
-- FLASK_APP app
-- SCHEMA (your unique schema name, in snake_case)
+    ```json
+    {
+      "message": "Question unsaved"
+    }
+    ```
 
-In a new tab, navigate to your dashboard and click on your Postgres database
-instance.
+* Error response: Couldn't find a saved question with the specified id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 
-Add the following keys and values:
+    ```json
+    {
+      "message": "Question couldn't be found in your saved list"
+    }
+    ```
 
-- DATABASE_URL (copy value from the **External Database URL** field)
+## Tags
 
-**Note:** Add any other keys and values that may be present in your local
-__.env__ file. As you work to further develop your project, you may need to add
-more environment variables to your local __.env__ file. Make sure you add these
-environment variables to the Render GUI as well for the next deployment.
+### Add Tags For a Question Based on the Question's id
 
-### Deploy
+Create if not exist and return all tags for a given question with id.
 
-Now you are finally ready to deploy! Click "Create Web Service" to deploy your
-project. The deployment process will likely take about 10-15 minutes if
-everything works as expected. You can monitor the logs to see your Dockerfile
-commands being executed and any errors that occur.
+* Require Authentication: true
+* Require proper authorization: Question must belong to the logged in user
+* Request
+  * Method: POST
+  * URL: /tags/questions/:questionId
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 
-When deployment is complete, open your deployed site and check to see that you
-have successfully deployed your Flask application to Render! You can find the
-URL for your site just below the name of the Web Service at the top of the page.
+    ```json
+    {
+      "Tags": [
+        {
+          "tagName": "javascript"
+        },
+        {
+          "tagName": "reactjs"
+        }
+      ]
+    }
+    ```
 
-**Note:** By default, Render will set Auto-Deploy for your project to true. This
-setting will cause Render to re-deploy your application every time you push to
-main, always keeping it up to date.
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 
-[Render.com]: https://render.com/
-[Dashboard]: https://dashboard.render.com/
+    ```json
+    {
+      "id": 1,
+      "Tags": [
+        {
+          "id": 5,
+          "tagName": "javascript"
+        },
+        {
+          "id": 6,
+          "tagName": "reactjs"
+        }
+      ]
+    }
+    ```
+
+* Error response: Body validation errors
+  * Status Code: 400
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "Bad Request",
+      "errors": {
+        "tagName": "tagName can't have space or capitalized letters"
+      }
+    }
+    ```
+
+* Error response: Couldn't find a Question with the specified id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "Question couldn't be found"
+    }
+    ```
+
+### Get all Tags of a Question Based on the Question's id
+
+Returns all the tags of a specific question based on its id.
+
+* Require Authentication: false
+* Request
+  * Method: GET
+  * URL: /tags/questions/:questionId
+  * Body: none
+
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "id": 1,
+      "Tags": [
+        {
+          "id": 5,
+          "tagName": "javascript"
+        },
+        {
+          "id": 6,
+          "tagName": "reactjs"
+        }
+      ]
+    }
+    ```
+## Questions
+### Get all questions
+* Require Authentication: false
+* Request
+  * Method: GET
+  * URL: /api/questions
+  * Body: none
+
+* Successful Response 
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"questions":[
+		{
+			"id": 1,
+			"question": "How do I write API's?",
+			"subject": "How do you make a readme",
+			"User": {
+				"username": "testUser"
+			}
+		},
+		{
+			"id": 2,
+			"question": "How do I finish a project?",
+			"subject": "What should I do?",
+			"User": {
+				"username": "testUser"
+			}
+		}
+	]
+    }
+    ```
+
+### Get question
+* Require Authentication: false
+* Request
+  * Method: GET
+  * URL: /api/questions/:id
+  * Body: none
+
+* Successful Response 
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+```json
+    {
+ {
+	"id": 1,
+	"question": "How do I write API's?",
+	"subject": "How do you make a readme",
+	"User": {
+		"username": "testUser",
+	},
+	"QuestionComments": [
+		{
+			"id": 3,
+			"comment": "This is a comment under the question",
+			"User":{
+				"username": "commentUser"
+			}
+	],
+	"Answers":[
+		{
+			"id": 3,
+			"answer": "By writing a backend"
+			"User":{
+				"username": "answerUser"
+			},
+			"AnswerComments":[
+				{
+					"comment": "This is the right answer",
+					"User":{
+						"username": "answerCommentUser"
+					}
+				}
+			]
+		}	
+	]
+
+    }
+ ```
+* Error response: Couldn't find question
+* Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	     "message": "Question couldn't be found"
+    }
+    ```
+
+### Edit Question
+* Require Authentication: true
+* Request
+  * Method: PUT
+  * URL: /api/questions/:id/edit
+  * Body:     
+    ```json
+    {
+        "id": 1,
+	"question": "How do I write API's?",
+	"subject": "How do you make a readme",
+	"userId": 1
+    }
+    ```
+
+* Successful Response 
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+   ```json
+   {
+	"message": "Question update"
+   }
+    ```
+
+* Error response: Couldn't find question
+* Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"message": "Question couldn't be found"
+    }
+    ```
+
+* Error response: User not logged in 
+* Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"message": "User must be logged in
+    }
+    ```
+
+* Error response: User unauthorized
+* Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"message": "Unauthorized"
+    }
+    ```
+
+### DELETE QUESTION
+* Require Authentication: true
+* Request
+  * Method: DELETE
+  * URL: /api/questions/:id/delete
+  * Body: none
+
+* Successful Response 
+  * Status Code: 204
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "Question deleted"
+    }
+    ```
+
+* Error response: Couldn't find question
+* Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"message": "Question couldn't be found"
+    }
+    ```
+
+* Error response: User not logged in 
+* Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"message": "User must be logged in
+    }
+    ```
+
+* Error response: User unauthorized
+* Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"message": "Unauthorized"
+    }
+    ```
+
+### CREATE QUESTION
+* Require Authentication: true
+* Request
+  * Method: CREATE
+  * URL: /api/questions/new
+  * Body: 
+ ```json
+    {
+	"id": 1,
+	"question": "How do I write API's?",
+	"subject": "How do you make a readme",
+	"user_id": 2
+    }
+ ```
+
+* Successful Response 
+  * Status Code: 204
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+ ```json
+    {
+	"message": "Question created"
+    }
+ ```
+
+* Error response: Couldn't find question
+* Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"message": "Question couldn't be found"
+    }
+    ```
+
+* Error response: User not logged in 
+* Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+	"message": "User must be logged in
+    }
+    ```
+## Answers
+
+### Get all Answers of the Current User
+
+Returns all the answers that belong to a question specified by id.
+
+* Require Authentication: true
+* Request
+  * Method: GET
+  * URL: /api/answers/current
+  * Body: none
+
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "Answers": [
+        {
+          "id": 1,
+          "userId": 1,
+          "questionId": 1,
+          "answer": "This is my answer",
+          "createdAt": "2021-11-19 20:39:36",
+          "updatedAt": "2021-11-19 20:39:36" ,
+          "User": {
+            "id": 1,
+            "firstName": "John",
+            "lastName": "Smith"
+          },
+        }
+      ]
+    }
+    ```
+    ```
+
+* Error response: User does not have any answers
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "User does not have any answers currently"
+    }
+    ```
+
+### Create a Answer for a Question based on the Question's id
+
+Create and return a new answer for a question specified by id.
+
+* Require Authentication: true
+* Request
+  * Method: POST
+  * URL: /api/questions/:questionId/answers
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "answer": "This is the answer to your question!",
+    }
+    ```
+
+* Successful Response
+  * Status Code: 201
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "id": 1,
+      "userId": 1,
+      "questionId": 1,
+      "answer": "This is the answer to your question!",
+      "createdAt": "2021-11-19 20:39:36",
+      "updatedAt": "2021-11-19 20:39:36"
+    }
+    ```
+
+* Error Response: Body validation errors
+  * Status Code: 400
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "Bad Request", // (or "Validation error" if generated by Sequelize),
+      "errors": {
+        "answer": "Answer text is required",
+      }
+    }
+    ```
+
+* Error response: Couldn't find a Question with the specified id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "Question couldn't be found"
+    }
+    ```
+
+* Error response: Answer from the current user already exists for the Question
+  * Status Code: 500
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "User already has a Answer for this Question"
+    }
+    ```
+### Edit a Answer
+
+Update and return an existing answer.
+
+* Require Authentication: true
+* Require proper authorization: Answer must belong to the current user
+* Request
+  * Method: PUT
+  * URL: /api/answers/:answerId
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "answer": "This is the answer to your question!",
+    }
+    ```
+
+* Successful Response
+  * Status Code: 201
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "id": 1,
+      "userId": 1,
+      "questionId": 1,
+      "answer": "This is an updated answer to your question!",
+      "createdAt": "2021-11-19 20:39:36",
+      "updatedAt": "2021-11-19 20:39:36"
+    }
+    ```
+
+* Error Response: Body validation errors
+  * Status Code: 400
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+    ```json
+    {
+      "message": "Bad Request", // (or "Validation error" if generated by Sequelize),
+      "errors": {
+        "answer": "Answer text is required",
+      }
+    }
+    ```
+
+* Error response: Couldn't find a Answer with the specified id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "Answer couldn't be found"
+    }
+
+
+### Delete a Answer
+
+Delete an existing Answer.
+
+* Require Authentication: true
+* Require proper authorization: Answer must belong to the current user
+* Request
+  * Method: DELETE
+  * URL: /api/answers/:answerId
+  * Body: none
+
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "Successfully deleted"
+    }
+    ```
+
+* Error response: Couldn't find a Answer with the specified id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "Answer couldn't be found"
+    }
+    ```
+
+## Answer Comments
+### Get all Answers of the Current User
+
+Returns all the answers that belong to a question specified by id.
+
+* Require Authentication: true
+* Request
+  * Method: GET
+  * URL: /api/answers/comments/current
+  * Body: none
+
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "AnswerComments": [
+        {
+          "id": 1,
+          "userId": 1,
+          "questionId": 1,
+          "comment": "Your answer is correct!",
+          "createdAt": "2021-11-19 20:39:36",
+          "updatedAt": "2021-11-19 20:39:36" ,
+          "User": {
+            "id": 1,
+            "firstName": "John",
+            "lastName": "Smith"
+          },
+        }
+      ]
+    }
+    ```
+    ```
+
+* Error response: User does not have any answer comments
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "User does not have any answer comments currently"
+    }
+    ```
+
+### Create a Answer Comment for a Answer based on the Answer's id
+
+Create and return a new answer comment for a answer specified by id.
+
+* Require Authentication: true
+* Request
+  * Method: POST
+  * URL: /api/answers/:answerId/comments
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "comment": "This answer is correct!",
+    }
+    ```
+
+* Successful Response
+  * Status Code: 201
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "id": 1,
+      "userId": 1,
+      "answerId": 1,
+      "comment": "This answer is correct!",
+      "createdAt": "2021-11-19 20:39:36",
+      "updatedAt": "2021-11-19 20:39:36"
+    }
+    ```
+
+* Error Response: Body validation errors
+  * Status Code: 400
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "Bad Request", // (or "Validation error" if generated by Sequelize),
+      "errors": {
+        "comment": "Comment text is required",
+      }
+    }
+    ```
+
+* Error response: Couldn't find a Answer with the specified id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "Answer couldn't be found"
+    }
+    ```
+
+    ```
+### Edit a Answer Comment
+
+Update and return an existing answer comment.
+
+* Require Authentication: true
+* Require proper authorization: Answer comment must belong to the current user
+* Request
+  * Method: PUT
+  * URL: /api/answers/comments/:commentId
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "comment": "This answer is wrong!",
+    }
+    ```
+
+* Successful Response
+  * Status Code: 201
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "id": 1,
+      "userId": 1,
+      "questionId": 1,
+      "comment": "This answer is wrong!",
+      "createdAt": "2021-11-19 20:39:36",
+      "updatedAt": "2021-11-19 20:39:36"
+    }
+    ```
+
+* Error Response: Body validation errors
+  * Status Code: 400
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+    ```json
+    {
+      "message": "Bad Request", // (or "Validation error" if generated by Sequelize),
+      "errors": {
+        "comment": "Comment text is required",
+      }
+    }
+    ```
+
+* Error response: Couldn't find a Answer Comment with the specified id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "Comment couldn't be found"
+    }
+
+
+### Delete a Answer
+
+Delete an existing Answer Comment.
+
+* Require Authentication: true
+* Require proper authorization: Answer Comment must belong to the current user
+* Request
+  * Method: DELETE
+  * URL: /api/answers/comments/:commentId
+  * Body: none
+
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "Successfully deleted"
+    }
+    ```
+
+* Error response: Couldn't find a Answer Comment with the specified id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "Comment couldn't be found"
+    }
