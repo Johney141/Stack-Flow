@@ -1,6 +1,9 @@
 # Stack-Flow
 
 ## BACKEND API
+## Schema
+![Stack Flow (1)](https://github.com/user-attachments/assets/ccc4394b-50bd-4d74-bc60-56d06f9f6af7)
+
 ## Questions
 
 ### Delete a Tag of a Question Based on the Question's id
