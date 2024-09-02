@@ -8,12 +8,10 @@ class Answer(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    answer = db.Column(db.String, nullable=False)
+    answer = db.Column(db.String(5000), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    # Add Foreign Key for questions once table is created
-    # db.ForeignKey("questions.id")
-    question_id = db.Column(db.Integer, nullable=False)
+    question_id = db.Column(db.Integer, db.ForeignKey("questions.id"), nullable=False)
 
     user = db.relationship("User", back_populates="answers")
-    # question = db.relationship("Question", back_populates="answers")
+    question = db.relationship("Question", back_populates="answers")
     comments = db.relationship("AnswerComment", back_populates='answer')
