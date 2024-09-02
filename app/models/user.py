@@ -15,6 +15,7 @@ class User(db.Model, UserMixin):
     hashed_password = db.Column(db.String(255), nullable=False)
 
     answers = db.relationship("Answer", back_populates="user")
+    answer_comments = db.relationship("AnswerComment", back_populates="user")
 
     @property
     def password(self):
