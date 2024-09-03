@@ -1,5 +1,6 @@
 from .db import db, environment, SCHEMA
 from .question_tag import QuestionTag
+from .question_following import question_following
 
 
 class Question(db.Model):
@@ -16,3 +17,4 @@ class Question(db.Model):
     user = db.relationship("User", back_populates="answers")
     answers = db.relationship('Answer', back_populates='question')
     tags = db.relationship('Tag', secondary=QuestionTag, backref='Question')
+    users = db.relationship("User", secondary=question_following, back_populates="question")
