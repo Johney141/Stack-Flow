@@ -14,7 +14,7 @@ class Question(db.Model):
     subject = db.Column(db.String(250), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
 
-    user = db.relationship("User", back_populates="answers")
+    # user = db.relationship("User", back_populates="answers")
     answers = db.relationship('Answer', back_populates='question')
     tags = db.relationship('Tag', secondary=QuestionTag, backref='Question')
-    users = db.relationship("User", secondary=QuestionFollowing, back_populates="question")
+    users = db.relationship("QuestionFollowing", back_populates="question")
