@@ -18,13 +18,13 @@ depends_on = None
 
 def upgrade():
     op.create_table('question_following',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('question_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
-    sa.ForeignKeyConstraint(['question_id'], ['questions.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('question_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['question_id'], ['question.id'], ondelete='SET NULL'),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='SET NULL'),
+    sa.PrimaryKeyConstraint(['user_id', 'question_id'])
     )
+    op.create_index(op.f('questions_following_user_id_idx'), 'questions_following', ['user_id'], unique=False)
 
 
 def downgrade():

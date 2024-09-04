@@ -1,7 +1,6 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from .question_following import question_following
 
 
 class User(db.Model, UserMixin):
@@ -15,10 +14,11 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
 
-    answers = db.relationship("Answer", back_populates="user")
-    answer_comments = db.relationship("AnswerComment", back_populates="user")
-    questions = db.relationship('Question', back_populates="user")
-    question = db.relationship("Question", secondary=question_following, back_populates="user")
+    questions = db.relationship('Question', back_populates='user')
+    answers = db.relationship('Answer', back_populates='user')
+    question_comments = db.relationship('QuestionComment', back_populates='user')
+    question_followings = db.relationship('QuestionFollowing', back_populates='user')
+    answer_comments = db.relationship('AnswerComment', back_populates='user')
 
     @property
     def password(self):

@@ -13,5 +13,4 @@ class AnswerComment(db.Model):
     answer_id = db.Column(db.Integer, db.ForeignKey("answers.id"), nullable=False)
 
     user = db.relationship('User', back_populates="answer_comments")
-    answer = db.relationship('Answer', back_populates="comments")
-
+    answer = db.relationship('Answer', back_populates="answer_comments")
