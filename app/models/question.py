@@ -1,6 +1,5 @@
 from .db import db, environment, SCHEMA
-from .question_tag import QuestionTag
-from .question_following import QuestionFollowing
+
 
 
 class Question(db.Model):
@@ -14,7 +13,8 @@ class Question(db.Model):
     subject = db.Column(db.String(250), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
 
-    # user = db.relationship("User", back_populates="answers")
+    user = db.relationship('User', back_populates='questions')
     answers = db.relationship('Answer', back_populates='question')
-    tags = db.relationship('Tag', secondary=QuestionTag, backref='Question')
-    users = db.relationship("QuestionFollowing", back_populates="question")
+    question_comments = db.relationship('QuestionComment', back_populates='question')
+    question_followings = db.relationship('QuestionFollowing', back_populates='question')
+    question_tags = db.relationship('QuestionTag', back_populates='question')

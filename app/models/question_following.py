@@ -11,9 +11,9 @@ class QuestionFollowing(db.Model):
     question_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('questions.id'), ondelete='SET NULL'), primary_key=True, nullable=True)
 
     # many to one with User
-    user = db.relationship("User", back_populates="question_following", passive_deletes=True)
+    user = db.relationship("User", back_populates="question_following")
     # many to one with Product
-    question = db.relationship("Question", back_populates="question_following", passive_deletes=True)
+    question = db.relationship("Question", back_populates="question_following")
 
     def to_dict(self):
         return {
