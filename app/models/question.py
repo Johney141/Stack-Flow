@@ -15,6 +15,7 @@ class Question(db.Model):
 
     user = db.relationship('User', back_populates='questions')
     answers = db.relationship('Answer', back_populates='question')
-    question_comments = db.relationship('QuestionComment', back_populates='question')
-    question_followings = db.relationship('QuestionFollowing', back_populates='question')
+    # Uncomment When Quesion Comments is added
+    # question_comments = db.relationship('QuestionComment', back_populates='question')
+    question_following = db.relationship('QuestionFollowing', back_populates='question')
     question_tags = db.relationship('QuestionTag', back_populates='question')
