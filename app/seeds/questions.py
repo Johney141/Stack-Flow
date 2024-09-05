@@ -15,6 +15,7 @@ def seed_questions():
     db.session.add(testQuestion)
     db.session.add(editQuestion)
     db.session.add(deleteQuestion)
+    db.session.flush()
     db.session.commit()
 
 
