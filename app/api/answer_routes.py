@@ -36,11 +36,11 @@ def update_answer(answer_id):
     answer = Answer.query.get(answer_id)
     # If answer doesn't exist
     if not answer:
-        return jsonify({"error": "Answer not found"})
+        return jsonify({"message": "Answer couldn't be found"}), 404
     
     # if not authorized
     if answer.user_id != current_user.id:
-        return jsonify({"error": "Not Authorized to udpate answer"})
+        return jsonify({"error": "Not Authorized to udpate answer"}), 403
 
     form = AnswerForm()
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -58,6 +58,29 @@ def update_answer(answer_id):
         return jsonify(res), 201
     else: 
         return form.errors, 401
+    
+
+# Delete a answer
+@answer_routes.route('/<int:answer_id>', methods=['DELETE'])
+@login_required
+def delete_answer(answer_id): 
+    answer = Answer.query.get(answer_id)
+
+    if not answer:
+        return jsonify({"error": "Answer couldn't be found"}), 404 
+    
+    if answer.user_id != current_user.id:
+        return jsonify({"error": "Not Authorized to delete answer"}), 403
+    
+    db.session.delete(answer)
+    db.session.commit()
+
+    return jsonify({"message": "Successfully deleted"})
+
+    
+    
+
+
 
     
 
