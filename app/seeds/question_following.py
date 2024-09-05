@@ -3,21 +3,21 @@ from sqlalchemy.sql import text
 
 def seed_question_followings():
 
-  qDemo = QuestionFollowing(user_id=1, question_id=1)
-  qDemo1 = QuestionFollowing(user_id=1, question_id=2)
-  qDemo2 = QuestionFollowing(user_id=1, question_id=3)
-  qDemo3 = QuestionFollowing(user_id=2, question_id=2)
-  qDemo4 = QuestionFollowing(user_id=3, question_id=3)
-  qDemo5 = QuestionFollowing(user_id=3, question_id=1)
-  qDemo6 = QuestionFollowing(user_id=2, question_id=1)
+  q_demo = QuestionFollowing(user_id=1, question_id=1)
+  q_demo1 = QuestionFollowing(user_id=1, question_id=2)
+  q_demo2 = QuestionFollowing(user_id=1, question_id=3)
+  q_demo3 = QuestionFollowing(user_id=2, question_id=2)
+  q_demo4 = QuestionFollowing(user_id=3, question_id=3)
+  q_demo5 = QuestionFollowing(user_id=3, question_id=1)
+  q_demo6 = QuestionFollowing(user_id=2, question_id=1)
 
-  db.session.add(qDemo)
-  db.session.add(qDemo1)
-  db.session.add(qDemo2)
-  db.session.add(qDemo3)
-  db.session.add(qDemo4)
-  db.session.add(qDemo5)
-  db.session.add(qDemo6)
+  db.session.add(q_demo)
+  db.session.add(q_demo1)
+  db.session.add(q_demo2)
+  db.session.add(q_demo3)
+  db.session.add(q_demo4)
+  db.session.add(q_demo5)
+  db.session.add(q_demo6)
   db.session.commit()
 
 

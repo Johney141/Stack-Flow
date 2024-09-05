@@ -2,19 +2,19 @@ from app.models import db, QuestionComment, environment, SCHEMA
 from sqlalchemy.sql import text
 
 def seed_question_comments():
-  qDemo = QuestionComment(
+  q_demo = QuestionComment(
     comment='Have you done a git pull?', user_id=1, question_id=2
   )
-  qDemo2 = QuestionComment(
+  q_demo2 = QuestionComment(
     comment='Smh I did not, everything is working now. Thanks', user_id=2, question_id=2
   )
-  qDemo3 = QuestionComment(
+  q_demo3 = QuestionComment(
     comment='Np', user_id=1, question_id=2
   )
 
-  db.session.add(qDemo)
-  db.session.add(qDemo2)
-  db.session.add(qDemo3)
+  db.session.add(q_demo)
+  db.session.add(q_demo2)
+  db.session.add(q_demo3)
   db.session.commit()
 
 

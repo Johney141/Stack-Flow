@@ -6,4 +6,5 @@ from .question import Question
 from .tag import Tag
 from .question_tag import QuestionTag
 from .question_following import QuestionFollowing
+from .question_comment import QuestionComment
 from .db import environment, SCHEMA
