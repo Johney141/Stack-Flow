@@ -578,7 +578,7 @@ Returns all the answers that belong to a question specified by id.
       ]
     }
     ```
-    ```
+
 
 * Error response: User does not have any answers
   * Status Code: 404
@@ -763,7 +763,7 @@ Delete an existing Answer.
     ```
 
 ## Answer Comments
-### Get all Answers of the Current User
+### Get all Answer Comments of the Current User
 
 Returns all the answers that belong to a question specified by id.
 
@@ -937,7 +937,7 @@ Update and return an existing answer comment.
     }
 
 
-### Delete a Answer
+### Delete a Answer Comment
 
 Delete an existing Answer Comment.
 
