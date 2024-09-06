@@ -1,14 +1,16 @@
 """Reset Migrations
 
 Revision ID: b9e5b33bcac9
-Revises: 
+Revises:
 Create Date: 2024-09-02 18:30:34.549218
 
 """
 from alembic import op
 import sqlalchemy as sa
 
-
+import os
+environment = os.getenv("FLASK_ENV")
+SCHEMA = os.environ.get("SCHEMA")
 # revision identifiers, used by Alembic.
 revision = 'b9e5b33bcac9'
 down_revision = None
@@ -27,6 +29,9 @@ def upgrade():
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
+
     op.create_table('questions',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('question', sa.String(length=5000), nullable=False),
@@ -35,6 +40,11 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE questions SET SCHEMA {SCHEMA};")
+
+
     op.create_table('answers',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('answer', sa.String(length=5000), nullable=False),
@@ -44,6 +54,11 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE answers SET SCHEMA {SCHEMA};")
+
+
     op.create_table('answer_comments',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('comment', sa.String(), nullable=False),
@@ -53,6 +68,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE answer_comments SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
 
