@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models import Question, Answer, db
+from app.models import Question, Answer, db, User
 from app.forms import AnswerForm
 from flask_login import current_user, login_required
 
@@ -9,8 +9,21 @@ question_routes = Blueprint('questions', __name__)
 
 @question_routes.route('/')
 def index():
-    # keep sample simple with just a link to the form
-    return 'Could it be, the first page?'
+    questions = Question.query.join(User).all()
+    questions_res = { 'Questions': [
+        {
+            'id': question.id,
+            'question': question.question,
+            'subject': question.subject,
+            'User': {
+                'id': question.user.id,
+                'username': question.user.username
+            }
+        } for question in questions]
+    }
+
+    return jsonify(questions_res)
+
 
 # Create Answer Route
 @question_routes.route('/<int:question_id>/answers', methods=['POST'])
@@ -20,12 +33,12 @@ def create_answer(question_id):
     question = Question.query.get(question_id)
     if not question:
         return jsonify({"error": "Question not found"}), 404
-    
+
     # Check to see if user has already answered
     existing_answer = Answer.query.filter_by(question_id=question_id, user_id=current_user.id).first()
     if existing_answer:
         return jsonify({"error": "User already has a answer for question"}), 400
-    
+
     # Create Answer
     form = AnswerForm()
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -44,5 +57,5 @@ def create_answer(question_id):
             "answer": answer.answer
         }
         return jsonify(res), 201
-    else: 
+    else:
         return form.errors, 401
