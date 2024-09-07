@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models import Question, Answer, Tag, QuestionTag, QuestionComment, db
+from app.models import Question, Answer, Tag, QuestionTag, QuestionComment, User, db
 from app.forms import AnswerForm, QuestionCommentForm
 from flask_login import current_user, login_required
 
@@ -68,6 +68,29 @@ def delete_tag(question_id, tag_id):
     db.session.commit()
 
     return jsonify({"message": "Successfully Removed"}), 200
+
+# Get Current user's question comments
+@question_routes.route('/comments/current')
+@login_required
+def question_comments():
+    comments = QuestionComment.query.join(User).filter(QuestionComment.user_id == current_user.id).all()
+
+
+    comments_res = { 'QuestionComments': [
+        {
+            'id': comment.id,
+            'userId': comment.user_id,
+            'questionId': comment.question_id,
+            'comment': comment.comment,
+            'User': {
+                'id': comment.user.id,
+                'username': comment.user.username,
+                'email': comment.user.email
+            }
+        } for comment in comments]
+    }
+
+    return jsonify(comments_res)
 
 # Create a question comment
 @question_routes.route('/<int:question_id>/comments', methods=['POST'])
