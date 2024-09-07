@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
-from app.models import Question, Answer, Tag, QuestionTag, db
-from app.forms import AnswerForm
+from app.models import Question, Answer, Tag, QuestionTag, QuestionComment, db
+from app.forms import AnswerForm, QuestionCommentForm
 from flask_login import current_user, login_required
 
 
@@ -68,3 +68,83 @@ def delete_tag(question_id, tag_id):
     db.session.commit()
 
     return jsonify({"message": "Successfully Removed"}), 200
+
+# Create a question comment
+@question_routes.route('/<int:question_id>/comments', methods=['POST'])
+@login_required
+def create_comment(question_id):
+    # Check if question exists
+    question = Question.query.get(question_id)
+    if not question:
+        return jsonify({"error": "Question couldn't be found"}), 404
+
+    # Create Question
+    form = QuestionCommentForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        comment = QuestionComment(
+            user_id=current_user.id,
+            question_id=question_id,
+            comment=form.data['comment']
+        )
+
+        db.session.add(comment)
+        db.session.commit()
+        res = {
+            "id": comment.id,
+            "userId": comment.user_id,
+            "questionId": comment.question_id,
+            "comment": comment.comment
+        }
+        return jsonify(res), 201
+    else:
+        return form.errors, 401
+
+# Update a question comment
+@question_routes.route('/comments/<int:comment_id>', methods=['PUT'])
+@login_required
+def update_comment(comment_id):
+    comment = QuestionComment.query.get(comment_id)
+    # Check if comment exists
+    if not comment:
+        return jsonify({"error": "Comment couldn't be found"}), 404
+
+    # Check if authorized
+    if comment.user_id != current_user.id:
+        return jsonify({"error": "Not Authorized to update comment"}), 403
+
+    form = QuestionCommentForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        comment.comment = form.data['comment']
+
+        db.session.commit()
+
+        res = {
+            "id": comment.id,
+            "userId": comment.user_id,
+            "questionId": comment.question_id,
+            "comment": comment.comment
+        }
+        return jsonify(res), 201
+    else:
+        return form.errors, 401
+
+##Delete a question comment
+@question_routes.route('/comments/<int:comment_id>', methods=['DELETE'])
+@login_required
+def delete_comment(comment_id):
+    comment = QuestionComment.query.get(comment_id)
+
+    # Check if comment exists
+    if not comment:
+        return jsonify({"error": "Comment couldn't be found"}), 404
+
+    # Check if authorized
+    if comment.user_id != current_user.id:
+        return jsonify({"error": "Not Authorized to delete comment"}), 403
+
+    db.session.delete(comment)
+    db.session.commit()
+
+    return jsonify({"message": "Successfully deleted"})
