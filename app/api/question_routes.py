@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify
-from app.models import Question, Answer, db, User
-from app.forms import AnswerForm
+from app.models import Question, Answer, db, User, QuestionComment, AnswerComment
+from app.forms import QuestionForm
 from flask_login import current_user, login_required
+
 
 
 question_routes = Blueprint('questions', __name__)
@@ -24,6 +25,104 @@ def index():
 
     return jsonify(questions_res)
 
+# Refractor required
+###########
+# Get Question
+@question_routes.route('/<int:id>')
+def get_question(id):
+    question_res = Question.query.get(id)
+
+    if not question_res:
+        return jsonify({"error": "Question couldn't be found"}), 404
+
+
+# We're going to just do this one step at a time to get it done faster
+# Get question
+    question = {
+        'id': question_res.id,
+        'subject': question_res.subject,
+        'question': question_res.question,
+        'user_id': question_res.user_id
+    }
+
+    user_res = User.query.get(id)
+    question["User"] = {'id':user_res.id, 'username':user_res.username}
+
+    #########
+    # Get question comments
+    questionComment_res = QuestionComment.query.filter(QuestionComment.question_id == id).all()
+    questionComments = []
+    for row in questionComment_res:
+        # Get user
+        user_res = u = User.query.get(row.user_id)
+        user_obj = {
+            'id': u.id,
+            'username': u.username
+        }
+        questionComments.append({
+            'id': row.id,
+            'comment': row.comment,
+            'User': user_obj
+        })
+
+    question["QuestionComment"] = questionComments
+
+    ################
+    # Get Ansers
+    answer_res = Answer.query.filter_by(question_id = id).join(AnswerComment)
+    answers = []
+    for row in answer_res:
+        answer_dict = {
+            'answer': row.answer,
+            'id': row.id,
+            'AnswerComments': []
+        }
+        for row in row.answer_comments:
+            user_res = u = User.query.get(row.user_id)
+            user_obj = {
+                'id': u.id,
+                'username': u.username
+            }
+            answer_dict["AnswerComments"].append({
+                'comment': row.comment,
+                'User': user_obj
+            })
+        answers.append(answer_dict)
+    question["Answer"] = answers
+        # answers.append()
+
+    return jsonify(question)
+
+#############
+# Edit Question
+
+@question_routes.route('/<int:id>', methods=["PUT"])
+def edit_question(id):
+    question = Question.query.get(id)
+    # If answer doesn't exist
+    if not question:
+        return jsonify({"message": "Question couldn't be found"}), 404
+
+    # if not authorized
+    # if question.user_id != current_user.id:
+    #     return jsonify({"error": "Not Authorized to udpate question"}), 403
+
+    form = QuestionForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        question.question = form.data['question']
+        question.subject = form.data['subject']
+
+        db.session.commit()
+
+        res = {
+            "id": question.id,
+            "subject": question.subject,
+            "question": question.question,
+        }
+        return jsonify(res), 201
+    else:
+        return form.errors, 401
 
 # Create Answer Route
 @question_routes.route('/<int:question_id>/answers', methods=['POST'])
