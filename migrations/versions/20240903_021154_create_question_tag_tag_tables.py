@@ -8,7 +8,9 @@ Create Date: 2024-09-03 02:11:54.725934
 from alembic import op
 import sqlalchemy as sa
 
-
+import os
+environment = os.getenv("FLASK_ENV")
+SCHEMA = os.environ.get("SCHEMA")
 # revision identifiers, used by Alembic.
 revision = '882939f3779d'
 down_revision = 'b9e5b33bcac9'
@@ -23,6 +25,10 @@ def upgrade():
     sa.Column('tag_name', sa.String(length=20), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE tags SET SCHEMA {SCHEMA};")
+
     op.create_table('question_tags',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('question_id', sa.Integer(), nullable=False),
@@ -31,6 +37,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['tag_id'], ['tags.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE question_tags SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
 

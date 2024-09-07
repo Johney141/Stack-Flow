@@ -8,7 +8,9 @@ Create Date: 2024-09-03 15:11:08.875583
 from alembic import op
 import sqlalchemy as sa
 
-
+import os
+environment = os.getenv("FLASK_ENV")
+SCHEMA = os.environ.get("SCHEMA")
 # revision identifiers, used by Alembic.
 revision = '06433e20b0e0'
 down_revision = '882939f3779d'
@@ -25,7 +27,8 @@ def upgrade():
     sa.PrimaryKeyConstraint('user_id', 'question_id')
     )
     op.create_index(op.f('question_following_user_id_idx'), 'question_following', ['user_id'], unique=False)
-
+    if environment == "production":
+        op.execute(f"ALTER TABLE question_following SET SCHEMA {SCHEMA};")
 
 def downgrade():
     op.drop_table('question_following')
