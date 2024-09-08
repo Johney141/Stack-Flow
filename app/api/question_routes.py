@@ -97,6 +97,7 @@ def get_question(id):
 # Edit Question
 
 @question_routes.route('/<int:id>', methods=["PUT"])
+@login_required
 def edit_question(id):
     question = Question.query.get(id)
     # If answer doesn't exist
@@ -119,6 +120,49 @@ def edit_question(id):
             "id": question.id,
             "subject": question.subject,
             "question": question.question,
+        }
+        return jsonify(res), 201
+    else:
+        return form.errors, 401
+
+###############
+# Delete Question
+@question_routes.route('/<int:id>', methods=['DELETE'])
+@login_required
+def delete_question(id):
+    question = Question.query.get(id)
+
+    if not question:
+        return jsonify({"error": "Question couldn't be found"}), 404
+
+    # if question.user_id != current_user.id:
+    #     return jsonify({"error": "Not Authorized to delete question"}), 403
+
+    db.session.delete(question)
+    db.session.commit()
+
+    return jsonify({"message": "Successfully deleted"})
+
+@question_routes.route('/', methods=["POST"])
+@login_required
+def create_question():
+
+    # Create Answer
+    form = QuestionForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        question = Question(
+            question=form.data['question'],
+            subject=form.data['subject'],
+            user_id=current_user.id
+        )
+        db.session.add(question)
+        db.session.commit()
+        res = {
+            "id": question.id,
+            "question": question.question,
+            "subject": question.subject,
+            "user_id": current_user.id
         }
         return jsonify(res), 201
     else:
