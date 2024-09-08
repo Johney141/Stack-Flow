@@ -19,3 +19,11 @@ class Question(db.Model):
     question_comments = db.relationship('QuestionComment', back_populates='question')
     question_following = db.relationship('QuestionFollowing', back_populates='question')
     question_tags = db.relationship('QuestionTag', back_populates='question')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'question': self.question,
+            'subject': self.subject,
+            'user_id': self.user_id
+        }

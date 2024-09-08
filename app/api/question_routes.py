@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
-from app.models import Question, Answer, Tag, QuestionTag, QuestionComment, User, db
-from app.forms import AnswerForm, QuestionCommentForm
+from app.models import Question, Answer, Tag, QuestionTag, QuestionComment, User, QuestionFollowing, db
+from app.forms import AnswerForm, QuestionCommentForm, QuestionFollowingForm
 from flask_login import current_user, login_required
 
 
@@ -171,3 +171,46 @@ def delete_comment(comment_id):
     db.session.commit()
 
     return jsonify({"message": "Successfully deleted"})
+
+# this will get all the questions the current user is following
+@question_routes.route('/saved')
+@login_required
+def questions_followed():
+    following_questions = QuestionFollowing.query.filter(QuestionFollowing.user_id == current_user.id).all()
+
+    response = {
+      'questions': [following.question.to_dict() for following in following_questions]
+      }
+
+    return jsonify(response)
+
+#Follow a Question
+@question_routes.route('/<int:question_id>/saved', methods=['POST'])
+@login_required
+def follow_question(question_id):
+   form = QuestionFollowingForm()
+   form['csrf_token'].data = request.cookies['csrf_token']
+   if form.validate_on_submit():
+    following = QuestionFollowing(user_id = current_user.id, question_id = question_id)
+    db.session.add(following)
+    db.session.commit()
+    res = {
+       'message': 'Saved for Later'
+    }
+    return jsonify(res), 200
+   else:
+    return form.errors, 401
+
+# Unfollow a Question
+@question_routes.route('/<int:question_id>/saved', methods=['DELETE'])
+@login_required
+def unfollow_question(question_id):
+    following = QuestionFollowing.query.get([current_user.id, question_id])
+    if not following:
+       return jsonify({"message": "Question couldn't be found in your saved list"}), 404
+    db.session.delete(following)
+    db.session.commit()
+    res = {
+       'message': 'Question unsaved'
+    }
+    return jsonify(res), 200
