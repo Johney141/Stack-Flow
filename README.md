@@ -62,7 +62,7 @@ Return all the questions saved by the current user.
 * Require Authentication: true
 * Request
   * Method: GET
-  * URL: /api/saved/current
+  * URL: /api/saved
   * Body: none
 
 * Successful Response
