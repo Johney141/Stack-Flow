@@ -6,6 +6,20 @@ from flask_login import current_user, login_required
 
 tag_routes = Blueprint('tags', __name__)
 
+@tag_routes.route('/')
+def index():
+    tags = Tag.query.all()
+    tag_res = { 'Tags': [
+        {
+            'id': tag.id,
+            'tagName': tag.tag_name
+        } for tag in tags]
+    }
+
+    return jsonify(tag_res)
+
+
+
 
 # Get all Tags of a Question Based on the Question's id
 @tag_routes.route('/questions/<int:question_id>')
