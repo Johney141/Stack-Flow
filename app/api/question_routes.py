@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+
 from app.models import Question, Answer, db, User, QuestionComment, AnswerComment
 from app.forms import QuestionForm, AnswerForm
 from flask_login import current_user, login_required
@@ -202,3 +203,25 @@ def create_answer(question_id):
         return jsonify(res), 201
     else:
         return form.errors, 401
+
+# Delete a Tag of a Question Based on the Question's id
+@question_routes.route('/tags/<int:question_id>/<int:tag_id>', methods=['DELETE'])
+@login_required
+def delete_tag(question_id, tag_id):
+  question = Question.query.get(question_id)
+  tag = Tag.query.get(tag_id)
+  if not question:
+    return jsonify({"message": "Question couldn't be found"}), 404
+  elif not tag:
+    return jsonify({"message": "Tag couldn't be found"}), 404
+  elif current_user.id != question.user.id:
+    return jsonify({"message": "Unauthorized"}), 401
+
+  questiontag = QuestionTag.query.filter_by(question_id=question_id, tag_id=tag_id).first()
+  if not questiontag:
+    return jsonify({"message": "Tag not associated with Question"}), 404
+  else:
+    db.session.delete(questiontag)
+    db.session.commit()
+
+    return jsonify({"message": "Successfully Removed"}), 200

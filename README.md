@@ -169,7 +169,7 @@ Unsaves a question.
 
 ## Tags
 
-### Add Tags For a Question Based on the Question's id
+### Add a Tag For a Question Based on the Question's id
 
 Create if not exist and return all tags for a given question with id.
 
@@ -184,14 +184,7 @@ Create if not exist and return all tags for a given question with id.
 
     ```json
     {
-      "Tags": [
-        {
-          "tagName": "javascript"
-        },
-        {
-          "tagName": "reactjs"
-        }
-      ]
+      "tagName": "javascript"
     }
     ```
 
@@ -203,17 +196,8 @@ Create if not exist and return all tags for a given question with id.
 
     ```json
     {
-      "id": 1,
-      "Tags": [
-        {
-          "id": 5,
-          "tagName": "javascript"
-        },
-        {
-          "id": 6,
-          "tagName": "reactjs"
-        }
-      ]
+      "id": 5,
+      "tagName": "javascript"
     }
     ```
 
@@ -225,9 +209,14 @@ Create if not exist and return all tags for a given question with id.
 
     ```json
     {
-      "message": "Bad Request",
-      "errors": {
-        "tagName": "tagName can't have space or capitalized letters"
+      {
+        "tagName": [
+          "Tag name must be less than 20 characters",
+          // and/or
+          "Tag name must not have space",
+          // and/or
+          "This field is required"
+        ]
       }
     }
     ```
@@ -240,7 +229,7 @@ Create if not exist and return all tags for a given question with id.
 
     ```json
     {
-      "message": "Question couldn't be found"
+      "error": "Question not found"
     }
     ```
 
@@ -275,6 +264,17 @@ Returns all the tags of a specific question based on its id.
       ]
     }
     ```
+* Error response: Couldn't find a Question with the specified id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "error": "Question not found"
+    }
+    ```
 ## Questions
 ### Get all questions
 * Require Authentication: false
@@ -283,7 +283,7 @@ Returns all the tags of a specific question based on its id.
   * URL: /api/questions
   * Body: none
 
-* Successful Response 
+* Successful Response
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
@@ -319,7 +319,7 @@ Returns all the tags of a specific question based on its id.
   * URL: /api/questions/:id
   * Body: none
 
-* Successful Response 
+* Successful Response
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
@@ -357,7 +357,7 @@ Returns all the tags of a specific question based on its id.
 					}
 				}
 			]
-		}	
+		}
 	]
 
     }
@@ -379,7 +379,7 @@ Returns all the tags of a specific question based on its id.
 * Request
   * Method: PUT
   * URL: /api/questions/:id/edit
-  * Body:     
+  * Body:
     ```json
     {
         "id": 1,
@@ -389,7 +389,7 @@ Returns all the tags of a specific question based on its id.
     }
     ```
 
-* Successful Response 
+* Successful Response
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
@@ -413,7 +413,7 @@ Returns all the tags of a specific question based on its id.
     }
     ```
 
-* Error response: User not logged in 
+* Error response: User not logged in
 * Status Code: 401
   * Headers:
     * Content-Type: application/json
@@ -444,7 +444,7 @@ Returns all the tags of a specific question based on its id.
   * URL: /api/questions/:id/delete
   * Body: none
 
-* Successful Response 
+* Successful Response
   * Status Code: 204
   * Headers:
     * Content-Type: application/json
@@ -468,7 +468,7 @@ Returns all the tags of a specific question based on its id.
     }
     ```
 
-* Error response: User not logged in 
+* Error response: User not logged in
 * Status Code: 401
   * Headers:
     * Content-Type: application/json
@@ -497,7 +497,7 @@ Returns all the tags of a specific question based on its id.
 * Request
   * Method: CREATE
   * URL: /api/questions/new
-  * Body: 
+  * Body:
  ```json
     {
 	"id": 1,
@@ -507,7 +507,7 @@ Returns all the tags of a specific question based on its id.
     }
  ```
 
-* Successful Response 
+* Successful Response
   * Status Code: 204
   * Headers:
     * Content-Type: application/json
@@ -530,7 +530,7 @@ Returns all the tags of a specific question based on its id.
     }
     ```
 
-* Error response: User not logged in 
+* Error response: User not logged in
 * Status Code: 401
   * Headers:
     * Content-Type: application/json
