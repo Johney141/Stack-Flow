@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
-from app.models import Question, Answer, Tag, QuestionTag, db
-from app.forms import AnswerForm
+from app.models import Question, Answer, Tag, QuestionTag, QuestionComment, User, QuestionFollowing, db
+from app.forms import AnswerForm, QuestionCommentForm, QuestionFollowingForm
 from flask_login import current_user, login_required
 
 
@@ -68,3 +68,149 @@ def delete_tag(question_id, tag_id):
     db.session.commit()
 
     return jsonify({"message": "Successfully Removed"}), 200
+
+# Get Current user's question comments
+@question_routes.route('/comments/current')
+@login_required
+def question_comments():
+    comments = QuestionComment.query.join(User).filter(QuestionComment.user_id == current_user.id).all()
+
+
+    comments_res = { 'QuestionComments': [
+        {
+            'id': comment.id,
+            'userId': comment.user_id,
+            'questionId': comment.question_id,
+            'comment': comment.comment,
+            'User': {
+                'id': comment.user.id,
+                'username': comment.user.username,
+                'email': comment.user.email
+            }
+        } for comment in comments]
+    }
+
+    return jsonify(comments_res)
+
+# Create a question comment
+@question_routes.route('/<int:question_id>/comments', methods=['POST'])
+@login_required
+def create_comment(question_id):
+    # Check if question exists
+    question = Question.query.get(question_id)
+    if not question:
+        return jsonify({"error": "Question couldn't be found"}), 404
+
+    # Create Question
+    form = QuestionCommentForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        comment = QuestionComment(
+            user_id=current_user.id,
+            question_id=question_id,
+            comment=form.data['comment']
+        )
+
+        db.session.add(comment)
+        db.session.commit()
+        res = {
+            "id": comment.id,
+            "userId": comment.user_id,
+            "questionId": comment.question_id,
+            "comment": comment.comment
+        }
+        return jsonify(res), 201
+    else:
+        return form.errors, 401
+
+# Update a question comment
+@question_routes.route('/comments/<int:comment_id>', methods=['PUT'])
+@login_required
+def update_comment(comment_id):
+    comment = QuestionComment.query.get(comment_id)
+    # Check if comment exists
+    if not comment:
+        return jsonify({"error": "Comment couldn't be found"}), 404
+
+    # Check if authorized
+    if comment.user_id != current_user.id:
+        return jsonify({"error": "Not Authorized to update comment"}), 403
+
+    form = QuestionCommentForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        comment.comment = form.data['comment']
+
+        db.session.commit()
+
+        res = {
+            "id": comment.id,
+            "userId": comment.user_id,
+            "questionId": comment.question_id,
+            "comment": comment.comment
+        }
+        return jsonify(res), 201
+    else:
+        return form.errors, 401
+
+##Delete a question comment
+@question_routes.route('/comments/<int:comment_id>', methods=['DELETE'])
+@login_required
+def delete_comment(comment_id):
+    comment = QuestionComment.query.get(comment_id)
+
+    # Check if comment exists
+    if not comment:
+        return jsonify({"error": "Comment couldn't be found"}), 404
+
+    # Check if authorized
+    if comment.user_id != current_user.id:
+        return jsonify({"error": "Not Authorized to delete comment"}), 403
+
+    db.session.delete(comment)
+    db.session.commit()
+
+    return jsonify({"message": "Successfully deleted"})
+
+# this will get all the questions the current user is following
+@question_routes.route('/saved')
+@login_required
+def questions_followed():
+    following_questions = QuestionFollowing.query.filter(QuestionFollowing.user_id == current_user.id).all()
+
+    response = {
+      'questions': [following.question.to_dict() for following in following_questions]
+      }
+
+    return jsonify(response)
+
+#Follow a Question
+@question_routes.route('/<int:question_id>/saved', methods=['POST'])
+@login_required
+def follow_question(question_id):
+   form = QuestionFollowingForm()
+   form['csrf_token'].data = request.cookies['csrf_token']
+   if form.validate_on_submit():
+    following = QuestionFollowing(user_id = current_user.id, question_id = question_id)
+    db.session.add(following)
+    db.session.commit()
+    res = {
+       'message': 'Saved for Later'
+    }
+    return jsonify(res), 200
+   else:
+    return form.errors, 401
+
+# Unfollow a Question
+@question_routes.route('/<int:question_id>/saved', methods=['DELETE'])
+@login_required
+def unfollow_question(question_id):
+    following = QuestionFollowing.query.get([current_user.id, question_id])
+    if not following:
+       return jsonify({"message": "Question couldn't be found in your saved list"}), 404
+    db.session.delete(following)
+    db.session.commit()
+    res = {
+       'message': 'Question unsaved'
+    }
+    return jsonify(res), 200
