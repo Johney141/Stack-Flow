@@ -22,11 +22,11 @@ def upgrade():
     op.create_table('question_following',
     sa.Column('user_id', sa.Integer()),
     sa.Column('question_id', sa.Integer()),
-    sa.ForeignKeyConstraint(['question_id'], ['question.id'], ondelete='SET NULL'),
+    sa.ForeignKeyConstraint(['question_id'], ['questions.id'], ondelete='SET NULL'),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='SET NULL'),
     sa.PrimaryKeyConstraint('user_id', 'question_id')
     )
-    op.create_index(op.f('question_following_user_id_idx'), 'question_following', ['user_id'], unique=False)
+
     if environment == "production":
         op.execute(f"ALTER TABLE question_following SET SCHEMA {SCHEMA};")
 
