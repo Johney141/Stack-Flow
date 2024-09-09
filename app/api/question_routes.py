@@ -148,8 +148,7 @@ def delete_question(id):
 @question_routes.route('/', methods=["POST"])
 @login_required
 def create_question():
-
-    # Create Answer
+    # Create Question
     form = QuestionForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
@@ -331,7 +330,7 @@ def delete_comment(comment_id):
     return jsonify({"message": "Successfully deleted"})
 
 # this will get all the questions the current user is following
-@question_routes.route('/saved')
+@question_routes.route('/saved/current')
 @login_required
 def questions_followed():
     following_questions = QuestionFollowing.query.filter(QuestionFollowing.user_id == current_user.id).all()

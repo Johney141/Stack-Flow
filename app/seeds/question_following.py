@@ -23,8 +23,8 @@ def seed_question_followings():
 
 def undo_question_followings():
   if environment == "production":
-    db.session.execute(f"TRUNCATE table {SCHEMA}.question_followings RESTART IDENTITY CASCADE;")
+    db.session.execute(f"TRUNCATE table {SCHEMA}.question_following RESTART IDENTITY CASCADE;")
   else:
-    db.session.execute(text("DELETE FROM question_followings"))
+    db.session.execute(text("DELETE FROM question_following"))
 
   db.session.commit()

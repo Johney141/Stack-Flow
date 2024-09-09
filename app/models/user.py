@@ -19,6 +19,7 @@ class User(db.Model, UserMixin):
     # Uncomment When Quesion Comments is added
     question_comments = db.relationship('QuestionComment', back_populates='user')
     question_following = db.relationship('QuestionFollowing', back_populates='user')
+    answer_upvote = db.relationship('AnswerUpvote', back_populates='user')
     answer_comments = db.relationship('AnswerComment', back_populates='user')
 
     @property

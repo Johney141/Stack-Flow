@@ -15,3 +15,4 @@ class Answer(db.Model):
     question = db.relationship('Question', back_populates='answers')
     user = db.relationship('User', back_populates='answers')
     answer_comments = db.relationship('AnswerComment', back_populates='answer', cascade="all, delete-orphan")
+    answer_upvote = db.relationship('AnswerUpvote', back_populates='answer', cascade="all, delete-orphan")
