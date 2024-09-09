@@ -1,18 +1,41 @@
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { FaStackOverflow } from "react-icons/fa6";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
 
 function Navigation() {
-  return (
-    <ul>
-      <li>
-        <NavLink to="/">Home</NavLink>
-      </li>
+  const navigate = useNavigate();
 
-      <li>
+  const handleHomeClick = () => {
+    navigate('/')
+  }
+
+
+  return (
+    <nav className="navbar">
+      <div className="nav-item">
+        <button
+          id="home-button"
+          onClick={handleHomeClick}
+        >
+          <FaStackOverflow />
+          Stack <b>Flow</b>
+        </button>
+      </div>
+      <div className="nav-item">
         <ProfileButton />
-      </li>
-    </ul>
+      </div>
+
+    </nav>
+    // <ul>
+    //   <li>
+    //     <NavLink to="/">Home</NavLink>
+    //   </li>
+
+    //   <li>
+    //     <ProfileButton />
+    //   </li>
+    // </ul>
   );
 }
 
