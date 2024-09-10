@@ -1,0 +1,24 @@
+/* .profile-container {
+    font-size: 1rem;
+} */
+
+.profile-dropdown {
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid lightgrey;
+    border-radius: 10px ;
+    overflow: hidden;
+}
+
+.profile-dropdown button {
+    border: none;
+    cursor: pointer;
+}
+#profile-button {
+    display: flex;
+    align-items: center;
+    font-size: 25px;
+    cursor: pointer;
+    border: none;
+}

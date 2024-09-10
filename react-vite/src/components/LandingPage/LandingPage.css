@@ -1,0 +1,46 @@
+.tag-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+}
+@media (min-width: 400px) {
+    .tag-container{
+        grid-template-columns: repeat(2, 1fr);
+        
+    }
+}
+
+@media (min-width: 700px) {
+    .tag-container{
+        grid-template-columns: repeat(3, 1fr);
+        
+    }
+}
+
+@media (min-width: 1000px) {
+    .tag-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+@media (min-width: 1200px) {
+    .tag-container {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+@media (min-width: 1900px) {
+    .tag-container {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+.tag-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid darkgrey;
+    border-radius: 25px;
+    cursor: pointer;
+    padding: 10px;
+    width: 4rem;
+    margin-top: 1rem;
+}
