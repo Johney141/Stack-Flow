@@ -2,10 +2,10 @@ from app.models import db, Tag, QuestionTag, environment, SCHEMA
 from sqlalchemy.sql import text
 
 def seed_tags():
-  tag1 = Tag(tag_name='test tag 1') # for question 1
-  tag2 = Tag(tag_name='test tag 2') # for question 2
-  tag3 = Tag(tag_name='test tag 3') # for question 2, 3
-  tag4 = Tag(tag_name='test tag 4') # for question 3
+  tag1 = Tag(tag_name='javascript') # for question 1
+  tag2 = Tag(tag_name='python') # for question 2
+  tag3 = Tag(tag_name='sqlalchemy') # for question 2, 3
+  tag4 = Tag(tag_name='docker') # for question 3
 
   questiontag1 = QuestionTag(question_id=1, tag_id=1)
   questiontag2 = QuestionTag(question_id=2, tag_id=2)
