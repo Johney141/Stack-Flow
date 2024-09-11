@@ -1,8 +1,6 @@
-import React from 'react';
-
 function LeftNavigation () {
   return (
-    <nav class="leftnav">
+    <nav className="leftnav">
       <ul>
         <li><a href='/'>Home</a></li>
         <li><a href='/questions'>Questions</a></li>

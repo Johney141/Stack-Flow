@@ -35,22 +35,22 @@ function LoginFormModal() {
   }
 
   return (
-    <div class='modal'>
-      <div class='md-element'>
+    <div className='modal'>
+      <div className='md-element'>
         <a href="/">
-          <FaStackOverflow class='md-icon'/>
+          <FaStackOverflow className='md-icon'/>
         </a>
       </div>
 
-      <div class='md-element'>
+      <div className='md-element'>
         <button
-          class='md-demo-button'
+          className='md-demo-button'
           onClick={handleDemoSubmit}>
             Log in as Demo User
         </button>
       </div>
 
-      <form class='md-element-form' onSubmit={handleSubmit}>
+      <form className='md-element-form' onSubmit={handleSubmit}>
 
         <label>
           <b>Email</b>
@@ -64,7 +64,7 @@ function LoginFormModal() {
             required
           />
           {errors.email && (
-            <div class='error'>{errors.email}</div>
+            <div className='error'>{errors.email}</div>
           )}
         </div>
 
@@ -80,13 +80,13 @@ function LoginFormModal() {
             required
           />
           {!errors.email && errors.password && (
-            <div class='error'>{errors.password}</div>
+            <div className='error'>{errors.password}</div>
           )}
         </div>
 
 
 
-        <button type="submit" class='md-button'
+        <button type="submit" className='md-button'
           disabled={!email || !password || email.length < 8 || password.length < 6}>
             Log In
         </button>
@@ -99,35 +99,6 @@ function LoginFormModal() {
 
 
     </div>
-  );
-
-  return (
-    <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        {errors.password && <p>{errors.password}</p>}
-        <button type="submit">Log In</button>
-      </form>
-    </>
   );
 }
 
