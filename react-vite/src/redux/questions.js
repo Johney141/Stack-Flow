@@ -52,6 +52,16 @@ export const getAllQuestionsThunk = () => async (dispatch) => {
     }
 }
 
+export const fetchComments = () => async (dispatch) => {
+    const res = await fetch('/api/questions/comments/current')
+
+    if (res.ok) {
+        const data = await res.json()
+        dispatch(getAllComments(data))
+    }
+    return res
+};
+
 export const fetchComment = (payload, questionId) => async (dispatch) => {
     const res = await fetch(`/api/questions/${questionId}/saved`, {
             method: 'POST',
@@ -102,6 +112,7 @@ const questionReducer = (state=initialState, action) => {
     switch (action.type) {
 
         case GET_QUESTIONS:
+            console.log(action, '<--------')
             newState = {...state};
             // All Tags
             newState.allQuestions = action.payload.Questions;
@@ -110,8 +121,37 @@ const questionReducer = (state=initialState, action) => {
             for (let question of action.payload.Questions) {
                 newState.byId[question.id] = question;
             }
-
             return newState
+        case LOAD_COMMENTS: {
+            console.log(action, '<--------')
+            return {
+                ...state,
+                QuestionComments: action.payload.QuestionComments
+            }
+        }
+        case LOAD_COMMENT: {
+            if (!state[action.id]) {
+                const newState = {
+                    ...state,
+                    [action.id]: action
+                }
+                return newState
+            }
+            return {...state}
+        }
+        case DELETE_COMMENT: {
+            let newComments;
+            const questionId = action.payload
+            const data = {...state.allQuestions.QuestionComments}
+            let comments = Object.values(data)
+            let index;
+            for (let i = 0; i < comments.length; i++) {
+                if (comments[i].id == questionId) index = i
+            }
+            comments.splice(index, 1)
+            newComments = Object.assign({}, comments)
+            return {...state, QuestionComments: newComments}
+        }
         default:
             return state
     }

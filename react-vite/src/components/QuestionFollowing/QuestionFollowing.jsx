@@ -9,15 +9,9 @@ const FollowingList = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const getFollowings = async () => {
-            await dispatch(fetchFollowings())
-            setIsLoaded(true);
-        }
+        dispatch(fetchFollowings())
+            .then(() => setIsLoaded(true));
 
-        if(!isLoaded) {
-            getFollowings()
-
-        }
     }, [isLoaded, dispatch])
 
     if(!isLoaded) {

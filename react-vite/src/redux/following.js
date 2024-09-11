@@ -58,7 +58,7 @@ const followingsReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_FOLLOWINGS: {
             newState = {...state};
-            newState.allFollowings = action.payload.Question_followings
+            newState.allFollowings = action.payload.questions
             return newState
         }
         case LOAD_FOLLOW: {
@@ -68,7 +68,7 @@ const followingsReducer = (state = initialState, action) => {
         case LOAD_UNFOLLOW: {
             let newFollowings;
             const questionId = action.payload
-            const data = {...state.allFollowings.Question_followings}
+            const data = {...state.allFollowings.questions}
             let followings = Object.values(data)
             let index;
             for (let i = 0; i < followings.length; i++) {
