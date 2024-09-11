@@ -9,8 +9,8 @@ const ProfilePage = () => {
     const user = useSelector((store) => store.session.user);
     const navigate = useNavigate();
 
-
     
+
     return (
         <h1>Testing</h1>
     )
