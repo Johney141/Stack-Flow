@@ -8,12 +8,14 @@ import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import tagReducer from "./tags";
 import questionReducer from "./questions";
+import followingsReducer from "./following";
 
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   tagState: tagReducer,
-  questionState: questionReducer
+  questionState: questionReducer,
+  followingState: followingsReducer
 });
 
 let enhancer;
