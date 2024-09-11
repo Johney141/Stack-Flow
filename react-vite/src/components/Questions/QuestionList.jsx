@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { getAllTagsThunk } from "../../redux/tags";
-import './LandingPage.css'
+
 
 const QuestionList = () => {
     const [isLoaded, setIsLoaded] = useState(false);
     const questions = useSelector(state => state.questionState.allTags)
-    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -17,7 +16,7 @@ const QuestionList = () => {
         }
 
         if(!isLoaded) {
-            GetQuestions()
+            getQuestions()
 
         }
     }, [isLoaded, dispatch])
