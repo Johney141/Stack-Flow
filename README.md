@@ -597,7 +597,7 @@ Create and return a new question comment for a question specified by question id
 * Require Authentication: true
 * Request
   * Method: POST
-  * URL: /api/answers/:answerId/comments
+  * URL: /api/answers/:questionId/comments
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1304,7 +1304,7 @@ Delete an existing Question Comment.
 * Require Authentication: true
 * Request
   * Method: DELETE
-  * URL: /api/answers/comments/:commentId
+  * URL: /api/questions/comments/:commentId
   * Body: none
 
 * Successful Response
