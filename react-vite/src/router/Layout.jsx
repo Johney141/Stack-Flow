@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { ModalProvider, Modal } from "../context/Modal";
 import { thunkAuthenticate } from "../redux/session";
 import Navigation from "../components/Navigation/Navigation";
+import LeftNavigation from "../components/LeftNavigation/LeftNavigation";
 
 export default function Layout() {
   const dispatch = useDispatch();
@@ -16,7 +17,10 @@ export default function Layout() {
     <>
       <ModalProvider>
         <Navigation />
-        {isLoaded && <Outlet />}
+        <LeftNavigation />
+        <div id="main-margin">
+          {isLoaded && <Outlet />}
+        </div>
         <Modal />
       </ModalProvider>
     </>
