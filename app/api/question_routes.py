@@ -157,8 +157,8 @@ def delete_question(id):
     if not question:
         return jsonify({"error": "Question couldn't be found"}), 404
 
-    # if question.user_id != current_user.id:
-    #     return jsonify({"error": "Not Authorized to delete question"}), 403
+    if question.user_id != current_user.id:
+        return jsonify({"error": "Not Authorized to delete question"}), 403
 
     db.session.delete(question)
     db.session.commit()

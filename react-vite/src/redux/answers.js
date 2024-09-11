@@ -21,7 +21,7 @@ export const getUserAnswersThunk = () => async (dispatch) => {
             throw res
         }
     } catch (error) {
-        err = error.json()
+        const err = error.json()
         return err
     }
 }
