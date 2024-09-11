@@ -1,3 +1,20 @@
+.leftnav {
+  width: 120px;
+  height: 100%;
+  padding-top: 60px;
+  position: fixed;
+  overflow-x: hidden;
+  background-color: #d7ade7;
+}
+
+div#main-margin {
+  margin-left: 120px;
+}
+
+.navbar {
+  margin-left: 120px;
+}
+
 .error {
   color: #c94036;
   font-weight: bold;
