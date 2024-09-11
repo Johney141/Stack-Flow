@@ -1,1 +1,57 @@
-/* TODO: Add sitewide styles */
+.error {
+  color: #c94036;
+  font-weight: bold;
+}
+
+.modal {
+  font-family: inherit;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+div#modal-content {
+  border-radius: 10px;
+}
+
+.md-element {
+  width: 400px;
+}
+
+.md-element-form {
+  padding-top: 15px;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.md-element-form div input {
+  width: 353px;
+  height: 25px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.md-icon {
+  transform: scale(2, 2);
+  padding-left: 127px;
+  padding-bottom: 10px;
+}
+
+.md-demo-button {
+  font-family: inherit;
+  width: 100%;
+  height: 30px;
+  font-size: 20px;
+  border-radius: 5px;
+}
+
+.md-button {
+  font-family: inherit;
+  width: 100%;
+  font-size: 18px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
