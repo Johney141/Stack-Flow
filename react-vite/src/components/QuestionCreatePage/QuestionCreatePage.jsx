@@ -49,6 +49,11 @@ function QuestionCreatePage() {
     }
   };
 
+  const handleTagReset = e => {
+    e.preventDefault();
+    setTags([]);
+  }
+
   useEffect(() => {
     if(!tagInput.includes(' ')) setTagError(false);
   }, [tagInput]);
@@ -93,15 +98,22 @@ function QuestionCreatePage() {
         >
           Add Tag
         </button>
+        <button
+          type="button"
+          onClick={handleTagReset}
+        >
+          Reset
+        </button>
       </div>
 
-      {tagError && <div>Tag Error</div>}
+      {tagError && <div className='error'>Name of the tag cannot have spaces, try replace using -</div>}
 
       <div>
-        {tags.map((tag) => (<p>{tag}</p>))}
+        {tags.map((tag) => (<label className='tag-label' key={tag}>{tag}</label>))}
       </div>
 
       <div>
+        {!(tags.length) && (<div className='error'>Need At Least One Tag</div>)}
         <button
           disabled={(!subject) || (question.length < 30)}
           type="submit"
