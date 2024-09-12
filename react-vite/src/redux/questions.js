@@ -105,7 +105,8 @@ export const fetchEditComment = (payload, commentId) => async (dispatch) => {
 
 const initialState = {
     allQuestions: [],
-    byId: {}
+    byId: {},
+    questionComments: {}
 }
 
 const questionReducer = (state=initialState, action) => {
@@ -121,13 +122,16 @@ const questionReducer = (state=initialState, action) => {
                 newState.byId[question.id] = question;
             }
             return newState;
-        
+
         case LOAD_COMMENTS: {
-            console.log(action, '<--------')
-            return {
-                ...state,
-                QuestionComments: action.payload.QuestionComments
-            }
+            console.log(action, '<-------- C')
+            const comments = {};
+            action.payload.QuestionComments.forEach(comment => comments[comment.id]={...comment});
+            return {...state, questionComments: comments}
+            // return {
+            //     ...state,
+            //     QuestionComments: action.payload.QuestionComments
+            // }
         }
         case LOAD_COMMENT: {
             if (!state[action.id]) {

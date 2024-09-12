@@ -13,19 +13,30 @@ const QuestionDetails = () => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [questionTags, setQuestionTags] = useState({});
     const questionsById = useSelector(state => state.questionState.byId)
+    const comments =  useSelector(state => state)
     const dispatch = useDispatch();
 
 
 
     useEffect(() => {
-        console.log("use effect");
+        console.log(comments, '<------- Comments');
         const getQuestion = async () => {
             let tags = await dispatch(getQuestionTagsThunk(id));
             setQuestionTags(tags.Tags);
             await dispatch(getAllQuestionsThunk());
+            dispatch(fetchComments())
             setIsLoaded(true);
         }
         getQuestion();
+        // will move when the question file is created.
+        const getComments = async () => {
+            await dispatch(fetchComments())
+            setIsLoaded(true)
+        }
+// will move when the question file is created.
+        const editComment = (commentId) => {
+            Navigate(`/questions/comments/${commentId}/edit`)
+        }
 // will move when the question file is created.
     }, [isLoaded, dispatch, setQuestionTags])
 
