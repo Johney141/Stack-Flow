@@ -9,13 +9,14 @@ import sessionReducer from "./session";
 import tagReducer from "./tags";
 import questionReducer from "./questions";
 import answersReducer from "./answers";
-
+import followingsReducer from "./following";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   tagState: tagReducer,
   questionState: questionReducer,
-  answerState: answersReducer
+  answerState: answersReducer,
+  followingState: followingsReducer
 });
 
 let enhancer;
