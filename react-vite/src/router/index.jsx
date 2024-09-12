@@ -6,6 +6,7 @@ import QuestionList from '../components/Questions/QuestionList';
 import EditCommentForm from '../components/EditComment/EditComment';
 import QuestionDetails from '../components/Questions/QuestionDetails';
 import QuestionCreatePage from '../components/QuestionCreatePage';
+import Followings from '../components/FollowingPage/FollowingPage';
 import Layout from './Layout';
 
 export const router = createBrowserRouter([
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
       {
         path: "questions/comments/:commentId/edit",
         element: <EditCommentForm />
+      },
+      {
+        path: "questions/saved/current",
+        element: <Followings />
       }
     ],
   },

@@ -57,6 +57,7 @@ const followingsReducer = (state = initialState, action) => {
     let newState;
     switch (action.type) {
         case LOAD_FOLLOWINGS: {
+            console.log(action, '<------')
             newState = {...state};
             newState.allFollowings = action.payload.questions
             return newState
