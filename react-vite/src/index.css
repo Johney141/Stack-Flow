@@ -72,3 +72,8 @@ div#modal-content {
   margin-bottom: 10px;
   border-radius: 5px;
 }
+
+.tag-label {
+  margin: 5px;
+  outline: 2px dashed blue;
+}

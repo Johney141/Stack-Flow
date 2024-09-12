@@ -34,7 +34,7 @@ export const deleteComment = (payload) => ({
 // Thunks
 export const createQuestion = (body) => async () => {
   const {question, subject} = body;
-  const response = await fetch('/api/questions', {
+  const response = await fetch('/api/questions/', {
     method: 'POST',
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({question, subject})

@@ -17,9 +17,11 @@ const getAllTags = (tags) => ({
 // Thunks
 export const createTags = (body) => async () => {
   const {tags, questionId} = body;
-  for(let tag in tags) {
+  console.log(body);
+  for(let tag of tags) {
     await fetch(`/api/tags/questions/${questionId}`, {
       method: 'POST',
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({tagName: tag})
     });
   }
@@ -27,7 +29,7 @@ export const createTags = (body) => async () => {
 
 export const getAllTagsThunk = () => async (dispatch) => {
     try {
-        const res = await fetch('/api/tags')
+        const res = await fetch('/api/tags/')
         if(res.ok) {
             const data = await res.json();
             if (data.errors) {
