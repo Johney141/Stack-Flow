@@ -55,11 +55,13 @@ export const getQuestionTagsThunk = (id) => async (dispatch) => {
             if (data.errors) {
                 throw data;
             }
+            
             return data
         } else {
             throw res
         }
     } catch (error) {
+        const err = await error.json();
         return err
     }
 }

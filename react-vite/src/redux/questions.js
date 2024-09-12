@@ -159,6 +159,7 @@ export const deleteQuestionThunk =(questionId) => async (dispatch) => {
         if (res.ok) {
             const data = await res.json();
             dispatch(deleteQuestion(data));
+            return data
         } else {
             throw res
         }
