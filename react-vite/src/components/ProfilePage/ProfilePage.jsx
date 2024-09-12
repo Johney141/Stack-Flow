@@ -60,9 +60,9 @@ const ProfilePage = () => {
     const handleQuestionDeleted = () => {
         setQuestionDeleted(true);
     }
-    // const handleAnswerDeleted = () => {
-    //     setAnswerDeleted(true);
-    // }
+    const handleAnswerDeleted = () => {
+        setAnswerDeleted(true);
+    }
 
     return (
         <div className="profile-page-container">
@@ -113,7 +113,7 @@ const ProfilePage = () => {
                                 <OpenModalMenuItem 
                                     itemText='Delete'
                                     onItemClick={closeMenu}
-                                    modalComponent={<DeleteAnswerModal />}
+                                    modalComponent={<DeleteAnswerModal answerId={answer.id} answerDeleted={handleAnswerDeleted}/>}
                                 />
                             </>: null
                         }
