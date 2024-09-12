@@ -8,6 +8,7 @@ import OpenModalMenuItem from '../Navigation/OpenModalMenuItem'
 import DeleteAnswerModal from "../DeleteAnswerModal/DeleteAnswerModal";
 import DeleteQuestionModal from "../DeleteQuestionModal/DeleteQuestionModal";
 import UpdateAnswerModal from "../UpdateAnswerModal/UpdateAnswerModal";
+import UpdateQuestionModal from "../UpdateQuestionModal/UpdateQuestoinModal";
 
 
 const ProfilePage = () => {
@@ -92,9 +93,12 @@ const ProfilePage = () => {
                         >{question.question}</p>
                         {isUsersProfile ? 
                             <>
-                                <button 
-                                    className="question-update"
-                                    >Update</button>
+                                <OpenModalMenuItem 
+                                    itemText='Update'
+                                    className='question-update'
+                                    onItemClick={closeMenu}
+                                    modalComponent={<UpdateQuestionModal question={question} questionUpdated={handleQuestionUpdated}/>}
+                                />
                                 <OpenModalMenuItem 
                                     itemText='Delete'
                                     onItemClick={closeMenu}

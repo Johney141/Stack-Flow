@@ -6,6 +6,7 @@ const EDIT_COMMENT = 'followings/editComment'
 const DELETE_COMMENT = 'followings/deleteComment'
 const GET_USER_QUESTIONS = 'questions/getUserQuestions'
 const DELETE_QUESTION = 'questions/deleteQuestion'
+const UPDATE_QUESTION = 'qustions/updateQuestion'
 
 // Action Creators
 const getAllQuestions = (questions) => ({
@@ -40,6 +41,11 @@ const getUserQuestions = (questions) => ({
 
 const deleteQuestion = (question) => ({
     type: DELETE_QUESTION,
+    payload: question
+})
+
+const updateQuestion = (question) => ({
+    type: UPDATE_QUESTION,
     payload: question
 })
 
@@ -170,6 +176,30 @@ export const deleteQuestionThunk =(questionId) => async (dispatch) => {
     }
 }
 
+export const updateQuestionThunk = (questionId, body) => async (dispatch) => {
+    try {
+        const {question, subject} = body;
+        const res = fetch(`/api/questions/${questionId}`,{
+            method: 'PUT',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({question, subject})
+        });
+        if(res.ok) {
+            data = res.json();
+            if(data.errors) {
+                throw data
+            }
+
+            dispatch(updateQuestion(data))
+            return data
+        }
+
+        
+    } catch (error) {
+        return error.json();
+    }
+}
+
 // Reducer
 const initialState = {
     allQuestions: [],
@@ -255,6 +285,23 @@ const questionReducer = (state = initialState, action) => {
             );
 
             delete newState.byId[action.payload.id];
+
+            return newState;
+        }
+
+        case UPDATE_QUESTION: {
+            newState = {...state};
+
+            const updatedQuestions = newState.allQuestions.map(question => {
+                if(question.id === action.payload.id) {
+                    return action.payload;
+                } else {
+                    return question
+                }
+            })
+
+            newState.allQuestions = updatedQuestions;
+            newState.byId = {...newState.byId, [action.payload.id]: action.payload}
 
             return newState;
         }

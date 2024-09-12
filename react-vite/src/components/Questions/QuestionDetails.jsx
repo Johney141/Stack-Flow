@@ -48,9 +48,9 @@ const QuestionDetails = () => {
         return () => document.removeEventListener("click", closeMenu);
 
 // will move when the question file is created.
-        // const editComment = (commentId) => {
-        //     Navigate(`/questions/comments/${commentId}/edit`)
-        // }
+        const editComment = (commentId) => {
+            Navigate(`/questions/comments/${commentId}/edit`)
+        }
 // will move when the question file is created.
     }, [isLoaded, dispatch, setQuestionTags])
 
