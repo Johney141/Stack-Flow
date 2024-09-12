@@ -27,6 +27,26 @@ def index():
 
     return jsonify(questions_res)
 
+# Get current user's questions
+@question_routes.route('/current')
+@login_required
+def get_user_questions():
+    questions = Question.query.join(User).filter(Question.user_id == current_user.id).all()
+
+    question_res = { 'Questions': [
+        {
+            'id': question.id,
+            'question': question.question,
+            'subject': question.subject,
+            'User': {
+                'id': question.user.id,
+                'username': question.user.username
+            }
+        } for question in questions]
+    }
+    
+    return jsonify(question_res)
+
 # Refractor required
 ###########
 # Get Question
@@ -137,8 +157,8 @@ def delete_question(id):
     if not question:
         return jsonify({"error": "Question couldn't be found"}), 404
 
-    # if question.user_id != current_user.id:
-    #     return jsonify({"error": "Not Authorized to delete question"}), 403
+    if question.user_id != current_user.id:
+        return jsonify({"error": "Not Authorized to delete question"}), 403
 
     db.session.delete(question)
     db.session.commit()

@@ -8,6 +8,7 @@ import QuestionDetails from '../components/Questions/QuestionDetails';
 import QuestionCreatePage from '../components/QuestionCreatePage';
 import Followings from '../components/FollowingPage/FollowingPage';
 import Layout from './Layout';
+import ProfilePage from '../components/ProfilePage/ProfilePage';
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ export const router = createBrowserRouter([
       {
         path: "questions/saved/current",
         element: <Followings />
+      },
+      {
+        path: "users/:userId",
+        element: <ProfilePage />
       }
     ],
   },
