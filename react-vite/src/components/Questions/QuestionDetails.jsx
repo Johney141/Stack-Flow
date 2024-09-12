@@ -87,7 +87,7 @@ const QuestionDetails = () => {
                 </div>
             </div>
             <div className="QuestionDetails-comments">
-                <h4>Question Comment Section starts</h4>
+                <h4>Question Comment Section starts here</h4>
                 {Object.values(comments).map(comment => {
                     return (
                         <div>
