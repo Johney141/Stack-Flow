@@ -32,6 +32,21 @@ export const deleteComment = (payload) => ({
 })
 
 // Thunks
+export const createQuestion = (body) => async () => {
+  const {question, subject} = body;
+  const response = await fetch('/api/questions', {
+    method: 'POST',
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({question, subject})
+  });
+  const data = await response.json();
+  console.log(data);
+
+  if(response.ok) {
+    return data.id;
+  }
+};
+
 export const getAllQuestionsThunk = () => async (dispatch) => {
     try {
         const res = await fetch('/api/questions')
@@ -121,7 +136,7 @@ const questionReducer = (state=initialState, action) => {
                 newState.byId[question.id] = question;
             }
             return newState;
-        
+
         case LOAD_COMMENTS: {
             console.log(action, '<--------')
             return {
