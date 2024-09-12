@@ -52,7 +52,7 @@ def get_question(id):
 
     #########
     # Get question comments
-    questionComment_res = QuestionComment.query.filter(QuestionComment.question_id == id).all()
+    questionComment_res = QuestionComment.query.filter(QuestionComment.question_id == question.id).all()
     questionComments = []
     for row in questionComment_res:
         # Get user
@@ -230,7 +230,7 @@ def delete_tag(question_id, tag_id):
 @question_routes.route('/comments/current')
 @login_required
 def question_comments():
-    comments = QuestionComment.query.join(User).filter(QuestionComment.user_id == current_user.id).all()
+    comments = QuestionComment.query.join(Question).filter(QuestionComment.question_id == current_user.id).all()
 
 
     comments_res = { 'QuestionComments': [

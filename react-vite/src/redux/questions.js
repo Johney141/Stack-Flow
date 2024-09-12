@@ -63,8 +63,8 @@ export const fetchComments = () => async (dispatch) => {
     return res
 };
 
-export const fetchComment = (payload, questionId) => async (dispatch) => {
-    const res = await fetch(`/api/questions/${questionId}/saved`, {
+export const fetchComment = (questionId, payload) => async (dispatch) => {
+    const res = await fetch(`/api/questions/${questionId}/comments`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -123,16 +123,25 @@ const questionReducer = (state=initialState, action) => {
             }
             return newState;
 
-        case LOAD_COMMENTS: {
-            console.log(action, '<-------- C')
-            const comments = {};
-            action.payload.QuestionComments.forEach(comment => comments[comment.id]={...comment});
-            return {...state, questionComments: comments}
-            // return {
-            //     ...state,
-            //     QuestionComments: action.payload.QuestionComments
-            // }
-        }
+            case LOAD_COMMENTS: {
+                console.log(LOAD_COMMENTS, action.payload.QuestionComments)
+
+                const updated = {
+                    ...state,
+                    questionComments: action.payload.QuestionComments.reduce(
+                        (accumulator, comment) => {
+                            accumulator[comment.id] = comment;
+
+                            return accumulator;
+                        },
+                        {}
+                    )
+                };
+
+                console.log(LOAD_COMMENTS, updated)
+
+                return updated;
+            }
         case LOAD_COMMENT: {
             if (!state[action.id]) {
                 const newState = {
