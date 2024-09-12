@@ -52,6 +52,7 @@ export const getAllQuestionsThunk = () => async (dispatch) => {
     }
 }
 
+
 export const fetchComments = () => async (dispatch) => {
     const res = await fetch('/api/questions/comments/current')
 
@@ -110,9 +111,7 @@ const initialState = {
 const questionReducer = (state=initialState, action) => {
     let newState;
     switch (action.type) {
-
         case GET_QUESTIONS:
-            console.log(action, '<--------')
             newState = {...state};
             // All Tags
             newState.allQuestions = action.payload.Questions;
@@ -121,7 +120,8 @@ const questionReducer = (state=initialState, action) => {
             for (let question of action.payload.Questions) {
                 newState.byId[question.id] = question;
             }
-            return newState
+            return newState;
+        
         case LOAD_COMMENTS: {
             console.log(action, '<--------')
             return {

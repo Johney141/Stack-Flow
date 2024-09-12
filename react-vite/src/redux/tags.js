@@ -1,11 +1,18 @@
 
 const GET_TAGS = 'tags/getAllTags'
+// const GET_QUESTION_TAGS = 'tags/getQuestionTags';
+
 
 // Action Creator
 const getAllTags = (tags) => ({
     type: GET_TAGS,
     payload: tags
 })
+
+// const getQuestionTags = (tags) => ({
+//     type: GET_QUESTION_TAGS,
+//     payload: tags
+// })
 
 // Thunks
 export const getAllTagsThunk = () => async (dispatch) => {
@@ -16,7 +23,7 @@ export const getAllTagsThunk = () => async (dispatch) => {
             if (data.errors) {
                 throw data;
             }
-    
+
             dispatch(getAllTags(data));
             return data
         } else {
@@ -24,6 +31,23 @@ export const getAllTagsThunk = () => async (dispatch) => {
         }
     } catch (error) {
         const err = await error.json();
+        return err
+    }
+}
+
+export const getQuestionTagsThunk = (id) => async (dispatch) => {
+    try {
+        const res = await fetch(`/api/tags/questions/${id}`)
+        if(res.ok) {
+            const data = await res.json();
+            if (data.errors) {
+                throw data;
+            }
+            return data
+        } else {
+            throw res
+        }
+    } catch (error) {
         return err
     }
 }
@@ -43,13 +67,13 @@ const tagReducer = (state=initialState, action) => {
             // All Tags
             newState.allTags = action.payload.Tags;
 
-            // byId 
+            // byId
             for (let tag of action.payload.Tags) {
                 newState.byId[tag.id] = tag;
             }
 
             return newState
-        default: 
+        default:
             return state
     }
 }
