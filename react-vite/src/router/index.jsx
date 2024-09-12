@@ -4,6 +4,7 @@ import SignupFormPage from '../components/SignupFormPage';
 import LandingPage from '../components/LandingPage/LandingPage';
 import QuestionList from '../components/Questions/QuestionList';
 import EditCommentForm from '../components/EditComment/EditComment';
+import QuestionDetails from '../components/Questions/QuestionDetails';
 import Layout from './Layout';
 
 export const router = createBrowserRouter([
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
       {
         path: "questions",
         element: <QuestionList />
+      },
+      {
+        path: "questions/:id",
+        element: <QuestionDetails />
       },
       {
         path: "questions/comments/current",
