@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 import { getQuestionTagsThunk } from "../../redux/tags";
 import { fetchComments, fetchEditComment } from "../../redux/questions";
 import { getAllQuestionsThunk } from "../../redux/questions";
-import PostQuestionCommentModal from "../PostQuestionComment/POstQuestionComment";
+import PostQuestionCommentModal from "../PostQuestionComment/PostQuestionComment"
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import { useModal } from "../../context/Modal";
 
@@ -16,6 +16,7 @@ const QuestionDetails = () => {
     const [showMenu, setShowMenu] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [questionTags, setQuestionTags] = useState({});
+    const ulRef = useRef()
     const sessionUser = useSelector(state => state.session.user)
     const questionsById = useSelector(state => state.questionState.byId)
     const comments =  useSelector(state => state.questionState.questionComments)
@@ -90,7 +91,7 @@ const QuestionDetails = () => {
                 <h4>Question Comment Section starts here</h4>
                 {Object.values(comments).map(comment => {
                     return (
-                        <div>
+                        <div key={comment.id}>
                             <p>{comment.comment}</p>
                             <p>{comment.User.username}</p>
                         </div>
