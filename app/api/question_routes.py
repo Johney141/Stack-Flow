@@ -27,6 +27,26 @@ def index():
 
     return jsonify(questions_res)
 
+# Get current user's questions
+@question_routes.route('/current')
+@login_required
+def get_user_questions():
+    questions = Question.query.join(User).filter(Question.user_id == current_user.id).all()
+
+    question_res = { 'Questions': [
+        {
+            'id': question.id,
+            'question': question.question,
+            'subject': question.subject,
+            'User': {
+                'id': question.user.id,
+                'username': question.user.username
+            }
+        } for question in questions]
+    }
+    
+    return jsonify(question_res)
+
 # Refractor required
 ###########
 # Get Question
@@ -52,7 +72,7 @@ def get_question(id):
 
     #########
     # Get question comments
-    questionComment_res = QuestionComment.query.filter(QuestionComment.question_id == id).all()
+    questionComment_res = QuestionComment.query.filter(QuestionComment.question_id == question.id).all()
     questionComments = []
     for row in questionComment_res:
         # Get user
@@ -137,8 +157,8 @@ def delete_question(id):
     if not question:
         return jsonify({"error": "Question couldn't be found"}), 404
 
-    # if question.user_id != current_user.id:
-    #     return jsonify({"error": "Not Authorized to delete question"}), 403
+    if question.user_id != current_user.id:
+        return jsonify({"error": "Not Authorized to delete question"}), 403
 
     db.session.delete(question)
     db.session.commit()
@@ -230,7 +250,7 @@ def delete_tag(question_id, tag_id):
 @question_routes.route('/comments/current')
 @login_required
 def question_comments():
-    comments = QuestionComment.query.join(User).filter(QuestionComment.user_id == current_user.id).all()
+    comments = QuestionComment.query.join(Question).filter(QuestionComment.question_id == current_user.id).all()
 
 
     comments_res = { 'QuestionComments': [

@@ -15,9 +15,21 @@ const getAllTags = (tags) => ({
 // })
 
 // Thunks
+export const createTags = (body) => async () => {
+  const {tags, questionId} = body;
+  console.log(body);
+  for(let tag of tags) {
+    await fetch(`/api/tags/questions/${questionId}`, {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({tagName: tag})
+    });
+  }
+};
+
 export const getAllTagsThunk = () => async (dispatch) => {
     try {
-        const res = await fetch('/api/tags')
+        const res = await fetch('/api/tags/')
         if(res.ok) {
             const data = await res.json();
             if (data.errors) {

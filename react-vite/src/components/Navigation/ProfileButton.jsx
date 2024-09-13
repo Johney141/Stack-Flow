@@ -6,12 +6,14 @@ import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import './ProfileButton.css'
+import { useNavigate } from "react-router-dom";
 
 function ProfileButton() {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const user = useSelector((store) => store.session.user);
   const ulRef = useRef();
+  const navigate = useNavigate();
 
   const toggleMenu = (e) => {
     e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
@@ -34,6 +36,11 @@ function ProfileButton() {
 
   const closeMenu = () => setShowMenu(false);
 
+  const profileCLick = (e) => {
+    e.preventDefault();
+    navigate(`/users/${user.id}`)
+  }
+
   const logout = (e) => {
     e.preventDefault();
     dispatch(thunkLogout());
@@ -43,18 +50,20 @@ function ProfileButton() {
   return (
     <div className="profile-container">
       <button onClick={toggleMenu} id="profile-button">
+    <div className="profile-container">
+      <button onClick={toggleMenu} id="profile-button">
         <FaUserCircle />
       </button>
       {showMenu && (
         <div className={"profile-dropdown"} ref={ulRef}>
+        <div className={"profile-dropdown"} ref={ulRef}>
           {user ? (
-            <>
-              <li>{user.username}</li>
-              <li>{user.email}</li>
-              <li>
-                <button onClick={logout}>Log Out</button>
-              </li>
-            </>
+            <div>
+              <p>{user.username}</p>
+              <p>{user.email}</p>
+              <button onClick={profileCLick}>Profile</button>
+              <button onClick={logout}>Log Out</button>
+            </div>
           ) : (
             <>
               <OpenModalMenuItem
@@ -70,7 +79,9 @@ function ProfileButton() {
             </>
           )}
         </div>
+        </div>
       )}
+    </div>
     </div>
   );
 }
