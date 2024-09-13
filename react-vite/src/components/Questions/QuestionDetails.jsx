@@ -7,6 +7,7 @@ import { getQuestionTagsThunk } from "../../redux/tags";
 import { fetchComments, fetchEditComment } from "../../redux/questions";
 import { getAllQuestionsThunk } from "../../redux/questions";
 import PostQuestionCommentModal from "../PostQuestionComment/PostQuestionComment"
+import EditQuestionCommentModal from "../EditComment/EditComment";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import { useModal } from "../../context/Modal";
 
@@ -93,14 +94,23 @@ const QuestionDetails = () => {
                     return (
                         <div key={comment.id}>
                             <p>{comment.comment}</p>
+                            <OpenModalMenuItem
+                            itemText="Edit Comment"
+                            onItemClick={closeMenu}
+                            modalComponent={<EditQuestionCommentModal questionId = {question.id}/>}
+                            />
                             <p>{comment.User.username}</p>
                         </div>
 
                     )
                 })}
-                <button>Edit</button>
                 <button>Delete</button>
                 <>
+                <OpenModalMenuItem
+                itemText="Edit Comment"
+                onItemClick={closeMenu}
+                modalComponent={<EditQuestionCommentModal questionId = {question.id}/>}
+              />
               <OpenModalMenuItem
                 itemText="Add a Comment"
                 onItemClick={closeMenu}
