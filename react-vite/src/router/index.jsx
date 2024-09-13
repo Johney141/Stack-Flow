@@ -4,6 +4,7 @@ import SignupFormPage from '../components/SignupFormPage';
 import LandingPage from '../components/LandingPage/LandingPage';
 import QuestionList from '../components/Questions/QuestionList';
 import EditQuestionCommentModal from '../components/EditComment/EditComment';
+import DeleteQuestionCommentModal from '../components/DeleteQuestionCommentModal/DeleteQuestionCommentModal';
 import QuestionDetails from '../components/Questions/QuestionDetails';
 import QuestionCreatePage from '../components/QuestionCreatePage';
 import Followings from '../components/FollowingPage/FollowingPage';
@@ -53,6 +54,10 @@ export const router = createBrowserRouter([
       {
         path: "users/:userId",
         element: <ProfilePage />
+      },
+      {
+        path: "questions/:commentId/saved",
+        element: <DeleteQuestionCommentModal />
       }
     ],
   },
