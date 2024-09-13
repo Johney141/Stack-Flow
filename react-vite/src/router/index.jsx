@@ -9,6 +9,7 @@ import QuestionCreatePage from '../components/QuestionCreatePage';
 import Followings from '../components/FollowingPage/FollowingPage';
 import Layout from './Layout';
 import ProfilePage from '../components/ProfilePage/ProfilePage';
+import TagMainPage from '../components/TagMainPage/TagMainPage';
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
       {
         path: "signup",
         element: <SignupFormPage />,
+      },
+      {
+        path: "tags",
+        element: <TagMainPage />
       },
       {
         path: "questions",
