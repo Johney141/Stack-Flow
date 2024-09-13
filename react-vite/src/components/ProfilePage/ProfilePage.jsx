@@ -44,7 +44,7 @@ const ProfilePage = () => {
             setAnswerDeleted(false);
             setQuestionDeleted(false);
             setAnswerUpdated(false);
-            setAnswerUpdated(false);
+            setQuestionUpdated(false);
         }
 
     }, [isLoaded, answerDeleted, questionDeleted, answerUpdated, questionUpdated, dispatch])

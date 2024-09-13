@@ -18,13 +18,25 @@ const getQuestionTags = (tags) => ({
 export const createTags = (body) => async () => {
   const {tags, questionId} = body;
   console.log(body);
-  for(let tag of tags) {
-    await fetch(`/api/tags/questions/${questionId}`, {
-      method: 'POST',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({tagName: tag})
-    });
+  const deleteRes = await fetch(`/api/tags/questions/${questionId}`,{
+    method: 'DELETE',
+    headers: { "Content-Type": "application/json" }
+  })
+  if (deleteRes.ok) {
+    console.log('tags deleted')
+    for(let tag of tags) {
+        const addRes = await fetch(`/api/tags/questions/${questionId}`, {
+          method: 'POST',
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({tagName: tag})
+        });
+
+        if(!addRes.ok) {
+            console.error(`Failed to add tag: ${tag}`)
+        }
+      }
   }
+
 };
 
 export const getAllTagsThunk = () => async (dispatch) => {
@@ -66,6 +78,7 @@ export const getQuestionTagsThunk = (id) => async (dispatch) => {
         return err
     }
 }
+
 
 // Reducer
 

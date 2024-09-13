@@ -51,7 +51,6 @@ def add_tags(question_id):
     return jsonify({"error": "Question not found"}), 404
   elif current_user.id != question.user.id:
     return jsonify({"message": "Unauthorized"}), 401
-
   form = TagForm()
   form['csrf_token'].data = request.cookies['csrf_token']
   if form.validate_on_submit():
@@ -77,3 +76,23 @@ def add_tags(question_id):
     return jsonify(res), 200
   else:
     return form.errors, 400
+  
+@tag_routes.route('/questions/<int:question_id>', methods=['DELETE'])
+@login_required
+def delete_tags(question_id):
+  question = Question.query.get(question_id)
+
+  if not question:
+    return jsonify({"error": "Question not found"}), 404
+  
+  elif current_user.id != question.user.id:
+    return jsonify({"message": "Unauthorized"}), 401
+  
+  questiontags = QuestionTag.query.filter(QuestionTag.question_id == question_id).all()
+  for tag in questiontags:
+    db.session.delete(tag)
+
+  db.session.commit()
+
+  return jsonify({"message": "Successfully deleted"})
+  

@@ -18,22 +18,20 @@ const UpdateQuestionModal = ({question, questionUpdated}) => {
     })
     const [tagInput, setTagInput] = useState('');
     const [tags, setTags] = useState(tagArr);
-    const [isLoaded, setIsLoaded] = useState(false);
-
     const [tagError, setTagError] = useState(false);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         const getQuestionTags = async () => {
-            await dispatch(getQuestionTagsThunk(question.id))
-            setIsLoaded(true)
-        }
-
-        if(!isLoaded) {
-            getQuestionTags();
-        }
-    }, [isLoaded, dispatch])
+            const fetchedTags = await dispatch(getQuestionTagsThunk(question.id));
+            if (fetchedTags) {
+                setTags(fetchedTags.Tags.map(tag => tag.tagName)); 
+            }
+        };
+    
+        getQuestionTags(); 
+    }, [dispatch, question.id]);
 
     useEffect(() => {
         if(!tagInput.includes(' ')) setTagError(false);
@@ -50,12 +48,12 @@ const UpdateQuestionModal = ({question, questionUpdated}) => {
         }
        
         dispatch(updateQuestionThunk(question.id, body))
+        dispatch(createTags({tags, questionId: question.id}))
             .then(() => {
-                dispatch(createTags({tags, questionId: question.id}))
                 questionUpdated();
                 closeModal();
             })
-        
+        console.log('Form Submitted')
 
     }
     const handleTagSubmit = e => {
