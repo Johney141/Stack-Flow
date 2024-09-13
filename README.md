@@ -963,15 +963,18 @@ Returns all the tags.
       "Tags": [
         {
           "id": 1,
-          "tagName": "java"
+          "tagName": "java",
+          "numQuestions": 1
         },
         {
           "id": 2,
-          "tagName": "javascript"
+          "tagName": "javascript",
+          "numQuestions": 2
         },
         {
           "id": 3,
-          "tagName": "reactjs"
+          "tagName": "reactjs",
+          "numQuestions": 1
         }
       ]
     }

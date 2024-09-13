@@ -33,6 +33,7 @@ const UpdateQuestionModal = ({question, questionUpdated}) => {
         getQuestionTags(); 
     }, [dispatch, question.id]);
 
+
     useEffect(() => {
         if(!tagInput.includes(' ')) setTagError(false);
     }, [tagInput]);

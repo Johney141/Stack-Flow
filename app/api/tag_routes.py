@@ -12,7 +12,8 @@ def index():
     tag_res = { 'Tags': [
         {
             'id': tag.id,
-            'tagName': tag.tag_name
+            'tagName': tag.tag_name,
+            'numQuestions': len(tag.question_tags)
         } for tag in tags]
     }
 
