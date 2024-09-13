@@ -13,7 +13,7 @@ def index():
         {
             'id': tag.id,
             'tagName': tag.tag_name,
-            'questionTags': tag.question_tags
+            'numQuestions': len(tag.question_tags)
         } for tag in tags]
     }
 
