@@ -204,7 +204,6 @@ export const updateQuestionThunk = (questionId, body) => async (dispatch) => {
             return data
         }
 
-
     } catch (error) {
         return error.json();
     }

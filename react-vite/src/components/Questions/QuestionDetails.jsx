@@ -10,7 +10,6 @@ import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 
 
 const QuestionDetails = () => {
-    // const navigate = useNavigate();
     const {id} = useParams();
     const [showMenu, setShowMenu] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
