@@ -37,13 +37,13 @@ export const getAllTagsThunk = () => async (dispatch) => {
             }
 
             dispatch(getAllTags(data));
-            return data
+            return data;
         } else {
-            throw res
+            throw res;
         }
     } catch (error) {
         const err = await error.json();
-        return err
+        return err;
     }
 }
 
