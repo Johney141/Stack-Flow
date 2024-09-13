@@ -7,12 +7,16 @@ import { getUserAnswersThunk } from "../../redux/answers";
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem'
 import DeleteAnswerModal from "../DeleteAnswerModal/DeleteAnswerModal";
 import DeleteQuestionModal from "../DeleteQuestionModal/DeleteQuestionModal";
+import UpdateAnswerModal from "../UpdateAnswerModal/UpdateAnswerModal";
+import UpdateQuestionModal from "../UpdateQuestionModal/UpdateQuestoinModal";
 
 
 const ProfilePage = () => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [answerDeleted, setAnswerDeleted] = useState(false)
     const [questionDeleted, setQuestionDeleted] = useState(false)
+    const [answerUpdated, setAnswerUpdated] = useState(false)
+    const [questionUpdated, setQuestionUpdated] = useState(false)
     const {userId} = useParams();
     const ulRef = useRef();
     const [showMenu, setShowMenu] = useState(false);
@@ -35,12 +39,15 @@ const ProfilePage = () => {
         if(!isLoaded) {
             getUserData();
         }
-        if(answerDeleted || questionDeleted) {
+        if(answerDeleted || questionDeleted || answerUpdated || questionUpdated) {
             getUserData();
             setAnswerDeleted(false);
             setQuestionDeleted(false);
+            setAnswerUpdated(false);
+            setAnswerUpdated(false);
         }
-    }, [isLoaded, answerDeleted, questionDeleted, dispatch])
+
+    }, [isLoaded, answerDeleted, questionDeleted, answerUpdated, questionUpdated, dispatch])
 
     useEffect(() => {
         if (!showMenu) return;
@@ -63,6 +70,12 @@ const ProfilePage = () => {
     const handleAnswerDeleted = () => {
         setAnswerDeleted(true);
     }
+    const handleQuestionUpdated = () => {
+        setQuestionUpdated(true);
+    }
+    const handleAnswerUpdated = () => {
+        setAnswerUpdated(true);
+    }
 
     return (
         <div className="profile-page-container">
@@ -80,9 +93,12 @@ const ProfilePage = () => {
                         >{question.question}</p>
                         {isUsersProfile ? 
                             <>
-                                <button 
-                                    className="question-update"
-                                    >Update</button>
+                                <OpenModalMenuItem 
+                                    itemText='Update'
+                                    className='question-update'
+                                    onItemClick={closeMenu}
+                                    modalComponent={<UpdateQuestionModal question={question} questionUpdated={handleQuestionUpdated}/>}
+                                />
                                 <OpenModalMenuItem 
                                     itemText='Delete'
                                     onItemClick={closeMenu}
@@ -107,9 +123,13 @@ const ProfilePage = () => {
                         >{answer.answer}</p>
                         {isUsersProfile ? 
                             <>
-                                <button 
-                                    className="answer-update"
-                                    >Update</button>
+                                <OpenModalMenuItem 
+                                    itemText='Update'
+                                    className='answer-update'
+                                    onItemClick={closeMenu}
+                                    modalComponent={<UpdateAnswerModal answer={answer} answerUpdated={handleAnswerUpdated}/>}
+                                />
+
                                 <OpenModalMenuItem 
                                     itemText='Delete'
                                     onItemClick={closeMenu}
