@@ -44,7 +44,7 @@ def get_user_questions():
             }
         } for question in questions]
     }
-    
+
     return jsonify(question_res)
 
 # Refractor required
@@ -246,12 +246,32 @@ def delete_tag(question_id, tag_id):
 
     return jsonify({"message": "Successfully Removed"}), 200
 
-# Get Current user's question comments
-@question_routes.route('/comments/current')
-@login_required
-def question_comments():
-    comments = QuestionComment.query.join(Question).filter(QuestionComment.question_id == current_user.id).all()
+# # Get Current user's question comments
+# @question_routes.route('/comments/current')
+# @login_required
+# def question_comments():
+#     comments = QuestionComment.query.join(Question).filter(QuestionComment.question_id == current_user.id).all()
+#
+#     comments_res = { 'QuestionComments': [
+#         {
+#             'id': comment.id,
+#             'userId': comment.user_id,
+#             'questionId': comment.question_id,
+#             'comment': comment.comment,
+#             'User': {
+#                 'id': comment.user.id,
+#                 'username': comment.user.username,
+#                 'email': comment.user.email
+#             }
+#         } for comment in comments]
+#     }
+#
+#     return jsonify(comments_res)
 
+@question_routes.route('/<int:question_id>/comments', methods=['GET'])
+@login_required
+def question_comments(question_id):
+    comments = QuestionComment.query.join(Question).filter(QuestionComment.question_id == question_id).all()
 
     comments_res = { 'QuestionComments': [
         {
@@ -349,6 +369,7 @@ def delete_comment(comment_id):
 
     return jsonify({"message": "Successfully deleted"})
 
+
 # this will get all the questions the current user is following
 @question_routes.route('/saved/current')
 @login_required
@@ -391,3 +412,25 @@ def unfollow_question(question_id):
        'message': 'Question unsaved'
     }
     return jsonify(res), 200
+
+@question_routes.route('/comments/<int:comment_id>', methods=['GET'])
+@login_required
+def get_comment(comment_id):
+    comment = QuestionComment.query.get(comment_id)
+
+    # Check if comment exists
+    if not comment:
+        return jsonify({"error": "Comment couldn't be found"}), 404
+
+
+    return jsonify({
+        'id': comment.id,
+        'userId': comment.user_id,
+        'questionId': comment.question_id,
+        'comment': comment.comment,
+        'User': {
+            'id': comment.user.id,
+            'username': comment.user.username,
+            'email': comment.user.email
+        }
+    }), 200
