@@ -374,11 +374,26 @@ def delete_comment(comment_id):
 @question_routes.route('/saved/current')
 @login_required
 def questions_followed():
-    following_questions = QuestionFollowing.query.filter(QuestionFollowing.user_id == current_user.id).all()
+    following_questions = QuestionFollowing.query.join(Question).filter(QuestionFollowing.user_id == current_user.id).all()
 
     response = {
-      'questions': [following.question.to_dict() for following in following_questions]
-      }
+        'Following': [
+            {
+                # 'id': following_question.id,
+                'userId': following_question.user_id,
+                'questionId': following_question.question_id,
+                'Question': {
+                    'id': following_question.question.id,
+                    'question': following_question.question.question,
+                    'subject': following_question.question.subject
+                }
+            }
+            for following_question in following_questions
+        ]
+    }
+    # response = {
+    #   'questions': [following.question.to_dict() for following in following_questions]
+    #   }
 
     return jsonify(response)
 

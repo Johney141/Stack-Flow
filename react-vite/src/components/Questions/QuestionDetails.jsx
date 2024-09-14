@@ -7,6 +7,7 @@ import PostQuestionCommentModal from "../PostQuestionComment/PostQuestionComment
 import EditQuestionCommentModal from "../EditComment/EditComment";
 import DeleteQuestionCommentModal from "../DeleteQuestionCommentModal/DeleteQuestionCommentModal";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
+import * as followActions from '../../redux/following';
 
 
 const QuestionDetails = () => {
@@ -14,9 +15,12 @@ const QuestionDetails = () => {
     const [showMenu, setShowMenu] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [questionTags, setQuestionTags] = useState({});
-    const sessionUser = useSelector(state => state.session.user.id)
+    const sessionUser = useSelector(state => state.session.user)
+    const user = sessionUser ? sessionUser.id : null
     const questionsById = useSelector(state => state.questionState.byId)
     const comments = useSelector(state => state.questionState.questionComments)
+    const followings = useSelector(state => state.followingState.allFollowings)
+    const alreadyFollowed = Object.values(followings).find(following => following.questionId === id)
     const dispatch = useDispatch();
     useEffect(() => {
         const getQuestion = async () => {
@@ -31,6 +35,26 @@ const QuestionDetails = () => {
 
     // will move when the question file is created.
     const closeMenu = () => setShowMenu(false);
+
+
+    const follow = (e) => {
+        const payload = {questionId: id}
+        e.preventDefault();
+        if (alreadyFollowed) {
+          Promise.all([
+            dispatch(followActions.fetchUnfollow(id, payload)),
+            dispatch(followActions.fetchFollowings())
+          ])
+        }
+        else {
+          Promise.all([
+            dispatch(followActions.fetchFollow(id, payload)),
+            dispatch(followActions.fetchFollowings())
+          ]).then(() => {
+            setIsLoaded(true);
+          })
+        }
+      }
 
     if (!isLoaded) {
         return (
@@ -49,6 +73,9 @@ const QuestionDetails = () => {
                 <div className="QuestionDetails-question">
                     {question.question}
                 </div>
+                <div className="follow-button">
+                    <button onClick={follow}>Follow</button>
+                </div>
                 <div className="QuestionDetails-tags">
                     {questionTags.map((tag, idx) => {
                         return (
@@ -66,12 +93,12 @@ const QuestionDetails = () => {
                         <div key={comment.id}>
                             <p>{comment.comment}</p>
                             <p>{comment.User.username}</p>
-                            {sessionUser === comment.userId && <OpenModalMenuItem
+                            {user === comment.userId && <OpenModalMenuItem
                                 itemText="Edit Comment"
                                 onItemClick={closeMenu}
                                 modalComponent={<EditQuestionCommentModal commentId={comment.id}/>}
                             />}
-                            {sessionUser === comment.userId && <OpenModalMenuItem
+                            {user === comment.userId && <OpenModalMenuItem
                                 itemText="Delete Comment"
                                 onItemClick={closeMenu}
                                 modalComponent={<DeleteQuestionCommentModal commentId={comment.id} questionId={question}/>}
