@@ -22,7 +22,7 @@ const QuestionListItem = (question) => {
                 <div className="QuestionListItem-tag">
                     {
                         question.Tags.map((tag, idx)=>{
-
+                            console.log("tag: ", tag)
                             return (
                                 <TagBubble tag={tag} idx={idx} />
                             )
