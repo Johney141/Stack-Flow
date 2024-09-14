@@ -13,10 +13,11 @@ const deleteAnswer = (answer) => ({
     payload: answer
 })
 
-const updateAnsewr = (answer) => ({
+/*const updateAnsewr = (answer) => ({
     type: UPDATE_ANSWER,
     payload, answer
-})
+})*/
+
 // Thunks
 export const getUserAnswersThunk = () => async (dispatch) => {
     try {
@@ -86,7 +87,7 @@ const initialState = {
 const answersReducer = (state = initialState, action) => {
     let newState;
     switch (action.type) {
-        case GET_USER_ANSWERS: 
+        case GET_USER_ANSWERS:
             newState = {...state};
             // All Answers
             newState.allAnswers = action.payload.Answers;
