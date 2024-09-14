@@ -12,6 +12,7 @@ const QuestionList = () => {
     const questions = useSelector(state => state.questionState.allQuestions)
     // const comments =  useSelector(state => state.questionState)
 
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -44,7 +45,7 @@ const QuestionList = () => {
             <h1>Loading...</h1>
         )
     }
-
+    console.log("all questions: ", questions)
     return (
         <div className="question-list">
             {questions.map((question_obj, idx)=>{

@@ -242,7 +242,7 @@ const questionReducer = (state = initialState, action) => {
 
             // byId
             console.log("action.payload: ", action.payload);
-            for (let question of action.payload) {
+            for (let question of action.payload.Questions) {
                 newState.byId[question.id] = question;
             }
             return newState;
