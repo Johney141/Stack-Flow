@@ -1,6 +1,6 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchComment, fetchEditComment, fetchComments} from '../../redux/questions';
+import {fetchComment, fetchEditComment} from '../../redux/questions';
 import {useNavigate} from 'react-router-dom';
 import { useModal } from '../../context/Modal';
 import './EditComment.css'
@@ -8,7 +8,7 @@ import './EditComment.css'
 const EditQuestionCommentModal = ({commentId}) => {
     const questionComment = useSelector(state => state.questionState.questionComments[commentId])
     const user = useSelector(state => state.session.user)
-    const [isLoaded, setIsLoaded] = useState(false)
+    //const [isLoaded, setIsLoaded] = useState(false)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [comment, setComment] = useState("")
@@ -24,7 +24,7 @@ const EditQuestionCommentModal = ({commentId}) => {
     //     ])
     // }, [dispatch, commentId])
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async () => {
         dispatch(fetchComment(commentId))
         .then(() => {
             closeModal()

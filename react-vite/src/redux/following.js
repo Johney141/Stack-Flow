@@ -28,21 +28,24 @@ export const fetchFollowings = () => async (dispatch) => {
     return res
 };
 
-export const fetchFollow = (questionId) => async (dispatch) => {
+export const fetchFollow = (questionId, payload) => async (dispatch) => {
+    console.log('Payload:', payload);
     const res = await fetch(`/api/questions/${questionId}/saved`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        })
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    });
 
-        if (res.ok) {
-            const data = await res.json();
-            dispatch(follow(data))
-        }
-        return res
-}
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(fetchFollowings());
+    } else {
+        console.error('Fetch error:', res.statusText);
+    }
+    return res;
+};
 
 export const fetchUnfollow = (questionId) => async (dispatch) => {
     const res = await fetch(`/api/questions/${questionId}/saved`, {
@@ -59,7 +62,7 @@ const followingsReducer = (state = initialState, action) => {
         case LOAD_FOLLOWINGS: {
             console.log(action, '<------')
             newState = {...state};
-            newState.allFollowings = action.payload.questions
+            newState.allFollowings = action.payload.Following
             return newState
         }
         case LOAD_FOLLOW: {

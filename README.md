@@ -482,6 +482,34 @@ Remove a tag from a question's tags.
     }
     ```
 
+### Get all questions of a specific tag
+Get all questions associated to a specific tag
+
+* Require Authentication: false
+* Request
+  * Method: GET
+  * URL: /api/questions/tags/:tagId
+  * Body: none
+
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "tagName": "javascript",
+      "Questions": [
+        {
+          "id": 1,
+          "question": "This is a Question",
+          "subject": "First Seed Question"
+        }
+      ]
+    }
+    ```
+
 ### Create an Answer for a Question
 Create and return a new answer for a question specified by id.
 
