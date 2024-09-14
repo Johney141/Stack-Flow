@@ -24,9 +24,9 @@ const Followings = () => {
             {Object.values(followed).map(follow => {
                 console.log(follow)
                 return (
-                    <NavLink key={follow.subject} to={`/questions/${follow.id}`}>
+                    <NavLink key={follow.Question.subject} to={`/questions/${follow.Question.id}`}>
                         <div>
-                            <h3>{follow.question}</h3>
+                            <h3>{follow.Question.question}</h3>
                         </div>
                     </NavLink>
                 )

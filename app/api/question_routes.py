@@ -374,11 +374,26 @@ def delete_comment(comment_id):
 @question_routes.route('/saved/current')
 @login_required
 def questions_followed():
-    following_questions = QuestionFollowing.query.filter(QuestionFollowing.user_id == current_user.id).all()
+    following_questions = QuestionFollowing.query.join(Question).filter(QuestionFollowing.user_id == current_user.id).all()
 
     response = {
-      'questions': [following.question.to_dict() for following in following_questions]
-      }
+        'Following': [
+            {
+                # 'id': following_question.id,
+                'userId': following_question.user_id,
+                'questionId': following_question.question_id,
+                'Question': {
+                    'id': following_question.question.id,
+                    'question': following_question.question.question,
+                    'subject': following_question.question.subject
+                }
+            }
+            for following_question in following_questions
+        ]
+    }
+    # response = {
+    #   'questions': [following.question.to_dict() for following in following_questions]
+    #   }
 
     return jsonify(response)
 
@@ -386,9 +401,6 @@ def questions_followed():
 @question_routes.route('/<int:question_id>/saved', methods=['POST'])
 @login_required
 def follow_question(question_id):
-   form = QuestionFollowingForm()
-   form['csrf_token'].data = request.cookies['csrf_token']
-   if form.validate_on_submit():
     following = QuestionFollowing(user_id = current_user.id, question_id = question_id)
     db.session.add(following)
     db.session.commit()
@@ -396,8 +408,6 @@ def follow_question(question_id):
        'message': 'Saved for Later'
     }
     return jsonify(res), 200
-   else:
-    return form.errors, 401
 
 # Unfollow a Question
 @question_routes.route('/<int:question_id>/saved', methods=['DELETE'])

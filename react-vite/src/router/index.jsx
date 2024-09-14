@@ -12,6 +12,7 @@ import Layout from './Layout';
 import ProfilePage from '../components/ProfilePage/ProfilePage';
 import TagMainPage from '../components/TagMainPage/TagMainPage';
 import TagDetailPage from '../components/TagDetailPage/TagDetailPage';
+import LoadUsers from '../components/UserPage/UserPage';
 
 export const router = createBrowserRouter([
   {
@@ -68,7 +69,11 @@ export const router = createBrowserRouter([
       {
         path: "questions/:commentId/saved",
         element: <DeleteQuestionCommentModal />
-      }
+      },
+      {
+        path: "users",
+        element: <LoadUsers />
+      },
     ],
   },
 ]);
