@@ -6,7 +6,7 @@ import { NavLink, useNavigate} from 'react-router-dom';
 
 const Followings = () => {
     const dispatch = useDispatch()
-    // const navigate = useNavigate(); Uncomment 
+    // const navigate = useNavigate(); Uncomment
     // const [showMenu, setShowMenu] = useState(false);
     // const ulRef = useRef();
     const followed = useSelector((state) => state.followingState.allFollowings);
@@ -24,9 +24,9 @@ const Followings = () => {
             {Object.values(followed).map(follow => {
                 console.log(follow)
                 return (
-                    <NavLink key={follow.subject} to={`/questions/${follow.id}`}>
+                    <NavLink key={follow.Question.subject} to={`/questions/${follow.Question.id}`}>
                         <div>
-                            <h3>{follow.question}</h3>
+                            <h3>{follow.Question.question}</h3>
                         </div>
                     </NavLink>
                 )
