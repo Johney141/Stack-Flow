@@ -121,7 +121,7 @@ export const createComment = (questionId, payload) => async (dispatch) => {
         return res
 }
 
-export const deleteQuestionComment = (commentId) => async (dispatch) => {
+export const deleteQuestionComment = (commentId) => async () => {
     const res = await fetch(`/api/questions/comments/${commentId}`, {
         method: 'DELETE'
     });
@@ -195,13 +195,13 @@ export const updateQuestionThunk = (questionId, body) => async (dispatch) => {
             body: JSON.stringify({question, subject})
         });
         if(res.ok) {
-            data = res.json();
+            const data = res.json();
             if(data.errors) {
-                throw data
+                throw data;
             }
 
             dispatch(updateQuestion(data))
-            return data
+            return data;
         }
 
     } catch (error) {

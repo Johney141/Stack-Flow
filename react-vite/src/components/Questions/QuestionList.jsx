@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchComments, getAllQuestionsThunk} from "../../redux/questions";
+import {getAllQuestionsThunk} from "../../redux/questions";
 import {getAllTagsThunk} from "../../redux/tags";
 import QuestionListItem from './QuestionListItem';
 import {useNavigate} from "react-router-dom";

@@ -6,7 +6,7 @@ import { NavLink, useNavigate} from 'react-router-dom';
 
 const Followings = () => {
     const dispatch = useDispatch()
-    // const navigate = useNavigate(); Uncomment 
+    // const navigate = useNavigate(); Uncomment
     // const [showMenu, setShowMenu] = useState(false);
     // const ulRef = useRef();
     const followed = useSelector((state) => state.followingState.allFollowings);
