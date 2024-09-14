@@ -94,7 +94,7 @@ export const getAllQuestionsThunk = () => async (dispatch) => {
             throw res
         }
     } catch (error) {
-        const err = await error.json();
+        const err = await error;
         return err
     }
 }
@@ -239,8 +239,10 @@ const questionReducer = (state = initialState, action) => {
             // All Questions
             newState.allQuestions = action.payload.Questions;
             newState.tagName = {"tagName": action.payload.tagName};
+
             // byId
-            for (let question of action.payload.Questions) {
+            console.log("action.payload: ", action.payload);
+            for (let question of action.payload) {
                 newState.byId[question.id] = question;
             }
             return newState;
