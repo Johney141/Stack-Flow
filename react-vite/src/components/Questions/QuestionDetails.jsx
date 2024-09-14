@@ -14,7 +14,11 @@ const QuestionDetails = () => {
     const [showMenu, setShowMenu] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [questionTags, setQuestionTags] = useState({});
-    const sessionUser = useSelector(state => state.session.user.id)
+    let sessionUser = -1
+    if(useSelector(state => state.session.user !== null)){
+        sessionUser = useSelector(state => state.session.user.id);
+    }
+    // const sessionUser = useSelector(state => state.session.user.id)
     const questionsById = useSelector(state => state.questionState.byId)
     const comments = useSelector(state => state.questionState.questionComments)
     const dispatch = useDispatch();
@@ -61,7 +65,7 @@ const QuestionDetails = () => {
             </div>
             <div className="QuestionDetails-comments">
                 <h4>Question Comment Section starts here</h4>
-                {Object.values(comments).map(comment => {
+                {question.QuestionComment.map(comment => {
                     return (
                         <div key={comment.id}>
                             <p>{comment.comment}</p>
@@ -91,10 +95,7 @@ const QuestionDetails = () => {
                 <h4>Question Comment Section ends</h4>
             </div>
             <div className="QuestionDetails-answers">
-                answers
-                <div className="QuestionDetails-answers-component">
-                    answer component list
-                </div>
+
             </div>
         </div>
     )
