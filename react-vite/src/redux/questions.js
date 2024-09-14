@@ -50,6 +50,20 @@ const updateQuestion = (question) => ({
 })
 
 // Thunks
+export const getQuestionsByTagThunk = (body) => async (dispatch) => {
+  const {tagId} = body;
+
+  const res = await fetch(`/api/questions/tags/${tagId}`);
+  if(res.ok) {
+    const data = await res.json();
+
+    console.log(data);
+
+    dispatch(getAllQuestions(data));
+    return data;
+  }
+};
+
 export const createQuestion = (body) => async () => {
   const {question, subject} = body;
   const response = await fetch('/api/questions/', {
@@ -67,7 +81,7 @@ export const createQuestion = (body) => async () => {
 
 export const getAllQuestionsThunk = () => async (dispatch) => {
     try {
-        const res = await fetch('/api/questions')
+        const res = await fetch('/api/questions/')
         if(res.ok) {
             const data = await res.json();
             if (data.errors) {
@@ -212,6 +226,7 @@ export const updateQuestionThunk = (questionId, body) => async (dispatch) => {
 // Reducer
 const initialState = {
     allQuestions: [],
+    tagName: {},
     byId: {},
     questionComments: {}
 }
@@ -223,7 +238,7 @@ const questionReducer = (state = initialState, action) => {
             newState = { ...state };
             // All Questions
             newState.allQuestions = action.payload.Questions;
-
+            newState.tagName = {"tagName": action.payload.tagName};
             // byId
             for (let question of action.payload.Questions) {
                 newState.byId[question.id] = question;
