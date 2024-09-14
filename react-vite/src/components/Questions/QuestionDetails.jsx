@@ -95,7 +95,27 @@ const QuestionDetails = () => {
                 <h4>Question Comment Section ends</h4>
             </div>
             <div className="QuestionDetails-answers">
+                {question.Answer.map((answer, idx)=>{
+                    return (
+                        <div className="AnswerDiv" key={idx}>
+                            <div className="Answer">
+                                {answer.answer}
+                            </div>
+                            <div className="AnswerComments">
+                                {answer.AnswerComments.map((comment, idx)=>{
+                                    let key = "a" + idx;
+                                    return(
+                                        <div className="AnswerComments-comment" key={key}>
+                                            <span className="comment">{comment.comment}</span>
+                                            <span className="comment-username">{comment.User.username}</span>
+                                        </div>
 
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    )
+                })}
             </div>
         </div>
     )
