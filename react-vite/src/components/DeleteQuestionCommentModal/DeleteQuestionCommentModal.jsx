@@ -1,6 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal"
-import { useNavigate } from 'react-router-dom';
 import * as questionActions from "../../redux/questions"
 import { useParams } from "react-router-dom";
 
@@ -10,7 +9,6 @@ const DeleteQuestionCommentModal = ({commentId}) => {
     const { closeModal } = useModal();
     // const questionId = useSelector(state => state.questionState.questionComments)
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     console.log(id)
 
     const handleSubmit = () => {

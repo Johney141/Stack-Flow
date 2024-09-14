@@ -10,8 +10,8 @@ const DeleteAnswerModal = ({answerId, answerDeleted}) => {
     const handleDelete = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        
-        const data = dispatch(deleteAnswerThunk(answerId))
+
+        dispatch(deleteAnswerThunk(answerId))
             .then(() => {
                 answerDeleted();
                 closeModal();

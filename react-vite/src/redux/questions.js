@@ -50,6 +50,20 @@ const updateQuestion = (question) => ({
 })
 
 // Thunks
+export const getQuestionsByTagThunk = (body) => async (dispatch) => {
+  const {tagId} = body;
+
+  const res = await fetch(`/api/questions/tags/${tagId}`);
+  if(res.ok) {
+    const data = await res.json();
+
+    console.log(data);
+
+    dispatch(getAllQuestions(data));
+    return data;
+  }
+};
+
 export const createQuestion = (body) => async () => {
   const {question, subject} = body;
   const response = await fetch('/api/questions/', {
@@ -67,7 +81,7 @@ export const createQuestion = (body) => async () => {
 
 export const getAllQuestionsThunk = () => async (dispatch) => {
     try {
-        const res = await fetch('/api/questions')
+        const res = await fetch('/api/questions/')
         if(res.ok) {
             const data = await res.json();
             if (data.errors) {
@@ -121,7 +135,7 @@ export const createComment = (questionId, payload) => async (dispatch) => {
         return res
 }
 
-export const deleteQuestionComment = (commentId) => async (dispatch) => {
+export const deleteQuestionComment = (commentId) => async () => {
     const res = await fetch(`/api/questions/comments/${commentId}`, {
         method: 'DELETE'
     });
@@ -195,13 +209,13 @@ export const updateQuestionThunk = (questionId, body) => async (dispatch) => {
             body: JSON.stringify({question, subject})
         });
         if(res.ok) {
-            data = res.json();
+            const data = res.json();
             if(data.errors) {
-                throw data
+                throw data;
             }
 
             dispatch(updateQuestion(data))
-            return data
+            return data;
         }
 
     } catch (error) {
@@ -212,6 +226,7 @@ export const updateQuestionThunk = (questionId, body) => async (dispatch) => {
 // Reducer
 const initialState = {
     allQuestions: [],
+    tagName: {},
     byId: {},
     questionComments: {}
 }
@@ -222,7 +237,8 @@ const questionReducer = (state = initialState, action) => {
         case GET_QUESTIONS:
             newState = { ...state };
             // All Questions
-            newState.allQuestions = action.payload;
+            newState.allQuestions = action.payload.Questions;
+            newState.tagName = {"tagName": action.payload.tagName};
 
             // byId
             console.log("action.payload: ", action.payload);

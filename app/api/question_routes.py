@@ -444,3 +444,25 @@ def get_comment(comment_id):
             'email': comment.user.email
         }
     }), 200
+
+# Get all questions of a specific tag
+@question_routes.route('/tags/<int:tag_id>', methods=['GET'])
+def get_questions_by_tag(tag_id):
+  questiontags = QuestionTag.query.filter(QuestionTag.tag_id == tag_id).all()
+
+  if questiontags:
+    return jsonify({
+      "tagName": questiontags[0].tag.tag_name,
+      "Questions": [
+        {
+          'id': questiontag.question_id,
+          'question': questiontag.question.question,
+          'subject': questiontag.question.subject
+        }
+        for questiontag in questiontags
+      ]
+    }), 200
+  else:
+    return jsonify({
+      "Questions": []
+    }), 200
