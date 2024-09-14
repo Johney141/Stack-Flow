@@ -80,7 +80,7 @@ export const getAllQuestionsThunk = () => async (dispatch) => {
             throw res
         }
     } catch (error) {
-        const err = await error.json();
+        const err = await error;
         return err
     }
 }
@@ -222,10 +222,11 @@ const questionReducer = (state = initialState, action) => {
         case GET_QUESTIONS:
             newState = { ...state };
             // All Questions
-            newState.allQuestions = action.payload.Questions;
+            newState.allQuestions = action.payload;
 
             // byId
-            for (let question of action.payload.Questions) {
+            console.log("action.payload: ", action.payload);
+            for (let question of action.payload) {
                 newState.byId[question.id] = question;
             }
             return newState;
