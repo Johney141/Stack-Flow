@@ -13,19 +13,94 @@ question_routes = Blueprint('questions', __name__)
 @question_routes.route('/')
 def index():
     questions = Question.query.join(User).all()
-    questions_res = { 'Questions': [
-        {
+    question_list = []
+
+    for question in questions:
+    # We're going to just do this one step at a time to get it done faster
+    # Get question
+        tags = []
+        comments = []
+        question_id = question.id
+        question_res = {
             'id': question.id,
-            'question': question.question,
             'subject': question.subject,
+            'question': question.question,
+            'user_id': question.user_id,
             'User': {
                 'id': question.user.id,
                 'username': question.user.username
             }
-        } for question in questions]
-    }
+        }
 
-    return jsonify(questions_res)
+        #########
+        # Get question comments
+        questionComment_res = QuestionComment.query.filter(QuestionComment.question_id == question_id).all()
+        questionComments = []
+        for row in questionComment_res:
+            # Get user
+            user_res = u = User.query.get(row.user_id)
+            user_obj = {
+                'id': u.id,
+                'username': u.username
+            }
+            questionComments.append({
+                'id': row.id,
+                'comment': row.comment,
+                'User': user_obj
+            })
+
+        question_res["QuestionComment"] = questionComments
+
+        ################
+        # Get Ansers
+        answer_res = Answer.query.filter_by(question_id = question_id).join(AnswerComment)
+        answers = []
+        for row in answer_res:
+            answer_dict = {
+                'answer': row.answer,
+                'id': row.id,
+                'AnswerComments': []
+            }
+            for row in row.answer_comments:
+                user_res = u = User.query.get(row.user_id)
+                user_obj = {
+                    'id': u.id,
+                    'username': u.username
+                }
+                answer_dict["AnswerComments"].append({
+                    'comment': row.comment,
+                    'User': user_obj
+                })
+            answers.append(answer_dict)
+        question_res["Answer"] = answers
+            # answers.append()
+
+        ###
+        # Get Comments
+
+        questiontags = QuestionTag.query.filter(QuestionTag.question_id == question_id).all()
+
+        tag_res = {
+            'id': question_id,
+            'Tags': [
+            {
+                'id': questiontag.tag.id,
+                'tagName': questiontag.tag.tag_name
+            }
+            for questiontag in questiontags]
+        }
+
+        question_res["Tags"] =  [
+            {
+                'id': questiontag.tag.id,
+                'tag_name': questiontag.tag.tag_name
+            }
+            for questiontag in questiontags]
+
+        question_list.append(question_res)
+
+    return jsonify({"Questions": question_list})
+
 
 # Get current user's questions
 @question_routes.route('/current')
