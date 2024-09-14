@@ -12,8 +12,8 @@ const DeleteQuestionModal = ({questionId, questionDeleted}) => {
     const handleDelete = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        
-        const data = dispatch(deleteQuestionThunk(questionId))
+
+        dispatch(deleteQuestionThunk(questionId))
             .then(() => {
                 questionDeleted();
                 closeModal();
@@ -25,9 +25,9 @@ const DeleteQuestionModal = ({questionId, questionDeleted}) => {
             <h1>Confirm Delete</h1>
             <p>Are you sure you wish to delete this question?</p>
             <button
-                className="delete-button"  
+                className="delete-button"
                 onClick={handleDelete}
-                
+
             >Yes (Delete question)</button>
             <button className="keep-button"
                 onClick={closeModal}
