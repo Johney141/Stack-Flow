@@ -222,11 +222,11 @@ const questionReducer = (state = initialState, action) => {
         case GET_QUESTIONS:
             newState = { ...state };
             // All Questions
-            newState.allQuestions = action.payload;
+            newState.allQuestions = action.payload.Questions;
 
             // byId
             console.log("action.payload: ", action.payload);
-            for (let question of action.payload) {
+            for (let question of action.payload.Questions) {
                 newState.byId[question.id] = question;
             }
             return newState;
