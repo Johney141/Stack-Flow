@@ -10,7 +10,7 @@ function FollowButton({questionId}) {
   const sessionUser = useSelector(state => state.session.user)
   const user = sessionUser ? sessionUser.id : null
   const followings = useSelector(state => state.followingState.allFollowings)
-  const alreadyFollowed = Object.values(followings).find(following => following.questionId === questionId)
+  const alreadyFollowed = Object.values(followings).find(following => following.questionId == questionId)
 
   const follow = (e) => {
       e.preventDefault();

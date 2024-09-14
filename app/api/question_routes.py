@@ -401,9 +401,6 @@ def questions_followed():
 @question_routes.route('/<int:question_id>/saved', methods=['POST'])
 @login_required
 def follow_question(question_id):
-   form = QuestionFollowingForm()
-   form['csrf_token'].data = request.cookies['csrf_token']
-   if form.validate_on_submit():
     following = QuestionFollowing(user_id = current_user.id, question_id = question_id)
     db.session.add(following)
     db.session.commit()
@@ -411,8 +408,6 @@ def follow_question(question_id):
        'message': 'Saved for Later'
     }
     return jsonify(res), 200
-   else:
-    return form.errors, 401
 
 # Unfollow a Question
 @question_routes.route('/<int:question_id>/saved', methods=['DELETE'])

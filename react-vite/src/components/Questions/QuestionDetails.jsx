@@ -20,7 +20,8 @@ const QuestionDetails = () => {
     const questionsById = useSelector(state => state.questionState.byId)
     const comments = useSelector(state => state.questionState.questionComments)
     const followings = useSelector(state => state.followingState.allFollowings)
-    const alreadyFollowed = Object.values(followings).find(following => following.questionId === id)
+    const alreadyFollowed = Object.values(followings).find(following => following.questionId == id)
+    console.log(followings)
     const dispatch = useDispatch();
     useEffect(() => {
         const getQuestion = async () => {
@@ -28,6 +29,7 @@ const QuestionDetails = () => {
             setQuestionTags(tags.Tags);
             await dispatch(getAllQuestionsThunk());
             await dispatch(fetchComments(id))
+            await dispatch(followActions.fetchFollowings())
             setIsLoaded(true);
         }
         getQuestion();
@@ -41,18 +43,12 @@ const QuestionDetails = () => {
         const payload = {questionId: id}
         e.preventDefault();
         if (alreadyFollowed) {
-          Promise.all([
-            dispatch(followActions.fetchUnfollow(id, payload)),
-            dispatch(followActions.fetchFollowings())
-          ])
+            dispatch(followActions.fetchUnfollow(id, payload))
+                .then(() => dispatch(followActions.fetchFollowings()));
         }
         else {
-          Promise.all([
-            dispatch(followActions.fetchFollow(id, payload)),
-            dispatch(followActions.fetchFollowings())
-          ]).then(() => {
-            setIsLoaded(true);
-          })
+            dispatch(followActions.fetchFollow(id, payload))
+                .then(() => dispatch(followActions.fetchFollowings()));
         }
       }
 
@@ -74,7 +70,7 @@ const QuestionDetails = () => {
                     {question.question}
                 </div>
                 <div className="follow-button">
-                    <button onClick={follow}>Follow</button>
+                    <button onClick={follow}>{alreadyFollowed ? 'Unfollow' : 'Follow'}</button>
                 </div>
                 <div className="QuestionDetails-tags">
                     {questionTags.map((tag, idx) => {
