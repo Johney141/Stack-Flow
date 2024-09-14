@@ -84,7 +84,7 @@ const QuestionDetails = () => {
             </div>
             <div className="QuestionDetails-comments">
                 <h4>Question Comment Section starts here</h4>
-                {Object.values(comments).map(comment => {
+                {question.QuestionComment.map(comment => {
                     return (
                         <div key={comment.id}>
                             <p>{comment.comment}</p>
@@ -114,10 +114,7 @@ const QuestionDetails = () => {
                 <h4>Question Comment Section ends</h4>
             </div>
             <div className="QuestionDetails-answers">
-                answers
-                <div className="QuestionDetails-answers-component">
-                    answer component list
-                </div>
+
             </div>
         </div>
     )
