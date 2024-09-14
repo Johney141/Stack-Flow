@@ -12,14 +12,13 @@ const PostQuestionCommentModal= ({questionId}) => {
 
 
       const handleSubmit = async (e) => {
-          e.preventDefault()
-          if (comment) {
-            Promise.all([
-                dispatch(questionActions.fetchComment(questionId, {comment: comment})),
-                dispatch(questionActions.fetchComments())
-              ])
-              .then(() => closeModal)
-          }
+        dispatch(questionActions.createComment(questionId, {comment: comment}))
+        .then(() => {
+            dispatch(questionActions.fetchComments())
+        })
+        .then(() => {
+            closeModal()
+        })
       }
 
       return (

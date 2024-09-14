@@ -6,6 +6,7 @@ const EDIT_COMMENT = 'followings/editComment'
 const DELETE_COMMENT = 'followings/deleteComment'
 const GET_USER_QUESTIONS = 'questions/getUserQuestions'
 const DELETE_QUESTION = 'questions/deleteQuestion'
+const UPDATE_QUESTION = 'qustions/updateQuestion'
 
 // Action Creators
 const getAllQuestions = (questions) => ({
@@ -43,6 +44,11 @@ const deleteQuestion = (question) => ({
     payload: question
 })
 
+const updateQuestion = (question) => ({
+    type: UPDATE_QUESTION,
+    payload: question
+})
+
 // Thunks
 export const createQuestion = (body) => async () => {
   const {question, subject} = body;
@@ -69,7 +75,7 @@ export const getAllQuestionsThunk = () => async (dispatch) => {
             }
 
             dispatch(getAllQuestions(data));
-            return data
+            return res
         } else {
             throw res
         }
@@ -79,17 +85,27 @@ export const getAllQuestionsThunk = () => async (dispatch) => {
     }
 }
 
-export const fetchComments = () => async (dispatch) => {
-    const res = await fetch('/api/questions/comments/current')
+export const fetchComments = (id) => async (dispatch) => {
+    const res = await fetch(`/api/questions/${id}/comments`)
 
     if (res.ok) {
         const data = await res.json()
         dispatch(getAllComments(data))
+        return res
     }
-    return res
 };
 
-export const fetchComment = (questionId, payload) => async (dispatch) => {
+export const fetchComment = (id) => async (dispatch) => {
+    const res = await fetch(`/api/comments/${id}`)
+
+    if (res.ok) {
+        const data = await res.json()
+        dispatch(comment(data))
+        return res
+    }
+}
+
+export const createComment = (questionId, payload) => async (dispatch) => {
     const res = await fetch(`/api/questions/${questionId}/comments`, {
             method: 'POST',
             headers: {
@@ -105,11 +121,11 @@ export const fetchComment = (questionId, payload) => async (dispatch) => {
         return res
 }
 
-export const fetchDeleteComment = (commentId) => async (dispatch) => {
-    const res = await fetch(`/api/questions/${commentId}/saved`, {
+export const deleteQuestionComment = (commentId) => async (dispatch) => {
+    const res = await fetch(`/api/questions/comments/${commentId}`, {
         method: 'DELETE'
-    })
-    return res
+    });
+        return res
 }
 
 export const fetchEditComment = (payload, commentId) => async (dispatch) => {
@@ -135,7 +151,7 @@ export const getUserQuestionsThunk = () => async (dispatch) => {
             if(data.errors) {
                 throw data
             }
-            
+
             dispatch(getUserQuestions(data));
             return data
         } else {
@@ -159,6 +175,7 @@ export const deleteQuestionThunk =(questionId) => async (dispatch) => {
         if (res.ok) {
             const data = await res.json();
             dispatch(deleteQuestion(data));
+            return data
         } else {
             throw res
         }
@@ -166,6 +183,29 @@ export const deleteQuestionThunk =(questionId) => async (dispatch) => {
     } catch (error) {
         const err = error.json();
         return err
+    }
+}
+
+export const updateQuestionThunk = (questionId, body) => async (dispatch) => {
+    try {
+        const {question, subject} = body;
+        const res = fetch(`/api/questions/${questionId}`,{
+            method: 'PUT',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({question, subject})
+        });
+        if(res.ok) {
+            data = res.json();
+            if(data.errors) {
+                throw data
+            }
+
+            dispatch(updateQuestion(data))
+            return data
+        }
+
+    } catch (error) {
+        return error.json();
     }
 }
 
@@ -202,8 +242,6 @@ const questionReducer = (state = initialState, action) => {
             return newState;
 
         case LOAD_COMMENTS: {
-            console.log(LOAD_COMMENTS, action.payload.QuestionComments);
-
             const updated = {
                 ...state,
                 questionComments: action.payload.QuestionComments.reduce(
@@ -216,34 +254,38 @@ const questionReducer = (state = initialState, action) => {
                 ),
             };
 
-            console.log(LOAD_COMMENTS, updated);
-
             return updated;
         }
 
         case LOAD_COMMENT: {
-            if (!state[action.id]) {
-                const newState = {
-                    ...state,
-                    [action.id]: action,
-                };
-                return newState;
-            }
-            return { ...state };
+            const updated =  {
+                ...state,
+                questionComments: {...state.questionComments,},
+            };
+
+            updated.questionComments[action.payload.id] = action.payload;
+
+            console.log(LOAD_COMMENT, updated);
+
+            return updated;
         }
 
         case DELETE_COMMENT: {
-            let newComments;
-            const questionId = action.payload;
-            const data = { ...state.allQuestions.QuestionComments };
-            let comments = Object.values(data);
-            let index;
-            for (let i = 0; i < comments.length; i++) {
-                if (comments[i].id == questionId) index = i;
-            }
-            comments.splice(index, 1);
-            newComments = Object.assign({}, comments);
-            return { ...state, QuestionComments: newComments };
+            const commentId = action.payload
+            const newState = {...state}
+            newState.questionComments ? {...newState.questionComments} : {}
+            delete newState.questionComments[commentId]
+            // newState = { ...state,
+            //     questionComments: {...state.questionComments}
+            // };
+
+            // newState.questionComments = newState.questionComments.filter(
+            //     (comment) => comment.id !== action.payload.id
+            // );
+
+            // delete newState.byId[action.payload.id];
+
+            return newState;
         }
 
         case DELETE_QUESTION: {
@@ -258,10 +300,26 @@ const questionReducer = (state = initialState, action) => {
             return newState;
         }
 
+        case UPDATE_QUESTION: {
+            newState = {...state};
+
+            const updatedQuestions = newState.allQuestions.map(question => {
+                if(question.id === action.payload.id) {
+                    return action.payload;
+                } else {
+                    return question
+                }
+            })
+
+            newState.allQuestions = updatedQuestions;
+            newState.byId = {...newState.byId, [action.payload.id]: action.payload}
+
+            return newState;
+        }
+
         default:
             return state;
     }
 }
 
 export default questionReducer;
-

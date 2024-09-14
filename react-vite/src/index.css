@@ -77,3 +77,39 @@ div#modal-content {
   margin: 5px;
   outline: 2px dashed blue;
 }
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  row-gap: 20px;
+  column-gap: 20px;
+}
+
+.tag-anchor {
+  width: 200px;
+  height: 110px;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  display: inline-block;
+  color: #444;
+  border: 2px solid #CCC;
+  background: #d4b869;
+  box-shadow: 0 0 5px -1px rgba(0,0,0,0.2);
+  cursor: pointer;
+  border-radius: 8px;
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 17px;
+}
+
+@media (width < 400px) {
+  .tag-anchor {
+    width: 20vw;
+    height: 9vh;
+  }
+
+  .tag-numQuestion {
+    visibility: hidden;
+  }
+}
