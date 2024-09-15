@@ -25,8 +25,7 @@ const LandingPage = () => {
         }
 
         if(!isLoaded) {
-            getTags()
-
+            getTags();
         }
     }, [isLoaded, dispatch])
 

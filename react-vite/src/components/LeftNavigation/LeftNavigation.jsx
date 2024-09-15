@@ -1,13 +1,58 @@
+import { useNavigate, useLocation } from "react-router-dom";
+import { AiOutlineHome, AiOutlineQuestion, AiOutlineTag, AiOutlineHeart } from "react-icons/ai";
+
+
 function LeftNavigation () {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleHome = () => {
+    navigate('/')
+  }
+
+  const handleQuestion = () => {
+    navigate('/questions')
+  }
+
+  const handleTag = () => {
+    navigate('/tags')
+  }
+
+  const handleSave = () => {
+    navigate('/saved')
+  }
+
   return (
     <nav className="leftnav">
-      <ul>
-        <li><a href='/'>Home</a></li>
-        <li><a href='/questions'>Questions</a></li>
-        <li><a href='/tags'>Tags</a></li>
-        <li><a href='/questions/saved/current'>Saves</a></li>
-        <li><a href='/users'>Users</a></li>
-      </ul>
+      <div>
+
+        <button
+          className="nav-button"
+          onClick={handleHome}
+          disabled={(location.pathname=="/")}>
+          <AiOutlineHome />Home
+        </button>
+        <button
+          className="nav-button"
+          onClick={handleQuestion}
+          disabled={(location.pathname.includes("/questions"))}>
+          <AiOutlineQuestion />Questions
+        </button>
+        <button
+          className="nav-button"
+          onClick={handleTag}
+          disabled={(location.pathname.includes("/tags"))}>
+          <AiOutlineTag />Tags
+        </button>
+        <button
+          className="nav-button"
+          onClick={handleSave}
+          disabled={(location.pathname=="/saved")}>
+          <AiOutlineHeart />Saves
+        </button>
+
+      </div>
+
     </nav>
   );
 }

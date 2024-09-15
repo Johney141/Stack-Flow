@@ -1,18 +1,107 @@
 .leftnav {
-  width: 120px;
+  width: 130px;
   height: 100%;
-  padding-top: 60px;
   position: fixed;
   overflow-x: hidden;
-  background-color: #d7ade7;
+  display: flex;
+  flex-direction: column;
+  margin-left: calc((100vw - 1200px) / 2);
+}
+
+#home-button {
+  font-size: larger;
+  border: none;
+  width: 130px;
+  margin-left: calc((100vw - 1200px) / 2);
+  cursor: pointer;
+}
+
+#profile-button {
+  margin-right: calc((100vw - 1200px) / 2);
 }
 
 div#main-margin {
-  margin-left: 120px;
+  margin-left: calc(150px + (100vw - 1200px) / 2);
+  margin-right: calc((100vw - 1200px) / 2);
 }
 
 .navbar {
-  margin-left: 120px;
+  margin-left: 0px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid lightgrey;
+}
+
+#profile-button {
+  display: flex;
+  align-items: center;
+  font-size: 25px;
+  cursor: pointer;
+  border: none;
+}
+
+.profile-dropdown {
+  position: absolute;
+  background-color: rgb(133, 157, 221, 0.5);
+  padding: 7px 10px;
+  z-index: 1000;
+  right: calc(10px + (100vw - 1200px) / 2);;
+  min-width: 100px;
+}
+
+.nav-profile {
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 17px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.nav-modalbutton {
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 17px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  cursor: pointer;
+}
+
+@media (width < 1200px) {
+  .leftnav {
+    margin-left: 0px;
+  }
+
+  #home-button {
+    margin-left: 0px;
+  }
+
+  #profile-button {
+    margin-right: 0px;
+  }
+
+  div#main-margin {
+    margin-left: 150px;
+    margin-right: 20px;
+    width: calc(100vw - 170px);
+  }
+
+  .profile-dropdown {
+    right: 10px;
+  }
+}
+
+.nav-button {
+  font-size: larger;
+  border: none;
+  width: 130px;
+  cursor: pointer;
+  margin-top: 7px;
+  margin-bottom: 10px;
+}
+
+.nav-button:disabled {
+  cursor: default;
+  font-weight: 750;
+  color: black;
 }
 
 .error {
@@ -73,6 +162,10 @@ div#modal-content {
   border-radius: 5px;
 }
 
+.tag-page {
+  font-size: larger;
+}
+
 .tag-label {
   margin: 5px;
   outline: 2px dashed blue;
@@ -103,6 +196,11 @@ div#modal-content {
   font-size: 17px;
 }
 
+.tag-bubble {
+  margin: 5px;
+  color:#777;
+}
+
 @media (width < 400px) {
   .tag-anchor {
     width: 20vw;
@@ -112,4 +210,8 @@ div#modal-content {
   .tag-numQuestion {
     visibility: hidden;
   }
+}
+
+.question-list-item {
+  cursor: pointer;
 }

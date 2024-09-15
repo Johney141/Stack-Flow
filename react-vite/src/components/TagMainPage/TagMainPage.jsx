@@ -15,18 +15,17 @@ function TagMainPage() {
   }, [dispatch]);
 
   const tags = useSelector((store) => store.tagState.allTags);
-  console.log(tags);
 
   return (
-    <>
-      <h3>Tags</h3>
+    <div className="tag-page">
+      <h2>Tags</h2>
       <div>
         A tag is a keyword or label that categorizes your question.
         Use them to find the answer to your question or to the similar ones.
       </div>
 
       <div>
-        <label>
+        <h4>
           Search Tags:
           <input
             value={tagSearch}
@@ -34,7 +33,7 @@ function TagMainPage() {
             type="text"
             name="tagSearch"
           />
-        </label>
+        </h4>
       </div>
 
       <div className="tag-list">
@@ -49,7 +48,7 @@ function TagMainPage() {
           }
         })}
       </div>
-    </>
+    </div>
   );
 }
 

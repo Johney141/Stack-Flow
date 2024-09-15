@@ -61,6 +61,7 @@ const QuestionList = () => {
             />}
             {questions.map((question_obj, idx)=>{
                 return (<QuestionListItem key={idx} question={{question_obj}}/>)
+
             })}
 
         </div>

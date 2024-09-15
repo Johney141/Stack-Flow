@@ -10,3 +10,9 @@ class Tag(db.Model):
   tag_name = db.Column(db.String(20), nullable=False)
 
   question_tags = db.relationship('QuestionTag', back_populates='tag')
+
+  def to_dict(self):
+    return {
+      'id': self.id,
+      'question': self.tag_name,
+    }
