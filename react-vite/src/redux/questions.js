@@ -79,7 +79,7 @@ export const createQuestion = (body) => async () => {
 
 export const getAllQuestionsThunk = () => async (dispatch) => {
     try {
-        const res = await fetch('/api/questions/')
+        const res = await fetch('/api/questions')
         if(res.ok) {
             const data = await res.json();
             if (data.errors) {
@@ -98,12 +98,12 @@ export const getAllQuestionsThunk = () => async (dispatch) => {
 }
 
 export const fetchComments = (id) => async (dispatch) => {
-    const res = await fetch(`/api/questions/${id}/comments`)
+    const res = await fetch(`/api/questions/${id}/comments`);
 
     if (res.ok) {
-        const data = await res.json()
-        dispatch(getAllComments(data))
-        return res
+        const data = await res.json();
+        dispatch(getAllComments(data));
+        return res;
     }
 };
 

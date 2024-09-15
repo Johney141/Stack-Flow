@@ -35,6 +35,8 @@ const QuestionDetails = () => {
         getQuestion();
     }, [dispatch, id, setQuestionTags, isLoaded])
 
+    console.log(questionTags);
+
     // will move when the question file is created.
     const closeMenu = () => setShowMenu(false);
 
