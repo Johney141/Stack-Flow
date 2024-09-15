@@ -12,7 +12,7 @@ const PostAnswerCommentModal= ({answerId}) => {
 
 
       const handleSubmit = async (e) => {
-        dispatch(answerActions.createComment(questionId, {comment: comment}))
+        dispatch(answerActions.createComment(answerId, {comment: comment}))
         .then(() => {
             dispatch(answerActions.fetchComments())
         })

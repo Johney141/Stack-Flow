@@ -11,6 +11,7 @@ import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import * as followActions from '../../redux/following';
 import * as questionActions from '../../redux/questions'
 import AnswerCreatePage from "../AnswerCreatePage/AnswerCreatePage";
+import DeleteAnswerCommentModal from "../DeleteAnswerCommentModal/DeleteAnswerCommentModal";
 
 
 
@@ -25,7 +26,7 @@ const QuestionDetails = () => {
     const comments = useSelector(state => state.questionState.questionComments)
     const followings = useSelector(state => state.followingState.allFollowings)
     const alreadyFollowed = Object.values(followings).find(following => following.questionId == id)
-    console.log(comments[id], '<-----Comments')
+    console.log(questionsById[id], '<-----Comments')
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -65,7 +66,7 @@ const QuestionDetails = () => {
 
     let question = questionsById[id];
     let comment = comments[id]
-    console.log(question, '<------subject')
+    // console.log(question, '<------subject')
     // const answers = question.Answer
     // const answerId = answers.answer
     // const singleAnswer = Object.values(answers)
@@ -126,13 +127,13 @@ const QuestionDetails = () => {
                 <h4>Question Comment Section ends</h4>
             </div>
             <div className="QuestionDetails-answers">
-            <OpenModalMenuItem
+            {<OpenModalMenuItem
                 itemText="Add an Answer"
                 onItemClick={closeMenu}
                 modalComponent={<AnswerCreatePage questionId = {question.id}/>}
-              />
+              />}
                 {question.Answer.map((answer, idx)=>{
-                    // console.log(answer.id, '<---------AAAA')
+                    console.log(answer.id, '<---------AAAA')
                     return (
                         <div className="AnswerDiv" key={idx}>
                             <div className="Answer">
@@ -152,6 +153,16 @@ const QuestionDetails = () => {
                                         <div className="AnswerComments-comment" key={key}>
                                             <span className="comment">{comment.comment}</span>
                                             <span className="comment-username">{comment.User.username}</span>
+                                            {user === answer.user_id && <OpenModalMenuItem
+                                itemText="Edit Comment"
+                                onItemClick={closeMenu}
+                                modalComponent={<EditQuestionCommentModal answerId={answer.id}/>}
+                            />}
+                            {user === answer.user_id && <OpenModalMenuItem
+                                itemText="Delete Comment"
+                                onItemClick={closeMenu}
+                                modalComponent={<DeleteAnswerCommentModal commentId={answer.id} answerId={answer.answer_id}/>}
+                            />}
                                         </div>
 
                                     )

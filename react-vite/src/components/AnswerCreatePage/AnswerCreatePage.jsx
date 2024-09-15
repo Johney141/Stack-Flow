@@ -7,6 +7,7 @@ import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import { useParams } from 'react-router-dom';
 import * as questionActions from "../../redux/questions"
+import { getAllQuestionsThunk } from '../../redux/questions';
 
 
 function AnswerCreatePage() {
@@ -17,6 +18,7 @@ function AnswerCreatePage() {
     const {id} = useParams()
 
     const [answer, setAnswer] = useState('');
+    const [answerError, setAnswerError] = useState(false);
     const { closeModal } = useModal();
 
 
@@ -24,13 +26,15 @@ function AnswerCreatePage() {
 
 
     const handleSubmit = async (e) => {
+        e.preventDefault();
+
         console.log(answer, id)
-      e.preventDefault();
-      createAnswer(id, {answer: answer})
-      .then(() => {
-        dispatch(questionActions.fetchComments(id))})
-  .then(() => closeModal())
-  .catch(error => console.log('oh shit'))
+        createAnswer(id, {answer: answer})
+            .then(() => {
+                dispatch(getAllQuestionsThunk())
+            })
+            .then(() => closeModal())
+            .catch(error => setAnswerError(true))
     };
 
 
@@ -55,8 +59,9 @@ function AnswerCreatePage() {
         />
 
         <div>
+        {answerError && <div>You can only submit one answer per question</div>}
           <button
-            disabled={(answer.length < 3)}
+            disabled={(answer.length < 3 || answerError)}
             type="submit"
           >
             Create Answer

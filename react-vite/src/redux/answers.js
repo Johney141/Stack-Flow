@@ -154,7 +154,7 @@ export const createComment = (answerId, payload) => async (dispatch) => {
         return res
 }
 
-export const deleteQuestionComment = (commentId) => async () => {
+export const deleteAnswerComment = (commentId) => async () => {
     const res = await fetch(`/api/answers/comments/${commentId}`, {
         method: 'DELETE'
     });
