@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaUserCircle } from 'react-icons/fa';
+import { AiOutlineUser } from "react-icons/ai";
 import { thunkLogout } from "../../redux/session";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
@@ -50,30 +50,32 @@ function ProfileButton() {
   return (
     <div className="profile-container">
       <button onClick={toggleMenu} id="profile-button">
-        <FaUserCircle />
+        <AiOutlineUser />
       </button>
       {showMenu && (
         <div className={"profile-dropdown"} ref={ulRef}>
           {user ? (
-            <div>
-              <p>{user.username}</p>
-              <p>{user.email}</p>
-              <button onClick={profileCLick}>Profile</button>
-              <button onClick={logout}>Log Out</button>
+            <div className="nav-profile">
+              <div>{user.username}</div>
+              <div>{user.email}</div>
+              <button className='nav-modalbutton' onClick={profileCLick}>Profile</button>
+              <button className='nav-modalbutton' onClick={logout}>Log Out</button>
             </div>
           ) : (
-            <>
+            <div className="nav-profile">
               <OpenModalMenuItem
                 itemText="Log In"
                 onItemClick={closeMenu}
+                className='nav-modalbutton'
                 modalComponent={<LoginFormModal />}
               />
               <OpenModalMenuItem
                 itemText="Sign Up"
                 onItemClick={closeMenu}
+                className='nav-modalbutton'
                 modalComponent={<SignupFormModal />}
               />
-            </>
+            </div>
           )}
         </div>
       )}

@@ -32,6 +32,31 @@ div#main-margin {
   border-bottom: 1px solid lightgrey;
 }
 
+.profile-dropdown {
+  position: absolute;
+  background-color: rgb(133, 157, 221, 0.5);
+  padding: 7px 10px;
+  z-index: 1000;
+  right: calc(10px + (100vw - 1200px) / 2);;
+  min-width: 100px;
+}
+
+.nav-profile {
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 17px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.nav-modalbutton {
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 17px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  cursor: pointer;
+}
+
 @media (width < 1200px) {
   .leftnav {
     margin-left: 0px;
@@ -49,6 +74,10 @@ div#main-margin {
     margin-left: 130px;
     margin-right: 0px;
     width: calc(100vw - 130px);
+  }
+
+  .profile-dropdown {
+    right: 10px;
   }
 }
 

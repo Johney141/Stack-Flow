@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { AiOutlineHome, AiOutlineQuestion, AiOutlineTag, AiTwotoneHeart } from "react-icons/ai";
+import { AiOutlineHome, AiOutlineQuestion, AiOutlineTag, AiOutlineHeart } from "react-icons/ai";
 
 
 function LeftNavigation () {
@@ -19,7 +19,7 @@ function LeftNavigation () {
   }
 
   const handleSave = () => {
-    navigate('/questions/saved/current')
+    navigate('/saved')
   }
 
   return (
@@ -47,8 +47,8 @@ function LeftNavigation () {
         <button
           className="nav-button"
           onClick={handleSave}
-          disabled={(location.pathname=="/questions/saved/current")}>
-          <AiTwotoneHeart />Saves
+          disabled={(location.pathname=="/saved")}>
+          <AiOutlineHeart />Saves
         </button>
 
       </div>
