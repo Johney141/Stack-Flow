@@ -56,12 +56,17 @@ def index():
         answer_res = Answer.query.filter_by(question_id = question_id)
         answers = []
         for row in answer_res:
+            answer_user = User.query.get(row.user_id)
             answer_dict = {
                 'answer': row.answer,
                 'id': row.id,
                 'user_id': row.user_id,
                 'question_id': row.question_id,
-                'AnswerComments': []
+                'AnswerComments': [],
+                'User': {
+                    'id': answer_user.id,
+                    'username': answer_user.username
+                }
             }
             for row in row.answer_comments:
                 user_res = u = User.query.get(row.user_id)

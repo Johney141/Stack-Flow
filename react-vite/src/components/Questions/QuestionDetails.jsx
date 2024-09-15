@@ -12,6 +12,7 @@ import * as followActions from '../../redux/following';
 import * as questionActions from '../../redux/questions'
 import AnswerCreatePage from "../AnswerCreatePage/AnswerCreatePage";
 import DeleteAnswerCommentModal from "../DeleteAnswerCommentModal/DeleteAnswerCommentModal";
+import './Question.css';
 
 
 
@@ -84,7 +85,7 @@ const QuestionDetails = () => {
                     {question.question}
                 </div>
                 <div className="follow-button">
-                    <button onClick={follow}>{alreadyFollowed ? 'Unfollow' : 'Follow'}</button>
+                {user !== null &&<button onClick={follow}>{alreadyFollowed ? 'Unfollow' : 'Follow'}</button>}
                 </div>
                 <div className="QuestionDetails-tags">
                     {questionTags.map((tag, idx) => {
@@ -97,13 +98,14 @@ const QuestionDetails = () => {
                 </div>
             </div>
             <div className="QuestionDetails-comments">
-                <h4>Question Comment Section starts here</h4>
+                <h4>Comments</h4>
+                {Object.values(comments).length < 1 && <span>No comments yet, add your own!</span>}
                 {Object.values(comments).map(comment => {
                     console.log(user, '<---user', comment.id, '<-----CU')
                     return (
                         <div key={comment.id}>
                             <p>{comment.comment}</p>
-                            <p>{comment.User.username}</p>
+                            <p> - {comment.User.username}</p>
                             {user === comment.User.id && <OpenModalMenuItem
                                 itemText="Edit Comment"
                                 onItemClick={closeMenu}
@@ -119,33 +121,37 @@ const QuestionDetails = () => {
                     )
                 })}
                 <>
-              <OpenModalMenuItem
+              {user !== null &&<OpenModalMenuItem
                 itemText="Add a Comment"
                 onItemClick={closeMenu}
                 modalComponent={<PostQuestionCommentModal questionId = {question.id}/>}
-              />
+              />}
             </>
-            <h4>Question Comment Section ends</h4>
-                <h4>Question Comment Section ends</h4>
+
             </div>
             <div className="QuestionDetails-answers">
-            {<OpenModalMenuItem
+            <h4>Answers</h4>
+            {question.Answer.length < 1 && <span>No answers yet, add your own!</span>}
+            {user !== null &&<OpenModalMenuItem
                 itemText="Add an Answer"
                 onItemClick={closeMenu}
                 modalComponent={<AnswerCreatePage questionId = {question.id}/>}
               />}
                 {question.Answer.map((answer, idx)=>{
-                    console.log(answer.id, '<---------AAAA')
+                    console.log(answer, '<---------AAAA')
                     return (
                         <div className="AnswerDiv" key={idx}>
+                            <hr/>
                             <div className="Answer">
+
                                 {answer.answer}
+                                <h4> - {answer.User.username}</h4>
                                 <>
-                                <OpenModalMenuItem
+                                {user !== null &&<OpenModalMenuItem
                                 itemText="Add a Comment"
                                 onItemClick={closeMenu}
                                 modalComponent={<PostAnswerCommentModal answerId = {answer.id}/>}
-                                />
+                                />}
                                 </>
                             </div>
                             <div className="AnswerComments">
@@ -154,7 +160,7 @@ const QuestionDetails = () => {
                                     return(
                                         <div className="AnswerComments-comment" key={key}>
                                             <span className="comment">{comment.comment}</span>
-                                            <span className="comment-username">{comment.User.username}</span>
+                                            <span className="comment-username"> - {comment.User.username}</span>
                                             {user === answer.user_id && <OpenModalMenuItem
                                 itemText="Edit Comment"
                                 onItemClick={closeMenu}
