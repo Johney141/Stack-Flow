@@ -625,13 +625,58 @@ Returns all the question comments that belong to the current user specified by a
     }
     ```
 
+### Get all Question Comments of a Question
+Create and return a new question comment for a question specified by question id.
+
+* Require Authentication: false
+* Request
+  * Method: GET
+  * URL: /api/questions/:questionId/comments
+  * Body: none
+
+* Successful Response
+  * Status Code: 201
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+    "QuestionComments": [
+        {
+          "User": {
+            "email": "demo@aa.io",
+            "id": 1,
+            "username": "Demo"
+          },
+          "comment": "Have you done a git pull?",
+          "id": 1,
+          "questionId": 2,
+          "userId": 1
+        },
+      ]
+    }
+    ```
+
+* Error response: Couldn't find a Question with the specified id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "Question couldn't be found"
+    }
+    ```
+
 ### Create a Question Comment
 Create and return a new question comment for a question specified by question id.
 
 * Require Authentication: true
 * Request
   * Method: POST
-  * URL: /api/answers/:questionId/comments
+  * URL: /api/questions/:questionId/comments
   * Headers:
     * Content-Type: application/json
   * Body:

@@ -75,6 +75,8 @@ const QuestionDetails = () => {
     // const singleAnswer = Object.values(answers)
     // console.log(question, '<----question', answers, '<----Answer', singleAnswer, '<-----AnswerId')
 
+    console.log(comments);
+
     return (
         <div className="QuestionDetails">
             <div className="QuestionDetails-question">
@@ -100,8 +102,7 @@ const QuestionDetails = () => {
             <div className="QuestionDetails-comments">
                 <h4>Comments</h4>
                 {Object.values(comments).length < 1 && <span>No comments yet, add your own!</span>}
-                {Object.values(comments).map(comment => {
-                    console.log(user, '<---user', comment.id, '<-----CU')
+                {Object.values(comments).map((comment) => {
                     return (
                         <div key={comment.id}>
                             <p>{comment.comment}</p>
