@@ -6,6 +6,8 @@ import { createAnswer } from '../../redux/questions';
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import { useParams } from 'react-router-dom';
+import * as questionActions from "../../redux/questions"
+
 
 function AnswerCreatePage() {
     const sessionUser = useSelector(state => state.session.user)
@@ -22,14 +24,13 @@ function AnswerCreatePage() {
 
 
     const handleSubmit = async (e) => {
+        console.log(answer, id)
       e.preventDefault();
-
-      const newAnswer = {
-        answer
-      }
-      const answerId = await dispatch(createAnswer(id, newAnswer));
-      navigate(`/questions/${id}`);
-      closeModal();
+      createAnswer(id, {answer: answer})
+      .then(() => {
+        dispatch(questionActions.fetchComments(id))})
+  .then(() => closeModal())
+  .catch(error => console.log('oh shit'))
     };
 
 
@@ -50,60 +51,22 @@ function AnswerCreatePage() {
           onChange={handleAnswer}
           type="text"
           name="subject"
-          placeholder="Title of your question"
+          placeholder="Answer"
         />
 
-        <h4>What are the details of your Question?</h4>
-        <div>Minimum of 30 characters required.</div>
-        <textarea
-          value={question}
-          onChange={handleQuestion}
-          name="question" rows="8"
-          placeholder="Please write at least 30 characters"
-        />
-
-        <h4>Tags</h4>
         <div>
-          <input
-            value={tagInput}
-            onChange={handleTagInput}
-            type="text"
-            name="tagName"
-          />
           <button
-            type="button"
-            onClick={handleTagSubmit}
-          >
-            Add Tag
-          </button>
-          <button
-            type="button"
-            onClick={handleTagReset}
-          >
-            Reset
-          </button>
-        </div>
-
-        {tagError && <div className='error'>Name of the tag cannot have spaces, try replace using -</div>}
-
-        <div>
-          {tags.map((tag) => (<label className='tag-label' key={tag}>{tag}</label>))}
-        </div>
-
-        <div>
-          {!(tags.length) && (<div className='error'>Need At Least One Tag</div>)}
-          <button
-            disabled={(!subject) || (question.length < 30)}
+            disabled={(answer.length < 3)}
             type="submit"
           >
-            Create Question
+            Create Answer
           </button>
         </div>
       </form>
       );
     }
     else {
-      questionForm = (
+      answerForm = (
         <>
           <h2>You need to <OpenModalButton
             buttonText="Log In"
@@ -115,7 +78,7 @@ function AnswerCreatePage() {
 
     return (
       <div>
-        {questionForm}
+        {answerForm}
       </div>
     );
   }

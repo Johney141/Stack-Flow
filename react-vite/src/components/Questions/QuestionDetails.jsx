@@ -10,7 +10,8 @@ import DeleteQuestionCommentModal from "../DeleteQuestionCommentModal/DeleteQues
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import * as followActions from '../../redux/following';
 import * as questionActions from '../../redux/questions'
-import QuestionCreatePage from "../QuestionCreatePage/QuestionCreatePage";
+import AnswerCreatePage from "../AnswerCreatePage/AnswerCreatePage";
+
 
 
 const QuestionDetails = () => {
@@ -24,20 +25,20 @@ const QuestionDetails = () => {
     const comments = useSelector(state => state.questionState.questionComments)
     const followings = useSelector(state => state.followingState.allFollowings)
     const alreadyFollowed = Object.values(followings).find(following => following.questionId == id)
+    console.log(comments[id], '<-----Comments')
 
     const dispatch = useDispatch();
     useEffect(() => {
-        const getQuestion = async () => {
-            let tags = await dispatch(getQuestionTagsThunk(id));
+        Promise.all([
+            dispatch(getAllQuestionsThunk()),
+            dispatch(fetchComments(id)),
+            dispatch(followActions.fetchFollowings()),
+            dispatch(getQuestionTagsThunk(id))
+        ]).then(([, , , tags]) => {
             setQuestionTags(tags.Tags);
-            await dispatch(getAllQuestionsThunk());
-            await dispatch(fetchComments(id))
-            await dispatch(followActions.fetchFollowings())
-            // await dispatch(questionActions.fetchAnswerComment(id))
             setIsLoaded(true);
-        }
-        getQuestion();
-    }, [dispatch, id, setQuestionTags, isLoaded])
+        })
+    }, [dispatch, id])
 
     // will move when the question file is created.
     const closeMenu = () => setShowMenu(false);
@@ -63,7 +64,8 @@ const QuestionDetails = () => {
     }
 
     let question = questionsById[id];
-    console.log(question.subject, '<------subject')
+    let comment = comments[id]
+    console.log(question, '<------subject')
     // const answers = question.Answer
     // const answerId = answers.answer
     // const singleAnswer = Object.values(answers)
@@ -93,8 +95,8 @@ const QuestionDetails = () => {
             </div>
             <div className="QuestionDetails-comments">
                 <h4>Question Comment Section starts here</h4>
-                {question.QuestionComment.map(comment => {
-                    console.log(user, '<---user', comment.User.id, '<-----CU')
+                {Object.values(comments).map(comment => {
+                    console.log(user, '<---user', comment.id, '<-----CU')
                     return (
                         <div key={comment.id}>
                             <p>{comment.comment}</p>
@@ -124,6 +126,11 @@ const QuestionDetails = () => {
                 <h4>Question Comment Section ends</h4>
             </div>
             <div className="QuestionDetails-answers">
+            <OpenModalMenuItem
+                itemText="Add an Answer"
+                onItemClick={closeMenu}
+                modalComponent={<AnswerCreatePage questionId = {question.id}/>}
+              />
                 {question.Answer.map((answer, idx)=>{
                     // console.log(answer.id, '<---------AAAA')
                     return (

@@ -7,6 +7,7 @@ const DELETE_COMMENT = 'followings/deleteComment'
 const GET_USER_QUESTIONS = 'questions/getUserQuestions'
 const DELETE_QUESTION = 'questions/deleteQuestion'
 const UPDATE_QUESTION = 'qustions/updateQuestion'
+const LOAD_ANSWER = 'questions/loadAnswers'
 const LOAD_ANSWER_COMMENTS = 'answers/loadComments'
 const LOAD_ANSWER_COMMENT = 'answers/loadComment'
 const EDIT_ANSWER_COMMENT = 'answers/editComment'
@@ -25,6 +26,11 @@ const getAllComments = (payload) => ({
 
 const comment = (payload) => ({
     type: LOAD_COMMENT,
+    payload
+})
+
+const answer = (payload) => ({
+    type: LOAD_ANSWER,
     payload
 })
 
@@ -103,18 +109,21 @@ export const createQuestion = (body) => async () => {
   }
 };
 
-export const createAnswer = (questionId, body) => async () => {
-    const {answer} = body;
+export const createAnswer = async (questionId, payload) => {
     const response = await fetch(`/api/questions/${questionId}/answers`, {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({answer})
+      body: JSON.stringify(payload)
     });
+
     const data = await response.json();
     console.log(data);
 
     if(response.ok) {
-      return data.id;
+      return response;
+    }
+    else {
+      throw response
     }
   };
 
@@ -325,7 +334,8 @@ const initialState = {
     tagName: {},
     byId: {},
     questionComments: {},
-    answerComments: {}
+    answerComments: {},
+    answers: {}
 }
 
 const questionReducer = (state = initialState, action) => {
@@ -456,6 +466,20 @@ const questionReducer = (state = initialState, action) => {
             newState.answerComments ? {...newState.answerComments} : {}
             delete newState.answerComments[commentId]
             return newState;
+        }
+
+        case LOAD_ANSWER: {
+            console.log(action, '<------action')
+            const updated =  {
+                ...state,
+                answers: {...state.answers,},
+            };
+
+            updated.answers[action.payload.id] = action.payload;
+
+            console.log(LOAD_ANSWER, updated);
+
+            return updated;
         }
 
         default:
