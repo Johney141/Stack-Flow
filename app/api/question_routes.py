@@ -56,17 +56,12 @@ def index():
         answer_res = Answer.query.filter_by(question_id = question_id)
         answers = []
         for row in answer_res:
-            answer_user = User.query.get(row.user_id)
             answer_dict = {
                 'answer': row.answer,
                 'id': row.id,
-                'user_id': row.user_id,
+                'User': row.user.to_dict(),
                 'question_id': row.question_id,
-                'AnswerComments': [],
-                'User': {
-                    'id': answer_user.id,
-                    'username': answer_user.username
-                }
+                'AnswerComments': []
             }
             for row in row.answer_comments:
                 user_res = u = User.query.get(row.user_id)
@@ -356,7 +351,6 @@ def delete_tag(question_id, tag_id):
 #     return jsonify(comments_res)
 
 @question_routes.route('/<int:question_id>/comments', methods=['GET'])
-@login_required
 def question_comments(question_id):
     comments = QuestionComment.query.join(Question).filter(QuestionComment.question_id == question_id).all()
 
@@ -535,11 +529,13 @@ def get_comment(comment_id):
 # Get all questions of a specific tag
 @question_routes.route('/tags/<int:tag_id>', methods=['GET'])
 def get_questions_by_tag(tag_id):
-  questiontags = QuestionTag.query.filter(QuestionTag.tag_id == tag_id).all()
+  tag = Tag.query.filter(Tag.id == tag_id).first()
 
-  if questiontags:
+  if tag:
+    questiontags = QuestionTag.query.filter(QuestionTag.tag_id == tag_id).all()
+
     return jsonify({
-      "tagName": questiontags[0].tag.tag_name,
+      "tagName": tag.tag_name,
       "Questions": [
         {
           'Tags': [questiontag.tag.to_dict() for questiontag in QuestionTag.query.filter(QuestionTag.question_id == questiontag.question_id).all()],
