@@ -1,6 +1,10 @@
 const GET_USER_ANSWERS = 'answers/getUserAnswers'
 const DELETE_ANSWER = 'answers/deleteAnswer'
 const UPDATE_ANSWER = 'answers/updateAnswer'
+const LOAD_COMMENTS = 'answers/loadComments'
+const LOAD_COMMENT = 'answers/loadComment'
+const EDIT_COMMENT = 'answers/editComment'
+const DELETE_COMMENT = 'answers/deleteComment'
 
 // Action Creators
 const getUserAnswers = (answers) => ({
@@ -11,6 +15,26 @@ const getUserAnswers = (answers) => ({
 const deleteAnswer = (answer) => ({
     type: DELETE_ANSWER,
     payload: answer
+})
+
+const getAllComments = (payload) => ({
+    type: LOAD_COMMENTS,
+    payload
+})
+
+const comment = (payload) => ({
+    type: LOAD_COMMENT,
+    payload
+})
+
+const editComment = (payload) => ({
+    type: EDIT_COMMENT,
+    payload
+})
+
+export const deleteComment = (payload) => ({
+    type: DELETE_COMMENT,
+    payload
 })
 
 /*const updateAnsewr = (answer) => ({
@@ -78,10 +102,84 @@ export const updateAnswerThunk = (answerId, body) => async (dispatch) => {
         return error
     }
 }
+
+export const createAnswer = (body) => async () => {
+    const {question, subject} = body;
+    const response = await fetch('/api/answers/', {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({question, subject})
+    });
+    const data = await response.json();
+    console.log(data);
+
+    if(response.ok) {
+      return data.id;
+    }
+  };
+
+export const fetchComments = () => async (dispatch) => {
+    const res = await fetch(`/api/comments/current`)
+
+    if (res.ok) {
+        const data = await res.json()
+        dispatch(getAllComments(data))
+        return res
+    }
+};
+
+export const fetchComment = (id) => async (dispatch) => {
+    const res = await fetch(`/api/answers/${id}/comments`)
+
+    if (res.ok) {
+        const data = await res.json()
+        dispatch(comment(data))
+        return res
+    }
+}
+
+export const createComment = (answerId, payload) => async (dispatch) => {
+    const res = await fetch(`/api/answers/${answerId}/comments`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+
+        if (res.ok) {
+            const data = await res.json();
+            dispatch(comment(data))
+        }
+        return res
+}
+
+export const deleteQuestionComment = (commentId) => async () => {
+    const res = await fetch(`/api/answers/comments/${commentId}`, {
+        method: 'DELETE'
+    });
+        return res
+}
+
+export const fetchEditComment = (payload, commentId) => async (dispatch) => {
+    const res = await fetch(`/api/answers/comments/${commentId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    if (res.ok) {
+        const edittedComment = await res.json();
+        dispatch(editComment(edittedComment))
+        return edittedComment
+    }
+}
 // Reducer
 const initialState = {
     allAnswers: [],
-    byId: {}
+    byId: {},
+    answerComments: {}
 }
 
 const answersReducer = (state = initialState, action) => {
@@ -122,6 +220,42 @@ const answersReducer = (state = initialState, action) => {
             newState.allAnswers = updatedAnswers;
             newState.byId = {...newState.byId, [action.payload.id]: action.payload}
 
+            return newState;
+        }
+        case LOAD_COMMENTS: {
+            const updated = {
+                ...state,
+                answerComments: action.payload.AnswerComments.reduce(
+                    (accumulator, comment) => {
+                        accumulator[comment.id] = comment;
+
+                        return accumulator;
+                    },
+                    {}
+                ),
+            };
+
+            return updated;
+        }
+
+        case LOAD_COMMENT: {
+            const updated =  {
+                ...state,
+                answerComments: {...state.answerComments,},
+            };
+
+            updated.answerComments[action.payload.id] = action.payload;
+
+            console.log(LOAD_COMMENT, updated);
+
+            return updated;
+        }
+
+        case DELETE_COMMENT: {
+            const commentId = action.payload
+            const newState = {...state}
+            newState.answerComments ? {...newState.answerComments} : {}
+            delete newState.answerComments[commentId]
             return newState;
         }
         default:

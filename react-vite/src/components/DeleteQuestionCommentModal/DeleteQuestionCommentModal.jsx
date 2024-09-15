@@ -1,21 +1,23 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal"
 import * as questionActions from "../../redux/questions"
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 
 const DeleteQuestionCommentModal = ({commentId}) => {
     const { id } = useParams()
     const { closeModal } = useModal();
-    // const questionId = useSelector(state => state.questionState.questionComments)
     const dispatch = useDispatch();
-    console.log(id)
+    console.log(id, '<------ID'); // This will print the current URL to the console
 
-    const handleSubmit = () => {
+    const handleSubmit = async (e) => {
         dispatch(questionActions.deleteQuestionComment(commentId))
         .then(() => {
             dispatch(questionActions.fetchComments(id))
-            closeModal();
+            window.location.reload()
+        })
+        .then(() => {
+            closeModal()
         })
     }
 

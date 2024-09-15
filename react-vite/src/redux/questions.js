@@ -7,6 +7,10 @@ const DELETE_COMMENT = 'followings/deleteComment'
 const GET_USER_QUESTIONS = 'questions/getUserQuestions'
 const DELETE_QUESTION = 'questions/deleteQuestion'
 const UPDATE_QUESTION = 'qustions/updateQuestion'
+const LOAD_ANSWER_COMMENTS = 'answers/loadComments'
+const LOAD_ANSWER_COMMENT = 'answers/loadComment'
+const EDIT_ANSWER_COMMENT = 'answers/editComment'
+const DELETE_ANSWER_COMMENT = 'answers/deleteComment'
 
 // Action Creators
 const getAllQuestions = (questions) => ({
@@ -49,6 +53,26 @@ const updateQuestion = (question) => ({
     payload: question
 })
 
+const getAllAnswerComments = (payload) => ({
+    type: LOAD_ANSWER_COMMENTS,
+    payload
+})
+
+const answerComment = (payload) => ({
+    type: LOAD_ANSWER_COMMENT,
+    payload
+})
+
+const editAnswerComment = (payload) => ({
+    type: EDIT_ANSWER_COMMENT,
+    payload
+})
+
+export const deleteAnswerComment = (payload) => ({
+    type: DELETE_ANSWER_COMMENT,
+    payload
+})
+
 // Thunks
 export const getQuestionsByTagThunk = (body) => async (dispatch) => {
   const {tagId} = body;
@@ -78,6 +102,21 @@ export const createQuestion = (body) => async () => {
     return data.id;
   }
 };
+
+export const createAnswer = (questionId, body) => async () => {
+    const {answer} = body;
+    const response = await fetch(`/api/questions/${questionId}/answers`, {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({answer})
+    });
+    const data = await response.json();
+    console.log(data);
+
+    if(response.ok) {
+      return data.id;
+    }
+  };
 
 export const getAllQuestionsThunk = () => async (dispatch) => {
     try {
@@ -139,7 +178,6 @@ export const deleteQuestionComment = (commentId) => async () => {
     const res = await fetch(`/api/questions/comments/${commentId}`, {
         method: 'DELETE'
     });
-        return res
 }
 
 export const fetchEditComment = (payload, commentId) => async (dispatch) => {
@@ -223,12 +261,71 @@ export const updateQuestionThunk = (questionId, body) => async (dispatch) => {
     }
 }
 
+export const fetchAnswerComments = () => async (dispatch) => {
+    const res = await fetch(`/api/comments/current`)
+
+    if (res.ok) {
+        const data = await res.json()
+        dispatch(getAllAnswerComments(data))
+        return res
+    }
+};
+
+export const fetchAnswerComment = (id) => async (dispatch) => {
+    const res = await fetch(`/api/${id}/comments`)
+
+    if (res.ok) {
+        const data = await res.json()
+        dispatch(answerComment(data))
+        return res
+    }
+}
+
+export const createAnswerComment = (answerId, payload) => async (dispatch) => {
+    const res = await fetch(`/api/answers/${answerId}/comments`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+
+        if (res.ok) {
+            const data = await res.json();
+            dispatch(answerComment(data))
+        }
+        return res
+}
+
+export const fetchDeleteAnswerComment = (commentId) => async () => {
+    const res = await fetch(`/api/answers/comments/${commentId}`, {
+        method: 'DELETE'
+    });
+        return res
+}
+
+export const fetchEditAnswerComment = (payload, commentId) => async (dispatch) => {
+    const res = await fetch(`/api/answers/comments/${commentId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    if (res.ok) {
+        const edittedComment = await res.json();
+        dispatch(editAnswerComment(edittedComment))
+        return edittedComment
+    }
+}
+
 // Reducer
 const initialState = {
     allQuestions: [],
     tagName: {},
     byId: {},
-    questionComments: {}
+    questionComments: {},
+    answerComments: {}
 }
 
 const questionReducer = (state = initialState, action) => {
@@ -292,16 +389,6 @@ const questionReducer = (state = initialState, action) => {
             const newState = {...state}
             newState.questionComments ? {...newState.questionComments} : {}
             delete newState.questionComments[commentId]
-            // newState = { ...state,
-            //     questionComments: {...state.questionComments}
-            // };
-
-            // newState.questionComments = newState.questionComments.filter(
-            //     (comment) => comment.id !== action.payload.id
-            // );
-
-            // delete newState.byId[action.payload.id];
-
             return newState;
         }
 
@@ -331,6 +418,43 @@ const questionReducer = (state = initialState, action) => {
             newState.allQuestions = updatedQuestions;
             newState.byId = {...newState.byId, [action.payload.id]: action.payload}
 
+            return newState;
+        }
+
+        case LOAD_ANSWER_COMMENTS: {
+            const updated = {
+                ...state,
+                answerComments: action.payload.AnswerComments.reduce(
+                    (accumulator, comment) => {
+                        accumulator[comment.id] = comment;
+
+                        return accumulator;
+                    },
+                    {}
+                ),
+            };
+
+            return updated;
+        }
+
+        case LOAD_ANSWER_COMMENT: {
+            const updated =  {
+                ...state,
+                answerComments: {...state.answerComments,},
+            };
+
+            updated.answerComments[action.payload.id] = action.payload;
+
+            console.log(LOAD_COMMENT, updated);
+
+            return updated;
+        }
+
+        case DELETE_ANSWER_COMMENT: {
+            const commentId = action.payload
+            const newState = {...state}
+            newState.answerComments ? {...newState.answerComments} : {}
+            delete newState.answerComments[commentId]
             return newState;
         }
 
