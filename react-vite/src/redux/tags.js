@@ -68,14 +68,14 @@ export const getQuestionTagsThunk = (id) => async (dispatch) => {
                 throw data;
             }
 
-            dispatch(getQuestionTags(data))
-            return data
+            dispatch(getQuestionTags(data));
+            return data;
         } else {
-            throw res
+            throw res;
         }
     } catch (error) {
         const err = await error.json();
-        return err
+        return err;
     }
 }
 
@@ -102,7 +102,7 @@ const tagReducer = (state=initialState, action) => {
 
             return newState
 
-        case GET_QUESTION_TAGS: 
+        case GET_QUESTION_TAGS:
             newState = {...state};
             // All Tags
             newState.allTags = action.payload.Tags;

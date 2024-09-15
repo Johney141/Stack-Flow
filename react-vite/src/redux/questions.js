@@ -24,6 +24,11 @@ const comment = (payload) => ({
     payload
 })
 
+const answer = (payload) => ({
+    type: LOAD_ANSWER,
+    payload
+})
+
 const editComment = (payload) => ({
     type: EDIT_COMMENT,
     payload
@@ -49,6 +54,8 @@ const updateQuestion = (question) => ({
     payload: question
 })
 
+
+
 // Thunks
 export const getQuestionsByTagThunk = (body) => async (dispatch) => {
   const {tagId} = body;
@@ -56,8 +63,6 @@ export const getQuestionsByTagThunk = (body) => async (dispatch) => {
   const res = await fetch(`/api/questions/tags/${tagId}`);
   if(res.ok) {
     const data = await res.json();
-
-    console.log(data);
 
     dispatch(getAllQuestions(data));
     return data;
@@ -79,9 +84,27 @@ export const createQuestion = (body) => async () => {
   }
 };
 
+export const createAnswer = async (questionId, payload) => {
+    const response = await fetch(`/api/questions/${questionId}/answers`, {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+    console.log(data);
+
+    if(response.ok) {
+      return response;
+    }
+    else {
+      throw response
+    }
+  };
+
 export const getAllQuestionsThunk = () => async (dispatch) => {
     try {
-        const res = await fetch('/api/questions/')
+        const res = await fetch('/api/questions')
         if(res.ok) {
             const data = await res.json();
             if (data.errors) {
@@ -100,12 +123,12 @@ export const getAllQuestionsThunk = () => async (dispatch) => {
 }
 
 export const fetchComments = (id) => async (dispatch) => {
-    const res = await fetch(`/api/questions/${id}/comments`)
+    const res = await fetch(`/api/questions/${id}/comments`);
 
     if (res.ok) {
-        const data = await res.json()
-        dispatch(getAllComments(data))
-        return res
+        const data = await res.json();
+        dispatch(getAllComments(data));
+        return res;
     }
 };
 
@@ -139,7 +162,6 @@ export const deleteQuestionComment = (commentId) => async () => {
     const res = await fetch(`/api/questions/comments/${commentId}`, {
         method: 'DELETE'
     });
-        return res
 }
 
 export const fetchEditComment = (payload, commentId) => async (dispatch) => {
@@ -223,12 +245,16 @@ export const updateQuestionThunk = (questionId, body) => async (dispatch) => {
     }
 }
 
+
+
 // Reducer
 const initialState = {
     allQuestions: [],
     tagName: {},
     byId: {},
-    questionComments: {}
+    questionComments: {},
+    answerComments: {},
+    answers: {}
 }
 
 const questionReducer = (state = initialState, action) => {
@@ -242,9 +268,11 @@ const questionReducer = (state = initialState, action) => {
 
             // byId
             console.log("action.payload: ", action.payload);
-            for (let question of action.payload) {
-                newState.byId[question.id] = question;
-            }
+            newState.byId = action.payload.Questions.reduce((accumlator, question) => {
+                accumlator[question.id] = question
+                return accumlator;
+            }, {})
+
             return newState;
 
         case GET_USER_QUESTIONS:
@@ -292,16 +320,6 @@ const questionReducer = (state = initialState, action) => {
             const newState = {...state}
             newState.questionComments ? {...newState.questionComments} : {}
             delete newState.questionComments[commentId]
-            // newState = { ...state,
-            //     questionComments: {...state.questionComments}
-            // };
-
-            // newState.questionComments = newState.questionComments.filter(
-            //     (comment) => comment.id !== action.payload.id
-            // );
-
-            // delete newState.byId[action.payload.id];
-
             return newState;
         }
 
@@ -333,7 +351,6 @@ const questionReducer = (state = initialState, action) => {
 
             return newState;
         }
-
         default:
             return state;
     }

@@ -174,8 +174,8 @@ def delete_comment(comment_id):
         return jsonify({"error": "Answer Comment couldn't be found"}), 404
 
     # Check if authorized
-    if comment.user_id != current_user.id:
-        return jsonify({"error": "Not Authorized to delete answer"}), 403
+    # if comment.user_id != current_user.id:
+    #     return jsonify({"error": "Not Authorized to delete answer"}), 403
 
     db.session.delete(comment)
     db.session.commit()

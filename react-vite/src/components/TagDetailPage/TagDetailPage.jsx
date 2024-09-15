@@ -14,20 +14,19 @@ function TagDetailPage() {
   }, [dispatch]);
 
   const questions = useSelector(state => state.questionState.allQuestions);
+  console.log(questions);
   const tagName= useSelector(state => state.questionState.tagName);
 
   return (
-    (
-      <div>
-        <h3>[{tagName.tagName}]</h3>
-        <div className="question-list">
-          {questions.map((question_obj, idx)=>{
-              return (<QuestionListItem key={idx} question={{question_obj}}/>)
-          })}
+    <div className="tag-page">
+      <h3>[{tagName.tagName}]</h3>
+      <div className="question-list">
+        {questions.map((question_obj)=>{
+            return (<QuestionListItem key={question_obj.id} question={{question_obj}}/>)
+        })}
 
-        </div>
       </div>
-    )
+    </div>
   );
 }
 

@@ -13,7 +13,7 @@ function Navigation() {
 
   return (
     <nav className="navbar">
-      <div className="nav-item">
+      <div>
         <button
           id="home-button"
           onClick={handleHomeClick}
@@ -22,8 +22,8 @@ function Navigation() {
           Stack <b>Flow</b>
         </button>
       </div>
-      <div className="nav-item">
-        <ProfileButton />
+      <div>
+        <ProfileButton id="profile-button"/>
       </div>
 
     </nav>

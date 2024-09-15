@@ -502,6 +502,12 @@ Get all questions associated to a specific tag
       "tagName": "javascript",
       "Questions": [
         {
+          "Tags": [
+            {
+              "id": 1,
+              "tag_name": "javascript"
+            }
+          ],
           "id": 1,
           "question": "This is a Question",
           "subject": "First Seed Question"
