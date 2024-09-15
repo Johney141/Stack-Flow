@@ -1,0 +1,18 @@
+.QuestionDetails-subject{
+    font-size:20px;
+}
+
+.QuestionDetails{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.AnswerComments{
+    margin-left: 15px;
+    border-left: 1px black solid;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+
+}
