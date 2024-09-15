@@ -4,10 +4,15 @@ import {NavLink, useNavigate, useParams} from "react-router-dom";
 import {getQuestionTagsThunk} from "../../redux/tags";
 import {fetchComments, getAllQuestionsThunk} from "../../redux/questions";
 import PostQuestionCommentModal from "../PostQuestionComment/PostQuestionComment"
+import PostAnswerCommentModal from "../PostAnswerCommentModal/PostAnswerCommentModal";
 import EditQuestionCommentModal from "../EditComment/EditComment";
 import DeleteQuestionCommentModal from "../DeleteQuestionCommentModal/DeleteQuestionCommentModal";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import * as followActions from '../../redux/following';
+import * as questionActions from '../../redux/questions'
+import AnswerCreatePage from "../AnswerCreatePage/AnswerCreatePage";
+import DeleteAnswerCommentModal from "../DeleteAnswerCommentModal/DeleteAnswerCommentModal";
+
 
 
 const QuestionDetails = () => {
@@ -21,19 +26,20 @@ const QuestionDetails = () => {
     const comments = useSelector(state => state.questionState.questionComments)
     const followings = useSelector(state => state.followingState.allFollowings)
     const alreadyFollowed = Object.values(followings).find(following => following.questionId == id)
-    console.log(followings)
+    console.log(questionsById[id], '<-----Comments')
+
     const dispatch = useDispatch();
     useEffect(() => {
-        const getQuestion = async () => {
-            let tags = await dispatch(getQuestionTagsThunk(id));
+        Promise.all([
+            dispatch(getAllQuestionsThunk()),
+            dispatch(fetchComments(id)),
+            dispatch(followActions.fetchFollowings()),
+            dispatch(getQuestionTagsThunk(id))
+        ]).then(([, , , tags]) => {
             setQuestionTags(tags.Tags);
-            await dispatch(getAllQuestionsThunk());
-            await dispatch(fetchComments(id))
-            await dispatch(followActions.fetchFollowings())
             setIsLoaded(true);
-        }
-        getQuestion();
-    }, [dispatch, id, setQuestionTags, isLoaded])
+        })
+    }, [dispatch, id])
 
     console.log(questionTags);
 
@@ -61,6 +67,12 @@ const QuestionDetails = () => {
     }
 
     let question = questionsById[id];
+    let comment = comments[id]
+    // console.log(question, '<------subject')
+    // const answers = question.Answer
+    // const answerId = answers.answer
+    // const singleAnswer = Object.values(answers)
+    // console.log(question, '<----question', answers, '<----Answer', singleAnswer, '<-----AnswerId')
 
     return (
         <div className="QuestionDetails">
@@ -86,17 +98,18 @@ const QuestionDetails = () => {
             </div>
             <div className="QuestionDetails-comments">
                 <h4>Question Comment Section starts here</h4>
-                {question.QuestionComment.map(comment => {
+                {Object.values(comments).map(comment => {
+                    console.log(user, '<---user', comment.id, '<-----CU')
                     return (
                         <div key={comment.id}>
                             <p>{comment.comment}</p>
                             <p>{comment.User.username}</p>
-                            {user === comment.userId && <OpenModalMenuItem
+                            {user === comment.User.id && <OpenModalMenuItem
                                 itemText="Edit Comment"
                                 onItemClick={closeMenu}
                                 modalComponent={<EditQuestionCommentModal commentId={comment.id}/>}
                             />}
-                            {user === comment.userId && <OpenModalMenuItem
+                            {user === comment.User.id && <OpenModalMenuItem
                                 itemText="Delete Comment"
                                 onItemClick={closeMenu}
                                 modalComponent={<DeleteQuestionCommentModal commentId={comment.id} questionId={question}/>}
@@ -116,11 +129,24 @@ const QuestionDetails = () => {
                 <h4>Question Comment Section ends</h4>
             </div>
             <div className="QuestionDetails-answers">
+            {<OpenModalMenuItem
+                itemText="Add an Answer"
+                onItemClick={closeMenu}
+                modalComponent={<AnswerCreatePage questionId = {question.id}/>}
+              />}
                 {question.Answer.map((answer, idx)=>{
+                    console.log(answer.id, '<---------AAAA')
                     return (
                         <div className="AnswerDiv" key={idx}>
                             <div className="Answer">
                                 {answer.answer}
+                                <>
+                                <OpenModalMenuItem
+                                itemText="Add a Comment"
+                                onItemClick={closeMenu}
+                                modalComponent={<PostAnswerCommentModal answerId = {answer.id}/>}
+                                />
+                                </>
                             </div>
                             <div className="AnswerComments">
                                 {answer.AnswerComments.map((comment, idx)=>{
@@ -129,6 +155,16 @@ const QuestionDetails = () => {
                                         <div className="AnswerComments-comment" key={key}>
                                             <span className="comment">{comment.comment}</span>
                                             <span className="comment-username">{comment.User.username}</span>
+                                            {user === answer.user_id && <OpenModalMenuItem
+                                itemText="Edit Comment"
+                                onItemClick={closeMenu}
+                                modalComponent={<EditQuestionCommentModal answerId={answer.id}/>}
+                            />}
+                            {user === answer.user_id && <OpenModalMenuItem
+                                itemText="Delete Comment"
+                                onItemClick={closeMenu}
+                                modalComponent={<DeleteAnswerCommentModal commentId={answer.id} answerId={answer.answer_id}/>}
+                            />}
                                         </div>
 
                                     )

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useModal } from '../../context/Modal';
 
 import { createQuestion } from '../../redux/questions';
 import { createTags } from '../../redux/tags';
@@ -17,6 +18,7 @@ function QuestionCreatePage() {
   const [question, setQuestion] = useState('');
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState([]);
+  const { closeModal } = useModal();
 
   const [tagError, setTagError] = useState(false);
 
@@ -28,11 +30,12 @@ function QuestionCreatePage() {
     e.preventDefault();
 
     const newQuestion = {
-      subject, question
+      question, subject
     }
     const questionId = await dispatch(createQuestion(newQuestion));
     await dispatch(createTags({tags, questionId}));
     navigate(`/questions/${questionId}`);
+    closeModal();
   };
 
   const handleTagSubmit = e => {

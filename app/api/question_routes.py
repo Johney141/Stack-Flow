@@ -53,12 +53,14 @@ def index():
 
         ################
         # Get Ansers
-        answer_res = Answer.query.filter_by(question_id = question_id).join(AnswerComment)
+        answer_res = Answer.query.filter_by(question_id = question_id)
         answers = []
         for row in answer_res:
             answer_dict = {
                 'answer': row.answer,
                 'id': row.id,
+                'user_id': row.user_id,
+                'question_id': row.question_id,
                 'AnswerComments': []
             }
             for row in row.answer_comments:
@@ -68,8 +70,10 @@ def index():
                     'username': u.username
                 }
                 answer_dict["AnswerComments"].append({
+                    'id': row.id,
                     'comment': row.comment,
-                    'User': user_obj
+                    'User': user_obj,
+                    'answer_id': row.answer_id
                 })
             answers.append(answer_dict)
         question_res["Answer"] = answers
@@ -172,6 +176,7 @@ def get_question(id):
         answer_dict = {
             'answer': row.answer,
             'id': row.id,
+            'question_id': row.question_id,
             'AnswerComments': []
         }
         for row in row.answer_comments:
@@ -181,8 +186,10 @@ def get_question(id):
                 'username': u.username
             }
             answer_dict["AnswerComments"].append({
+                'id': row.id,
                 'comment': row.comment,
-                'User': user_obj
+                'User': user_obj,
+                'answer_id': row.answer_id
             })
         answers.append(answer_dict)
     question["Answer"] = answers

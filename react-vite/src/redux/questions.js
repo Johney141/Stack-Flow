@@ -24,6 +24,11 @@ const comment = (payload) => ({
     payload
 })
 
+const answer = (payload) => ({
+    type: LOAD_ANSWER,
+    payload
+})
+
 const editComment = (payload) => ({
     type: EDIT_COMMENT,
     payload
@@ -48,6 +53,8 @@ const updateQuestion = (question) => ({
     type: UPDATE_QUESTION,
     payload: question
 })
+
+
 
 // Thunks
 export const getQuestionsByTagThunk = (body) => async (dispatch) => {
@@ -76,6 +83,24 @@ export const createQuestion = (body) => async () => {
     return data.id;
   }
 };
+
+export const createAnswer = async (questionId, payload) => {
+    const response = await fetch(`/api/questions/${questionId}/answers`, {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+    console.log(data);
+
+    if(response.ok) {
+      return response;
+    }
+    else {
+      throw response
+    }
+  };
 
 export const getAllQuestionsThunk = () => async (dispatch) => {
     try {
@@ -137,7 +162,6 @@ export const deleteQuestionComment = (commentId) => async () => {
     const res = await fetch(`/api/questions/comments/${commentId}`, {
         method: 'DELETE'
     });
-        return res
 }
 
 export const fetchEditComment = (payload, commentId) => async (dispatch) => {
@@ -221,12 +245,16 @@ export const updateQuestionThunk = (questionId, body) => async (dispatch) => {
     }
 }
 
+
+
 // Reducer
 const initialState = {
     allQuestions: [],
     tagName: {},
     byId: {},
-    questionComments: {}
+    questionComments: {},
+    answerComments: {},
+    answers: {}
 }
 
 const questionReducer = (state = initialState, action) => {
@@ -240,9 +268,11 @@ const questionReducer = (state = initialState, action) => {
 
             // byId
             console.log("action.payload: ", action.payload);
-            for (let question of action.payload.Questions) {
-                newState.byId[question.id] = question;
-            }
+            newState.byId = action.payload.Questions.reduce((accumlator, question) => {
+                accumlator[question.id] = question
+                return accumlator;
+            }, {})
+
             return newState;
 
         case GET_USER_QUESTIONS:
@@ -290,16 +320,6 @@ const questionReducer = (state = initialState, action) => {
             const newState = {...state}
             newState.questionComments ? {...newState.questionComments} : {}
             delete newState.questionComments[commentId]
-            // newState = { ...state,
-            //     questionComments: {...state.questionComments}
-            // };
-
-            // newState.questionComments = newState.questionComments.filter(
-            //     (comment) => comment.id !== action.payload.id
-            // );
-
-            // delete newState.byId[action.payload.id];
-
             return newState;
         }
 
@@ -331,7 +351,6 @@ const questionReducer = (state = initialState, action) => {
 
             return newState;
         }
-
         default:
             return state;
     }

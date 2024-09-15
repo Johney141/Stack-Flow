@@ -1,14 +1,22 @@
 import { useEffect, useState } from "react";
+import { useModal } from "../../context/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getAllTagsThunk } from "../../redux/tags";
+import QuestionCreatePage from "../QuestionCreatePage/QuestionCreatePage";
+import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import './LandingPage.css'
 
 const LandingPage = () => {
     const [isLoaded, setIsLoaded] = useState(false);
+    const [showMenu, setShowMenu] = useState(false);
     const tags = useSelector(state => state.tagState.allTags)
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const sessionUser = useSelector(state => state.session.user)
+    const user = sessionUser ? sessionUser.id : null
+
+    const closeMenu = () => setShowMenu(false);
 
     useEffect(() => {
         const getTags = async () => {
@@ -31,6 +39,11 @@ const LandingPage = () => {
     return (
         <div className="landing-container">
             <h1>Browse Questions by Category</h1>
+            {user && <OpenModalMenuItem
+            itemText="Add a question"
+            onItemClick={closeMenu}
+            modalComponent={<QuestionCreatePage/>}
+            />}
             <div className="tag-container">
                 {tags.map(tag => (
                     <div
