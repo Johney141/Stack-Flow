@@ -13,6 +13,7 @@ import * as questionActions from '../../redux/questions'
 import AnswerCreatePage from "../AnswerCreatePage/AnswerCreatePage";
 import DeleteAnswerCommentModal from "../DeleteAnswerCommentModal/DeleteAnswerCommentModal";
 import './Question.css';
+import TagBubble from "../TagBubble/TagBubble";
 
 
 
@@ -90,9 +91,7 @@ const QuestionDetails = () => {
                 <div className="QuestionDetails-tags">
                     {questionTags.map((tag, idx) => {
                         return (
-                            <span key={idx} className="TagBubble">
-                                <NavLink to={`/questions/${tag.tagName}`}>{tag.tagName}</NavLink>
-                            </span>
+                            <TagBubble tag={tag} idx={idx} />
                         )
                     })}
                 </div>
@@ -156,17 +155,19 @@ const QuestionDetails = () => {
                             </div>
                             <div className="AnswerComments">
                                 {answer.AnswerComments.map((comment, idx)=>{
+
+                                    console.log("Comment: ", comment);
                                     let key = "a" + idx;
                                     return(
                                         <div className="AnswerComments-comment" key={key}>
                                             <span className="comment">{comment.comment}</span>
                                             <span className="comment-username"> - {comment.User.username}</span>
-                                            {user === answer.user_id && <OpenModalMenuItem
-                                itemText="Edit Comment"
-                                onItemClick={closeMenu}
-                                modalComponent={<EditQuestionCommentModal answerId={answer.id}/>}
+                                            {user === comment.User.id && <OpenModalMenuItem
+                                                itemText="Edit Comment"
+                                                onItemClick={closeMenu}
+                                                modalComponent={<EditQuestionCommentModal answerId={answer.id}/>}
                             />}
-                            {user === answer.user_id && <OpenModalMenuItem
+                            {user === comment.User.id && <OpenModalMenuItem
                                 itemText="Delete Comment"
                                 onItemClick={closeMenu}
                                 modalComponent={<DeleteAnswerCommentModal commentId={answer.id} answerId={answer.answer_id}/>}
