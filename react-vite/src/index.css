@@ -32,6 +32,14 @@ div#main-margin {
   border-bottom: 1px solid lightgrey;
 }
 
+#profile-button {
+  display: flex;
+  align-items: center;
+  font-size: 25px;
+  cursor: pointer;
+  border: none;
+}
+
 .profile-dropdown {
   position: absolute;
   background-color: rgb(133, 157, 221, 0.5);
@@ -71,9 +79,9 @@ div#main-margin {
   }
 
   div#main-margin {
-    margin-left: 130px;
-    margin-right: 0px;
-    width: calc(100vw - 130px);
+    margin-left: 150px;
+    margin-right: 20px;
+    width: calc(100vw - 170px);
   }
 
   .profile-dropdown {
@@ -154,6 +162,10 @@ div#modal-content {
   border-radius: 5px;
 }
 
+.tag-page {
+  font-size: larger;
+}
+
 .tag-label {
   margin: 5px;
   outline: 2px dashed blue;
@@ -184,6 +196,11 @@ div#modal-content {
   font-size: 17px;
 }
 
+.tag-bubble {
+  margin: 5px;
+  color:#777;
+}
+
 @media (width < 400px) {
   .tag-anchor {
     width: 20vw;
@@ -193,4 +210,8 @@ div#modal-content {
   .tag-numQuestion {
     visibility: hidden;
   }
+}
+
+.question-list-item {
+  cursor: pointer;
 }
