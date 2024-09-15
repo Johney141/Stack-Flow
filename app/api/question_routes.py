@@ -530,6 +530,7 @@ def get_questions_by_tag(tag_id):
       "tagName": questiontags[0].tag.tag_name,
       "Questions": [
         {
+          'Tags': [questiontag.tag.to_dict() for questiontag in QuestionTag.query.filter(QuestionTag.question_id == questiontag.question_id).all()],
           'id': questiontag.question_id,
           'question': questiontag.question.question,
           'subject': questiontag.question.subject

@@ -48,8 +48,8 @@ const QuestionList = () => {
     console.log("all questions: ", questions)
     return (
         <div className="question-list">
-            {questions.map((question_obj, idx)=>{
-                return (<QuestionListItem key={idx} question={{question_obj}}/>)
+            {questions.map((question_obj)=>{
+                return (<QuestionListItem key={question_obj.id} question={{question_obj}}/>)
             })}
 
         </div>

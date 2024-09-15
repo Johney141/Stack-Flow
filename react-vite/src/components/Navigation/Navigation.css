@@ -1,16 +1,3 @@
 .profile-dropdown {
   position: absolute;
 }
-
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid lightgrey;
-}
-
-
-#home-button {
-  font-size: larger;
-  border: none
-}

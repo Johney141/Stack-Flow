@@ -59,7 +59,7 @@ export const router = createBrowserRouter([
         element: <EditQuestionCommentModal/>
       },
       {
-        path: "questions/saved/current",
+        path: "saved",
         element: <Followings />
       },
       {
