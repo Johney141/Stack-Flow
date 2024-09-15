@@ -19,7 +19,7 @@ export const unfollow = (payload) => ({
 })
 
 export const fetchFollowings = () => async (dispatch) => {
-    const res = await fetch('/api/questions/saved/current')
+    const res = await fetch('/api/questions/saved/current/')
 
     if (res.ok) {
         const data = await res.json()

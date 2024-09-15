@@ -1,18 +1,70 @@
 .leftnav {
-  width: 120px;
+  width: 130px;
   height: 100%;
-  padding-top: 60px;
   position: fixed;
   overflow-x: hidden;
-  background-color: #d7ade7;
+  display: flex;
+  flex-direction: column;
+  margin-left: calc((100vw - 1200px) / 2);
+}
+
+#home-button {
+  font-size: larger;
+  border: none;
+  width: 130px;
+  margin-left: calc((100vw - 1200px) / 2);
+  cursor: pointer;
+}
+
+#profile-button {
+  margin-right: calc((100vw - 1200px) / 2);
 }
 
 div#main-margin {
-  margin-left: 120px;
+  margin-left: calc(150px + (100vw - 1200px) / 2);
+  margin-right: calc((100vw - 1200px) / 2);
 }
 
 .navbar {
-  margin-left: 120px;
+  margin-left: 0px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid lightgrey;
+}
+
+@media (width < 1200px) {
+  .leftnav {
+    margin-left: 0px;
+  }
+
+  #home-button {
+    margin-left: 0px;
+  }
+
+  #profile-button {
+    margin-right: 0px;
+  }
+
+  div#main-margin {
+    margin-left: 130px;
+    margin-right: 0px;
+    width: calc(100vw - 130px);
+  }
+}
+
+.nav-button {
+  font-size: larger;
+  border: none;
+  width: 130px;
+  cursor: pointer;
+  margin-top: 7px;
+  margin-bottom: 10px;
+}
+
+.nav-button:disabled {
+  cursor: default;
+  font-weight: 750;
+  color: black;
 }
 
 .error {
