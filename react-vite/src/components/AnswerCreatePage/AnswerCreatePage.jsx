@@ -44,6 +44,7 @@ function AnswerCreatePage({ subject, questionId }) {
     let answerForm;
     if (user) {
       answerForm = (
+      <div className='modal'>
       <form
         onSubmit={handleSubmit}
         className='question-form'
@@ -60,15 +61,18 @@ function AnswerCreatePage({ subject, questionId }) {
         />
 
         <div>
-        {answerError && <div>You can only submit one answer per question</div>}
-          <button
+        {answerError && <div className='error'>You can only submit one answer per question</div>}
+        <div >
+          <button className='md-button'
             disabled={(answer.length < 3 || answerError)}
             type="submit"
           >
             Create Answer
           </button>
+          </div>
         </div>
       </form>
+      </div>
       );
     }
     else {

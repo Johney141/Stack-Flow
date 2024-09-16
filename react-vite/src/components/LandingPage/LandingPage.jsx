@@ -39,11 +39,13 @@ const LandingPage = () => {
     return (
         <div className="landing-container">
             <h1>Browse Questions by Category</h1>
+            <div className='landing-button'>
             {user && <OpenModalMenuItem
             itemText="Add a question"
             onItemClick={closeMenu}
             modalComponent={<QuestionCreatePage/>}
             />}
+            </div>
             <div className="tag-container">
                 {tags.map(tag => (
                     <div

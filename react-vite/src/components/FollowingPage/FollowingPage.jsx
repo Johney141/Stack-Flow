@@ -20,15 +20,19 @@ const Followings = () => {
             <h1>All Saves</h1>
             <nav>
             {Object.values(followed).map(follow => {
-                console.log(follow)
                 return (
-                    <NavLink key={follow.Question.subject} to={`/questions/${follow.Question.id}`}>
+                    <div>
+                        <NavLink key={follow.Question.subject} to={`/questions/${follow.Question.id}`}>
                         <div>
-                            <h3>{follow.Question.question}</h3>
+                            <h3 className='followings-subject'>{follow.Question.subject}</h3>
                         </div>
                     </NavLink>
+                    <h4 className='followings-question'>{follow.Question.question}</h4>
+                    </div>
                 )
             } )}
+            <div>
+            </div>
             </nav>
         </main>
     )
