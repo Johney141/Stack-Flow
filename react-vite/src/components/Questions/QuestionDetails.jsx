@@ -148,13 +148,13 @@ const QuestionDetails = () => {
                 itemText="Add an Answer"
                 onItemClick={closeMenu}
                 className="QuestionDetails-buttons"
-                modalComponent={<AnswerCreatePage questionId = {question.id}/>}
+                modalComponent={<AnswerCreatePage questionId={question.id} subject={question.subject}/>}
               />}</h4>
             {question.Answer.length < 1 && <span>No answers yet, add your own!</span>}
                 {question.Answer.map((answer, idx)=>{
                     console.log(answer, '<---------AAAA')
                     return (
-                        <div key={idx}>
+                        <div className='QuestionDetails-eachAnswer' key={idx}>
                             <div className="Answer">
 
                                 {answer.answer}

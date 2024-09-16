@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { thunkLogin } from "../../redux/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
@@ -7,6 +8,7 @@ import { fetchFollowings } from "../../redux/following";
 import "./LoginForm.css";
 
 function LoginFormModal() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,13 +30,15 @@ function LoginFormModal() {
       dispatch(fetchFollowings())
     } else {
       closeModal();
+      navigate("/");
     }
   };
 
   const handleDemoSubmit = () => {
     return dispatch(thunkLogin({ email: "demo@aa.io", password: "password" }))
     .then(() => dispatch(fetchFollowings()))
-      .then(closeModal);
+      .then(closeModal)
+      .then(() => navigate('/'));
   }
 
   return (

@@ -10,12 +10,12 @@ import * as questionActions from "../../redux/questions"
 import { getAllQuestionsThunk } from '../../redux/questions';
 
 
-function AnswerCreatePage() {
+function AnswerCreatePage({ subject, questionId }) {
     const sessionUser = useSelector(state => state.session.user)
     const user = sessionUser ? sessionUser.id : null
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {id} = useParams()
+    //const {id} = useParams()
 
     const [answer, setAnswer] = useState('');
     const [answerError, setAnswerError] = useState(false);
@@ -28,8 +28,8 @@ function AnswerCreatePage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log(answer, id)
-        createAnswer(id, {answer: answer})
+        console.log(answer, questionId)
+        createAnswer(questionId, {answer: answer})
             .then(() => {
                 dispatch(getAllQuestionsThunk())
             })
@@ -46,16 +46,17 @@ function AnswerCreatePage() {
       answerForm = (
       <form
         onSubmit={handleSubmit}
+        className='question-form'
       >
-        <h3>Help Answer This Question!</h3>
-        <h4>Title</h4>
-        <div>Don't leave a blank answer</div>
-        <input
+        <h3 className="md-demo-div middle bold">Answer to This Question: </h3>
+        <h4>{subject}</h4>
+        <textarea
           value={answer}
           onChange={handleAnswer}
           type="text"
-          name="subject"
-          placeholder="Answer"
+          name="answer"
+          rows="8"
+          placeholder=""
         />
 
         <div>
@@ -82,7 +83,7 @@ function AnswerCreatePage() {
     }
 
     return (
-      <div>
+      <div className='question-ask'>
         {answerForm}
       </div>
     );
