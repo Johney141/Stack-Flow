@@ -78,16 +78,19 @@ const UpdateQuestionModal = ({question, questionUpdated}) => {
     const handleSubject = e => setNewSubject(e.target.value);
     const handleQuestion = e => setNewQuestion(e.target.value);
     const handleTagInput = e => setTagInput(e.target.value);
+    const handleDeleteTag = e => {
+      console.log(e);
+    }
 
 
     return (
-        <div className="modal">
+        <div className="question-ask">
             <div className='md-demo-div middle bold'>
               Update Question
             </div>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="subject">Title</label>
+            <form onSubmit={handleSubmit} className="question-form">
+
+                    <h4>Title</h4>
                     <input
                         value={newSubject}
                         onChange={handleSubject}
@@ -95,18 +98,20 @@ const UpdateQuestionModal = ({question, questionUpdated}) => {
                         name="subject"
                         placeholder="Title of your question"
                     />
-                </div>
-                <div>
-                    <label for="question">What are the details of your Question?</label>
+
+
+                    <h4>What are the details of your Question?</h4>
                     <textarea
                         id="questoin-area"
                         name="question"
                         value={newQuestion}
                         onChange={handleQuestion}
+                        rows={8}
                         placeholder="Please write at least 30 characters"
                     />
-                </div>
-                <div>
+
+
+                <h4>Tags</h4>
                     <input
                     value={tagInput}
                     onChange={handleTagInput}
@@ -116,6 +121,7 @@ const UpdateQuestionModal = ({question, questionUpdated}) => {
                     <button
                     type="button"
                     onClick={handleTagSubmit}
+                    disabled={tagInput.length == 0}
                     >
                     Add Tag
                     </button>
@@ -125,24 +131,34 @@ const UpdateQuestionModal = ({question, questionUpdated}) => {
                     >
                     Reset
                     </button>
-                </div>
+
 
                 {tagError && <div className='error'>Name of the tag cannot have spaces, try replace using -</div>}
 
-                <div>
-                    {tags.map((tag) => (<label className='tag-label' key={tag}>{tag}</label>))}
+                <div className="question-tagContainer">
+                  {tags.map((tag, idx) => {
+                      return (<label className='tag-label'
+                        onClick={() => {
+                          let newArr = JSON.parse(JSON.stringify(tags));
+                          newArr.splice(idx, 1);
+                          setTags(newArr);
+                        }} key={tag}># {tag}</label>)
+                    }
+                  )}
                 </div>
 
-                <div>
-                    {!(tags.length) && (<div className='error'>Need At Least One Tag</div>)}
+                {!(tags.length) && (<div className='error'>Need At Least One Tag</div>)}
+                <div className="middle">
+
                     <button
-                    disabled={(!newSubject) || (newQuestion.length < 30)}
+                    disabled={(!newSubject) || (newQuestion.length < 30) || (tags.length < 1)}
                     type="submit"
                     >
                     Update Question
                     </button>
+                    <button onClick={closeModal}>Cancel</button>
                 </div>
-                <button onClick={closeModal}>Cancel</button>
+
             </form>
         </div>
     )

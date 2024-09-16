@@ -216,6 +216,12 @@ div#modal-content {
   color: #3a3a3a;
 }
 
+.tag-label:hover {
+  color: red;
+  cursor: pointer;
+  text-decoration-line: line-through;
+}
+
 .tag-list {
   display: flex;
   flex-wrap: wrap;
@@ -314,6 +320,15 @@ div#modal-content {
 
 .question-title button:hover {
   background-color: rgb(133, 157, 221);
+}
+
+.question-tagContainer {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  row-gap: 5px;
+  column-gap: 0px;
 }
 
 .profile-page-container {
