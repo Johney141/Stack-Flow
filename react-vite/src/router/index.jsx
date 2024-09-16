@@ -15,6 +15,7 @@ import ProfilePage from '../components/ProfilePage/ProfilePage';
 import TagMainPage from '../components/TagMainPage/TagMainPage';
 import TagDetailPage from '../components/TagDetailPage/TagDetailPage';
 import LoadUsers from '../components/UserPage/UserPage';
+import TagBubbleNavigate from '../components/TagBubble/TagBubbleNavigate';
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
       {
         path: "tags",
         element: <TagMainPage />
+      },
+      {
+        path: "tags/bubble/:id",
+        element: <TagBubbleNavigate />
       },
       {
         path: "tags/:id",
