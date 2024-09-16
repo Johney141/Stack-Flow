@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import LoginFormModal from "../LoginFormModal";
 import { useModal } from "../../context/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -40,11 +41,11 @@ const LandingPage = () => {
         <div className="landing-container tag-page">
             <h1>Browse Questions by Category</h1>
             <div className='landing-button'>
-            {user && <OpenModalMenuItem
-            itemText="Add a question"
-            onItemClick={closeMenu}
-            modalComponent={<QuestionCreatePage/>}
-            />}
+            <OpenModalMenuItem
+              itemText="Add a question"
+              onItemClick={closeMenu}
+              modalComponent={user ? <QuestionCreatePage/> : <LoginFormModal/>}
+            />
             </div>
             <div className="tag-container tag-list">
                 {tags.map(tag => {

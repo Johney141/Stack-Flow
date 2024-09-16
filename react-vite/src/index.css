@@ -252,6 +252,7 @@ div#modal-content {
   text-decoration: none;
   background-color: rgba(0,0,0,0.15);
   color: #3a3a3a;
+  cursor: pointer;
 }
 
 .tag-bubble:hover {

@@ -1,13 +1,14 @@
-import { NavLink } from 'react-router-dom';
 import './TagBubble.css';
+import { useNavigate } from 'react-router-dom';
 
 
 const TagBubble = (tag, idx) => {
+  const navigate = useNavigate();
     return(
         <span key={idx}>
-            <NavLink to={`/tags/${tag.tag.id}`} className="tag-bubble">
-              #{tag.tag.question} {tag.tag.tag_name} {tag.tag.tagName}
-            </NavLink>
+            <span className="tag-bubble" onClick={() => navigate(`/tags/bubble/${tag.tag.id}`)}>
+              # {tag.tag.question} {tag.tag.tag_name} {tag.tag.tagName}
+            </span>
         </span>
     )
 }
