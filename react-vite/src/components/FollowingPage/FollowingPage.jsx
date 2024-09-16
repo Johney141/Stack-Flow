@@ -10,16 +10,14 @@ const Followings = () => {
     // const [showMenu, setShowMenu] = useState(false);
     // const ulRef = useRef();
     const followed = useSelector((state) => state.followingState.allFollowings);
-    console.log(followed, '<-------')
-
+    console.log(followed, '<-------', '{}')
     useEffect(() => {
         dispatch(fetchFollowings())
     }, [dispatch])
 
     return (
         <main className='followings'>
-            <h1>Username</h1>
-            <h2>All Saves</h2>
+            <h1>All Saves</h1>
             <nav>
             {Object.values(followed).map(follow => {
                 console.log(follow)

@@ -17,12 +17,10 @@ function LoginFormPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const serverResponse = await dispatch(
-      thunkLogin({
-        email,
-        password,
-      })
-    );
+    const serverResponse = await dispatch(thunkLogin({
+      email,
+      password
+    }))
 
     if (serverResponse) {
       setErrors(serverResponse);
