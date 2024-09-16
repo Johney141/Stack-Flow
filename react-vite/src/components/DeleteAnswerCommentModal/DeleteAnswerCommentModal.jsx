@@ -14,15 +14,14 @@ const DeleteAnswerCommentModal = (commentId) => {
     console.log(question, '<------ID'); // This will print the current URL to the console
 
     const handleSubmit = async (e) => {
+        e.preventDefault()
         dispatch(answerActions.deleteAnswerComment(commentId))
-        .then(() => {
-            dispatch(questionActions.fetchComments(parseInt(id)))
-            window.location.reload()
-        })
-        .then(() => {
-            closeModal()
-            console.log(id, '<-------commentID')
-        })
+            .then(() => {
+                dispatch(questionActions.getAllQuestionsThunk())
+            })
+            .then(() => {
+                closeModal()
+            })
     }
 
     return (

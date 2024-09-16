@@ -247,9 +247,9 @@ const answersReducer = (state = initialState, action) => {
                 answerComments: {...state.answerComments,},
             };
 
-            updated.answerComments[action.payload.id] = action.payload;
-
-            console.log(LOAD_COMMENT, updated);
+            // updated.answerComments[action.payload.id] = action.payload;
+            //
+            // console.log(LOAD_COMMENT, updated);
 
             return updated;
         }

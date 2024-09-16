@@ -305,9 +305,9 @@ const questionReducer = (state = initialState, action) => {
                 questionComments: {...state.questionComments,},
             };
 
-            updated.questionComments[action.payload.id] = action.payload;
-
-            console.log(LOAD_COMMENT, updated);
+            // updated.questionComments[action.payload.id] = action.payload;
+            //
+            // console.log(LOAD_COMMENT, updated);
 
             return updated;
         }

@@ -12,14 +12,15 @@ const PostQuestionCommentModal= ({questionId}) => {
 
 
       const handleSubmit = async (e) => {
+        e.preventDefault();
         dispatch(questionActions.createComment(questionId, {comment: comment}))
-        .then(() => {
-            dispatch(questionActions.fetchComments())
-        })
-        .then(() => {
-            closeModal()
-        })
-      }
+            .then(() => {
+                dispatch(questionActions.fetchComments(questionId))
+            })
+            .then(() => {
+                closeModal()
+            })
+    }
 
       return (
         <>
