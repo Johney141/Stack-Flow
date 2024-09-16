@@ -44,30 +44,35 @@ function AnswerCreatePage() {
     let answerForm;
     if (user) {
       answerForm = (
+      <div className='modal'>
       <form
         onSubmit={handleSubmit}
       >
-        <h3>Help Answer This Question!</h3>
-        <h4>Title</h4>
-        <div>Don't leave a blank answer</div>
-        <input
+        <h3 style={{textAlign: 'center'}}>Help Answer This Question!</h3>
+        <div>
+
+        </div>
+        <input style={{height: 100, width: 300}}
           value={answer}
           onChange={handleAnswer}
           type="text"
           name="subject"
-          placeholder="Answer"
+          placeholder="Answer must be at least 3 characters long"
         />
 
         <div>
         {answerError && <div>You can only submit one answer per question</div>}
-          <button
+        <div >
+          <button className='md-button'
             disabled={(answer.length < 3 || answerError)}
             type="submit"
           >
             Create Answer
           </button>
+          </div>
         </div>
       </form>
+      </div>
       );
     }
     else {

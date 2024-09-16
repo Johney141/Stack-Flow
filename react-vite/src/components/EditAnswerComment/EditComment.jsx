@@ -38,7 +38,7 @@ const EditAnswerCommentModal = ({ commentId, oldComment }) => {
         <label>
           <input style={{height: 100, width: 300}}
             type="text"
-            placeholder="Edit comment"
+            placeholder="Comment must be at least 3 characters long"
             defaultValue={oldComment}
             onChange={handleComment}
           />

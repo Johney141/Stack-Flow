@@ -6,14 +6,14 @@
 @media (min-width: 400px) {
     .tag-container{
         grid-template-columns: repeat(2, 1fr);
-        
+
     }
 }
 
 @media (min-width: 700px) {
     .tag-container{
         grid-template-columns: repeat(3, 1fr);
-        
+
     }
 }
 
@@ -43,4 +43,24 @@
     padding: 10px;
     width: 4rem;
     margin-top: 1rem;
+}
+
+.landing-button button {
+    color: #181818;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border: none;
+    background-color: rgb(133, 157, 221, 0.5);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: large;
+    cursor: pointer;
+    border-radius: 5px;
+    display: flex;
+    justify-content: flex-end
+}
+
+.landing-button {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: end;
 }

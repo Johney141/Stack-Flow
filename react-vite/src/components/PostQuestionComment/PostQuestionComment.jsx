@@ -23,21 +23,21 @@ const PostQuestionCommentModal= ({questionId}) => {
     }
 
       return (
-        <>
+        <div className='modal'>
           <form onSubmit={handleSubmit}>
             <label>
               <input style={{height: 100, width: 300}}
                 type="text"
-                placeholder="Add a comment"
+                placeholder="Comment must be at least 3 characters long"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
               />
             </label>
             <div style={{textAlign:'center'}}>
-            <button className='post-comment' disabled={comment.length < 3}type="submit">Add a Comment</button>
+            <button className='md-button' disabled={comment.length < 3}type="submit">Add a Comment</button>
             </div>
           </form>
-        </>
+        </div>
       );
   }
 
