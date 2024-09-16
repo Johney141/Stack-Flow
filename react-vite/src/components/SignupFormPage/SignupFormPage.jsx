@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { thunkSignup } from "../../redux/session";
+import { fetchFollowings } from "../../redux/following";
 
 function SignupFormPage() {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ function SignupFormPage() {
         email,
         username,
         password,
-      })
+      }).then(() => dispatch(fetchFollowings()))
     );
 
     if (serverResponse) {

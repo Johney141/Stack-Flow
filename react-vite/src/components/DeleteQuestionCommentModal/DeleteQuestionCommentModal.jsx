@@ -10,10 +10,10 @@ const DeleteQuestionCommentModal = ({commentId}) => {
     const dispatch = useDispatch();
 
     const handleSubmit = async (e) => {
+        e.preventDefault();
         dispatch(questionActions.deleteQuestionComment(commentId))
         .then(() => {
             dispatch(questionActions.fetchComments(id))
-            window.location.reload()
         })
         .then(() => {
             closeModal()

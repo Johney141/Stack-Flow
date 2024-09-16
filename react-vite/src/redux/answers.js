@@ -154,11 +154,17 @@ export const createComment = (answerId, payload) => async (dispatch) => {
         return res
 }
 
-export const deleteAnswerComment = (commentId) => async () => {
+export const deleteAnswerComment = (body) => async (dispatch) => {
+    const {commentId} = body
     const res = await fetch(`/api/answers/comments/${commentId}`, {
         method: 'DELETE'
     });
-        return res
+
+    if (res.ok) {
+        const data = await res.json()
+        dispatch(deleteComment(data))
+        return data
+    }
 }
 
 export const fetchEditComment = (body) => async (dispatch) => {
@@ -241,9 +247,9 @@ const answersReducer = (state = initialState, action) => {
                 answerComments: {...state.answerComments,},
             };
 
-            updated.answerComments[action.payload.id] = action.payload;
-
-            console.log(LOAD_COMMENT, updated);
+            // updated.answerComments[action.payload.id] = action.payload;
+            //
+            // console.log(LOAD_COMMENT, updated);
 
             return updated;
         }

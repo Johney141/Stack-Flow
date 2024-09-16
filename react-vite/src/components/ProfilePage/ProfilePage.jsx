@@ -128,6 +128,7 @@ const ProfilePage = () => {
                         className="user-answer"
                         key={answer.id}
                     >
+
                         <p>{answer.answer}</p>
                         <div className='user-modify-button'>
                           <button
@@ -136,7 +137,6 @@ const ProfilePage = () => {
                             Go To Question
                           </button>
                         {isUsersProfile ?
-
                             <>
                                 <OpenModalMenuItem
                                     itemText='Update'

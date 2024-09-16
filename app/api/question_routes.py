@@ -453,7 +453,6 @@ def delete_comment(comment_id):
 
 # this will get all the questions the current user is following
 @question_routes.route('/saved/current')
-@login_required
 def questions_followed():
     following_questions = QuestionFollowing.query.join(Question).filter(QuestionFollowing.user_id == current_user.id).all()
 

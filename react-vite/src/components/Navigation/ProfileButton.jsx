@@ -7,6 +7,8 @@ import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import './ProfileButton.css'
 import { useNavigate } from "react-router-dom";
+import { deleteFollowings } from "../../redux/following";
+import { fetchFollowings } from "../../redux/following";
 
 function ProfileButton() {
   const dispatch = useDispatch();
@@ -43,8 +45,9 @@ function ProfileButton() {
 
   const logout = (e) => {
     e.preventDefault();
-    dispatch(thunkLogout());
-    closeMenu();
+    dispatch(thunkLogout())
+      .then(() => dispatch(deleteFollowings()))
+      .then(() => closeMenu())
   };
 
   return (

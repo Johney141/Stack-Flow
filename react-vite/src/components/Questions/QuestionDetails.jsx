@@ -153,7 +153,7 @@ const QuestionDetails = () => {
                                 {user !== null &&<OpenModalMenuItem
                                 itemText="Add a Comment"
                                 onItemClick={closeMenu}
-                                modalComponent={<PostAnswerCommentModal answerId = {answer.id}/>}
+                                modalComponent={<PostAnswerCommentModal questionId={question.id} answerId={answer.id}/>}
                                 />}
                                 </>
                             </div>
@@ -175,7 +175,7 @@ const QuestionDetails = () => {
                             {user === comment.User.id && <OpenModalMenuItem
                                 itemText="Delete Comment"
                                 onItemClick={closeMenu}
-                                modalComponent={<DeleteAnswerCommentModal commentId={answer.id} answerId={answer.answer_id}/>}
+                                modalComponent={<DeleteAnswerCommentModal commentId={comment.id} />}
                             />}
                                         </div>
 

@@ -2,24 +2,26 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as answerActions from '../../redux/answers'
+import * as questionActions from '../../redux/questions'
 import './PostAnswerCommentModal.css'
 
 
-const PostAnswerCommentModal= ({answerId}) => {
-    const { closeModal } = useModal();
-      const dispatch = useDispatch();
-      const [comment, setComment] = useState("")
+const PostAnswerCommentModal = ({questionId, answerId}) => {
+    const {closeModal} = useModal();
+    const dispatch = useDispatch();
+    const [comment, setComment] = useState("")
 
 
-      const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         dispatch(answerActions.createComment(answerId, {comment: comment}))
-        .then(() => {
-            dispatch(answerActions.fetchComments())
-        })
-        .then(() => {
-            closeModal()
-        })
-      }
+            .then(() => {
+                dispatch(questionActions.getAllQuestionsThunk())
+            })
+            .then(() => {
+                closeModal()
+            })
+    }
 
       return (
         <>
