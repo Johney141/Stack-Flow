@@ -16,7 +16,7 @@ function TagMainPage() {
 
   const tags = useSelector((store) => store.tagState.allTags);
 
-  return (
+  return (tags ? (
     <div className="tag-page">
       <h2>Tags</h2>
       <div>
@@ -49,7 +49,7 @@ function TagMainPage() {
         })}
       </div>
     </div>
-  );
+  ) : <h2>Loading...</h2>);
 }
 
 export default TagMainPage;

@@ -12,10 +12,10 @@ const QuestionListItem = (question) => {
     question = question.question.question_obj;
     console.log("Question: ", question);
     return(
-        <div key={question.id} onClick={handleQuestionDetail} className="question-list-item">
-            <h4 className="QuestionListItem-subject">
-                {question.subject}
-            </h4>
+        <div key={question.id}>
+            <div className="QuestionListItem-subject" onClick={handleQuestionDetail}>
+                <a href={`/questions/${question.id}`} className='question-anchor'>{question.subject}</a>
+            </div>
             <div className="QuestionListItem-question">
                 {question.question.substring(0, 250)} {question.question.length > 250 ? "... ..." : ""}
             </div>
@@ -23,7 +23,6 @@ const QuestionListItem = (question) => {
                 <div className="QuestionListItem-tag">
                     {
                         question.Tags.map((tag)=>{
-                            //console.log("tag: ", tag)
                             return (
                                 <TagBubble tag={tag} idx={tag.id} />
                             )

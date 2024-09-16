@@ -95,7 +95,7 @@ const QuestionDetails = () => {
                 <div className="QuestionDetails-tags">
                     {questionTags.map((tag) => {
                         return (
-                            <TagBubble tag={tag} idx={tag.id} />
+                              <TagBubble tag={tag} idx={tag.id} />
                         )
                     })}
                 </div>
