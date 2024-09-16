@@ -49,7 +49,7 @@ const LandingPage = () => {
                     <div
                         key={tag.id}
                         className="tag-card"
-                        onClick={() => navigate(`/questions/${tag.tagName}`)}
+                        onClick={() => navigate(`/tags/${tag.id}`)}
                     >
                         <h4>{tag.tagName}</h4>
 
