@@ -161,19 +161,16 @@ export const deleteAnswerComment = (commentId) => async () => {
         return res
 }
 
-export const fetchEditComment = (payload, commentId) => async (dispatch) => {
-    const res = await fetch(`/api/answers/comments/${commentId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-    })
-    if (res.ok) {
-        const edittedComment = await res.json();
-        dispatch(editComment(edittedComment))
-        return edittedComment
-    }
+export const fetchEditComment = (body) => async (dispatch) => {
+  const { comment, commentId } = body;
+  const res = await fetch(`/api/answers/comments/${commentId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({comment})
+  })
+  return res;
 }
 // Reducer
 const initialState = {

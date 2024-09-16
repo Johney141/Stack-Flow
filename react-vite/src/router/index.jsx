@@ -3,7 +3,7 @@ import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import LandingPage from '../components/LandingPage/LandingPage';
 import QuestionList from '../components/Questions/QuestionList';
-import EditQuestionCommentModal from '../components/EditComment/EditComment';
+import EditQuestionCommentModal from '../components/EditQuestionComment/EditComment';
 import DeleteQuestionCommentModal from '../components/DeleteQuestionCommentModal/DeleteQuestionCommentModal';
 import QuestionDetails from '../components/Questions/QuestionDetails';
 import QuestionCreatePage from '../components/QuestionCreatePage';

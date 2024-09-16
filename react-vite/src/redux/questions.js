@@ -164,19 +164,16 @@ export const deleteQuestionComment = (commentId) => async () => {
     });
 }
 
-export const fetchEditComment = (payload, commentId) => async (dispatch) => {
-    const res = await fetch(`/api/questions/comments/${commentId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-    })
-    if (res.ok) {
-        const edittedComment = await res.json();
-        dispatch(editComment(edittedComment))
-        return edittedComment
-    }
+export const fetchEditComment = (body) => async (dispatch) => {
+  const { comment, commentId } = body;
+  const res = await fetch(`/api/questions/comments/${commentId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({comment})
+  })
+  return res;
 }
 
 export const getUserQuestionsThunk = () => async (dispatch) => {

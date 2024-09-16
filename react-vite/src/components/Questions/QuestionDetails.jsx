@@ -5,7 +5,8 @@ import {getQuestionTagsThunk} from "../../redux/tags";
 import {fetchComments, getAllQuestionsThunk} from "../../redux/questions";
 import PostQuestionCommentModal from "../PostQuestionComment/PostQuestionComment"
 import PostAnswerCommentModal from "../PostAnswerCommentModal/PostAnswerCommentModal";
-import EditQuestionCommentModal from "../EditComment/EditComment";
+import EditQuestionCommentModal from "../EditQuestionComment/EditComment";
+import EditAnswerCommentModal from "../EditAnswerComment/EditComment";
 import DeleteQuestionCommentModal from "../DeleteQuestionCommentModal/DeleteQuestionCommentModal";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import * as followActions from '../../redux/following';
@@ -92,9 +93,9 @@ const QuestionDetails = () => {
                 {user !== null &&<button onClick={follow}>{alreadyFollowed ? 'Unfollow' : 'Follow'}</button>}
                 </div>
                 <div className="QuestionDetails-tags">
-                    {questionTags.map((tag, idx) => {
+                    {questionTags.map((tag) => {
                         return (
-                            <TagBubble tag={tag} idx={idx} />
+                            <TagBubble tag={tag} idx={tag.id} />
                         )
                     })}
                 </div>
@@ -110,7 +111,8 @@ const QuestionDetails = () => {
                             {user === comment.User.id && <OpenModalMenuItem
                                 itemText="Edit Comment"
                                 onItemClick={closeMenu}
-                                modalComponent={<EditQuestionCommentModal commentId={comment.id}/>}
+                                modalComponent={<EditQuestionCommentModal
+                                  commentId={comment.id} oldComment={comment.comment} questionId={id}/>}
                             />}
                             {user === comment.User.id && <OpenModalMenuItem
                                 itemText="Delete Comment"
@@ -167,7 +169,8 @@ const QuestionDetails = () => {
                                             {user === comment.User.id && <OpenModalMenuItem
                                                 itemText="Edit Comment"
                                                 onItemClick={closeMenu}
-                                                modalComponent={<EditQuestionCommentModal answerId={answer.id}/>}
+                                                modalComponent={<EditAnswerCommentModal
+                                                  commentId={comment.id} oldComment={comment.comment}/>}
                             />}
                             {user === comment.User.id && <OpenModalMenuItem
                                 itemText="Delete Comment"
