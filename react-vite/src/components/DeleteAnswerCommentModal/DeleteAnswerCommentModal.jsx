@@ -25,14 +25,14 @@ const DeleteAnswerCommentModal = (commentId) => {
     }
 
     return (
-        <div className="delete-answer-container">
-            <h1>Confirm Delete</h1>
-            <p>Are you sure you wish to delete this comment?</p>
+        <div className="modal">
+            <div className="md-demo-div middle bold">Confirm Delete</div>
+            <div className="error">Are you sure you wish to delete this comment?</div>
             <button
-                className="delete-button"
+                className="md-button"
                 onClick={handleSubmit}
             >Yes (Delete comment)</button>
-            <button className="keep-button"
+            <button className="md-button"
                 onClick={closeModal}
             >No (Keep comment)</button>
         </div>

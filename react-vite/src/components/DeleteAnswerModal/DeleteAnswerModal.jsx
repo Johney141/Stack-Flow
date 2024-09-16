@@ -19,14 +19,14 @@ const DeleteAnswerModal = ({answerId, answerDeleted}) => {
     }
 
     return (
-        <div className="delete-answer-container">
-            <h1>Confirm Delete</h1>
-            <p>Are you sure you wish to delete this answer?</p>
+        <div className="modal">
+            <div className="md-demo-div middle bold">Confirm Delete</div>
+            <div className="error">Are you sure you wish to delete this question?</div>
             <button
-                className="delete-button"
+                className="md-button"
                 onClick={handleDelete}
             >Yes (Delete answer)</button>
-            <button className="keep-button"
+            <button className="md-button"
                 onClick={closeModal}
             >No (Keep answer)</button>
         </div>

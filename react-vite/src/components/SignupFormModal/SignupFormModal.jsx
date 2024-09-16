@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { thunkSignup } from "../../redux/session";
+import { FaStackOverflow } from "react-icons/fa6";
 import "./SignupForm.css";
 
 function SignupFormModal() {
@@ -19,7 +20,7 @@ function SignupFormModal() {
     if (password !== confirmPassword) {
       return setErrors({
         confirmPassword:
-          "Confirm Password field must be the same as the Password field",
+          "Confirm Password must be same as the Password",
       });
     }
 
@@ -39,53 +40,95 @@ function SignupFormModal() {
   };
 
   return (
-    <>
-      <h1>Sign Up</h1>
-      {errors.server && <p>{errors.server}</p>}
-      <form onSubmit={handleSubmit}>
+  <div className="middle">
+    <div className='modal'>
+      <div className='md-element'>
+        <a href="/">
+          <FaStackOverflow className='md-icon'/>
+        </a>
+      </div>
+
+      <div className='md-element'>
+        <div className='md-demo-div middle bold'>
+          Sign Up For Stack Flow
+        </div>
+      </div>
+
+      <form className='md-element-form' onSubmit={handleSubmit}>
+
         <label>
-          Email
+          <b>Email</b>
+        </label>
+        <div>
           <input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            placeholder='Example: example@gmail.com'
             required
           />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
+          {errors.email && (
+            <div className='error'>{errors.email}</div>
+          )}
+        </div>
+
         <label>
-          Username
+          <b>Username</b>
+        </label>
+        <div>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            placeholder='Username needs to be 6 characters or longer'
             required
           />
-        </label>
-        {errors.username && <p>{errors.username}</p>}
+          {errors.username && (
+            <div className='error'>{errors.username}</div>
+          )}
+        </div>
+
         <label>
-          Password
+          <b>Password</b>
+        </label>
+        <div>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            placeholder='Password needs to be 6 characters or longer'
             required
           />
-        </label>
-        {errors.password && <p>{errors.password}</p>}
+          {errors.password && (
+            <div className='error'>{errors.password}</div>
+          )}
+        </div>
+
         <label>
-          Confirm Password
+          <b>Confirm Password</b>
+        </label>
+        <div>
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder=''
             required
           />
-        </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+          {errors.confirmPassword && (
+            <div className='error'>{errors.confirmPassword}</div>
+          )}
+        </div>
+
+
+
+        <button type="submit" className='md-button'
+          disabled={!email || !password || email.length < 8 || username.length < 6 || password.length < 6}>
+            Sign Up
+        </button>
       </form>
-    </>
+    </div>
+  </div>
   );
 }
 

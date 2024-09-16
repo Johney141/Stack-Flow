@@ -9,7 +9,7 @@ import OpenModalMenuItem from '../Navigation/OpenModalMenuItem'
 import DeleteAnswerModal from "../DeleteAnswerModal/DeleteAnswerModal";
 import DeleteQuestionModal from "../DeleteQuestionModal/DeleteQuestionModal";
 import UpdateAnswerModal from "../UpdateAnswerModal/UpdateAnswerModal";
-import UpdateQuestionModal from "../UpdateQuestionModal/UpdateQuestoinModal";
+import UpdateQuestionModal from "../UpdateQuestionModal/UpdateQuestionModal";
 
 
 const ProfilePage = () => {

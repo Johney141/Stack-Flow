@@ -26,11 +26,11 @@ const UpdateQuestionModal = ({question, questionUpdated}) => {
         const getQuestionTags = async () => {
             const fetchedTags = await dispatch(getQuestionTagsThunk(question.id));
             if (fetchedTags) {
-                setTags(fetchedTags.Tags.map(tag => tag.tagName)); 
+                setTags(fetchedTags.Tags.map(tag => tag.tagName));
             }
         };
-    
-        getQuestionTags(); 
+
+        getQuestionTags();
     }, [dispatch, question.id]);
 
 
@@ -47,7 +47,7 @@ const UpdateQuestionModal = ({question, questionUpdated}) => {
             question: newQuestion,
             subject: newSubject
         }
-       
+
         dispatch(updateQuestionThunk(question.id, body))
         dispatch(createTags({tags, questionId: question.id}))
             .then(() => {
@@ -59,7 +59,7 @@ const UpdateQuestionModal = ({question, questionUpdated}) => {
     }
     const handleTagSubmit = e => {
         e.preventDefault();
-    
+
         if(tagInput.includes(' ')) {
           setTagError(true);
         }
@@ -81,8 +81,10 @@ const UpdateQuestionModal = ({question, questionUpdated}) => {
 
 
     return (
-        <div>
-            <h1>Update Your Question</h1>
+        <div className="modal">
+            <div className='md-demo-div middle bold'>
+              Update Question
+            </div>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="subject">Title</label>
@@ -96,7 +98,7 @@ const UpdateQuestionModal = ({question, questionUpdated}) => {
                 </div>
                 <div>
                     <label for="question">What are the details of your Question?</label>
-                    <textarea 
+                    <textarea
                         id="questoin-area"
                         name="question"
                         value={newQuestion}
@@ -146,4 +148,4 @@ const UpdateQuestionModal = ({question, questionUpdated}) => {
     )
 }
 
-export default UpdateQuestionModal
+export default UpdateQuestionModal;

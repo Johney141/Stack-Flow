@@ -1,6 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import LoginFormPage from '../components/LoginFormPage';
+import LoginFormModal from '../components/LoginFormModal';
 import SignupFormPage from '../components/SignupFormPage';
+import SignupFormModal from '../components/SignupFormModal';
 import LandingPage from '../components/LandingPage/LandingPage';
 import QuestionList from '../components/Questions/QuestionList';
 import EditQuestionCommentModal from '../components/EditQuestionComment/EditComment';
@@ -24,11 +26,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "login",
-        element: <LoginFormPage />,
+        element: <LoginFormModal />,
       },
       {
         path: "signup",
-        element: <SignupFormPage />,
+        element: <SignupFormModal />,
       },
       {
         path: "tags",

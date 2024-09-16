@@ -66,6 +66,7 @@ function QuestionCreatePage() {
     questionForm = (
     <form
       onSubmit={handleSubmit}
+      className='question-form'
     >
       <h3>Ask a Question on Stack Flow</h3>
       <h4>Title</h4>
@@ -112,13 +113,12 @@ function QuestionCreatePage() {
       {tagError && <div className='error'>Name of the tag cannot have spaces, try replace using -</div>}
 
       <div>
-        {tags.map((tag) => (<label className='tag-label' key={tag}>{tag}</label>))}
+        {tags.map((tag) => (<label className='tag-label' key={tag}># {tag}</label>))}
       </div>
-
-      <div>
-        {!(tags.length) && (<div className='error'>Need At Least One Tag</div>)}
+      {!(tags.length) && (<div className='error'>Need At Least One Tag</div>)}
+      <div className='middle'>
         <button
-          disabled={(!subject) || (question.length < 30)}
+          disabled={(!subject) || (question.length < 30) || (tags.length < 1)}
           type="submit"
         >
           Create Question
@@ -130,7 +130,7 @@ function QuestionCreatePage() {
   else {
     questionForm = (
       <>
-        <h2>You need to <OpenModalButton
+        <h2 className='user-modify-button'>You need to <OpenModalButton
           buttonText="Log In"
           modalComponent={<LoginFormModal />}
         /> first.</h2>
@@ -139,7 +139,7 @@ function QuestionCreatePage() {
   }
 
   return (
-    <div>
+    <div className='question-ask'>
       {questionForm}
     </div>
   );

@@ -30,7 +30,7 @@ const EditAnswerCommentModal = ({ commentId, oldComment }) => {
     }
   }
   return (
-    <>
+    <div className='modal'>
       <form onSubmit={handleSubmit}>
         {errors.message && (
           <p className='error'>{errors.message}</p>
@@ -44,10 +44,10 @@ const EditAnswerCommentModal = ({ commentId, oldComment }) => {
           />
         </label>
         <div style={{textAlign: 'center'}}>
-          <button className='post-comment' disabled={comment.length < 3} type="submit">Edit Comment</button>
+          <button className='md-button' disabled={comment.length < 3} type="submit">Edit Comment</button>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 

@@ -1,3 +1,12 @@
+.middle {
+  display: flex;
+  justify-content: center;
+}
+
+.bold {
+  font-weight: bold;
+}
+
 .leftnav {
   width: 130px;
   height: 100%;
@@ -6,6 +15,7 @@
   display: flex;
   flex-direction: column;
   margin-left: calc((100vw - 1200px) / 2);
+  top: 34px;
 }
 
 #home-button {
@@ -21,11 +31,18 @@
 }
 
 div#main-margin {
+  margin-top: 44px;
   margin-left: calc(150px + (100vw - 1200px) / 2);
   margin-right: calc((100vw - 1200px) / 2);
 }
 
 .navbar {
+  position: fixed;
+  width: 100vw;
+  height: 30px;
+  top: 0;
+  padding-top: 3px;
+  background-color: rgba(255, 255, 255, 1);
   margin-left: 0px;
   display: flex;
   justify-content: space-between;
@@ -46,6 +63,7 @@ div#main-margin {
   padding: 7px 10px;
   z-index: 1000;
   right: calc(10px + (100vw - 1200px) / 2);;
+  margin-top: 4px;
   min-width: 100px;
 }
 
@@ -145,12 +163,25 @@ div#modal-content {
   padding-bottom: 10px;
 }
 
+.md-demo-div {
+  font-family: inherit;
+  width: 100%;
+  font-size: 22px;
+  margin-top: 7px;
+  margin-bottom: 3px;
+}
+
 .md-demo-button {
   font-family: inherit;
   width: 100%;
   height: 30px;
   font-size: 20px;
   border-radius: 5px;
+  cursor: pointer;
+}
+
+.md-demo-button:hover {
+  background-color: #ccc;
 }
 
 .md-button {
@@ -160,6 +191,16 @@ div#modal-content {
   margin-top: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
+  cursor: pointer;
+}
+
+.md-button:hover {
+  background-color: #ccc;
+}
+
+.md-button:disabled {
+  background-color: #fff;
+  cursor: not-allowed;
 }
 
 .tag-page {
@@ -169,7 +210,10 @@ div#modal-content {
 
 .tag-label {
   margin: 5px;
-  outline: 2px dashed blue;
+  color:#777;
+  text-decoration: none;
+  background-color: rgba(0,0,0,0.15);
+  color: #3a3a3a;
 }
 
 .tag-list {
@@ -276,6 +320,10 @@ div#modal-content {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
+.user-modify-button {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
 .user-modify-button button {
   color:#181818;
   margin-top: 8px;
@@ -290,4 +338,46 @@ div#modal-content {
 
 .user-modify-button button:hover {
   background-color: rgb(133, 157, 221);
+}
+
+.question-ask {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: larger;
+  margin: 20px;
+  padding-right: 10px;
+}
+
+.question-form input, textarea {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 20px;
+  width: 100%;
+}
+
+.question-form button {
+  color:#181818;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border: none;
+  background-color: rgb(133, 157, 221, 0.5);
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: large;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.question-form button:hover {
+  background-color: rgb(133, 157, 221);
+}
+
+.question-form button:disabled {
+  background-color: rgb(194, 194, 194);
+  cursor: not-allowed;
+}
+
+.follow-button {
+  display: flex;
+  align-items: center;
+  font-size: 22px;
+  cursor: pointer;
+  border: none;
 }
