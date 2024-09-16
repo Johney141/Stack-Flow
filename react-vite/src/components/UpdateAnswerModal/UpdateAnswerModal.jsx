@@ -17,13 +17,13 @@ const UpdateAnswerModal = ({answer, answerUpdated}) => {
         const body = {
             answer: newAnswer
         }
-       
+
         dispatch(updateAnswerThunk(answer.id, body))
             .then(() => {
                 answerUpdated();
                 closeModal();
             })
-        
+
 
     }
 
@@ -33,16 +33,18 @@ const UpdateAnswerModal = ({answer, answerUpdated}) => {
 
 
     return (
-        <div>
-            <h1>Update Your Answer</h1>
+        <div className="modal">
+            <div className='md-demo-div middle bold'>
+              Update Answer
+            </div>
             <form onSubmit={handleSubmit}>
-                <textarea 
+                <textarea
                     id="answer-area"
                     value={newAnswer}
                     onChange={handleChange}
                 />
-                <button type="submit">Update</button>
-                <button onClick={closeModal}>Cancel</button>
+                <button className='md-button' type="submit">Update</button>
+                <button className='md-button' onClick={closeModal}>Cancel</button>
             </form>
         </div>
     )

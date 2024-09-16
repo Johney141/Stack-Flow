@@ -38,6 +38,7 @@ function LoginFormModal() {
   }
 
   return (
+  <div className="middle">
     <div className='modal'>
       <div className='md-element'>
         <a href="/">
@@ -98,10 +99,8 @@ function LoginFormModal() {
           Don’t have an account? <a href="/signup">Sign up</a>
         </div>
       </form>
-
-
-
     </div>
+  </div>
   );
 }
 

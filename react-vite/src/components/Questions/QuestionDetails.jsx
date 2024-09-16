@@ -15,6 +15,7 @@ import AnswerCreatePage from "../AnswerCreatePage/AnswerCreatePage";
 import DeleteAnswerCommentModal from "../DeleteAnswerCommentModal/DeleteAnswerCommentModal";
 import './Question.css';
 import TagBubble from "../TagBubble/TagBubble";
+import { AiFillPlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
 
 
 
@@ -85,13 +86,23 @@ const QuestionDetails = () => {
             <div className="QuestionDetails-question">
                 <div className="QuestionDetails-subject">
                     {question.subject}
+                    <div>
+                      {user !== null &&<button
+                        onClick={follow}
+                        className="follow-button"
+                        title={alreadyFollowed ? "Unsave this question" : "Save this question"}>
+                        {alreadyFollowed ?
+                        <AiOutlineMinusCircle /> : <AiFillPlusCircle />}
+                      </button>}
+                    </div>
+                </div>
+                <div className="QuestionDetails-user">
+                  Asked By {question.User.username}
                 </div>
                 <div className="QuestionDetails-question">
                     {question.question}
                 </div>
-                <div className="follow-button">
-                {user !== null &&<button onClick={follow}>{alreadyFollowed ? 'Unfollow' : 'Follow'}</button>}
-                </div>
+
                 <div className="QuestionDetails-tags">
                     {questionTags.map((tag) => {
                         return (
@@ -100,59 +111,59 @@ const QuestionDetails = () => {
                     })}
                 </div>
             </div>
-            <div className="QuestionDetails-comments">
-                <h4>Comments</h4>
-                {Object.values(comments).length < 1 && <span>No comments yet, add your own!</span>}
-                {Object.values(comments).map((comment) => {
-                    return (
-                        <div key={comment.id}>
-                            <p>{comment.comment}</p>
-                            <p> - {comment.User.username}</p>
-                            {user === comment.User.id && <OpenModalMenuItem
-                                itemText="Edit Comment"
-                                onItemClick={closeMenu}
-                                modalComponent={<EditQuestionCommentModal
-                                  commentId={comment.id} oldComment={comment.comment} questionId={id}/>}
-                            />}
-                            {user === comment.User.id && <OpenModalMenuItem
-                                itemText="Delete Comment"
-                                onItemClick={closeMenu}
-                                modalComponent={<DeleteQuestionCommentModal commentId={comment.id} questionId={question}/>}
-                            />}
-                        </div>
 
-                    )
-                })}
-                <>
               {user !== null &&<OpenModalMenuItem
                 itemText="Add a Comment"
                 onItemClick={closeMenu}
+                className="QuestionDetails-buttons"
                 modalComponent={<PostQuestionCommentModal questionId = {question.id}/>}
               />}
-            </>
 
-            </div>
+              <div className="QuestionComments">
+                {Object.values(comments).map((comment) => {
+                  return (
+                    <div className="QuestionComments-comment" key={comment.id}>
+                      <span className="comment">{comment.comment}</span>
+                      <span className="QuestionDetails-user"> - {comment.User.username}</span>
+                      {user === comment.User.id && <OpenModalMenuItem
+                        itemText="Edit Comment"
+                        onItemClick={closeMenu}
+                        className="QuestionDetails-buttons"
+                        modalComponent={<EditQuestionCommentModal
+                        commentId={comment.id} oldComment={comment.comment} questionId={id}/>}
+                      />}
+                      {user === comment.User.id && <OpenModalMenuItem
+                        itemText="Delete Comment"
+                        onItemClick={closeMenu}
+                        className="QuestionDetails-buttons"
+                        modalComponent={<DeleteQuestionCommentModal commentId={comment.id} questionId={question}/>}
+                      />}
+                    </div>
+                  )
+                })}
+              </div>
+
             <div className="QuestionDetails-answers">
-            <h4>Answers</h4>
-            {question.Answer.length < 1 && <span>No answers yet, add your own!</span>}
-            {user !== null &&<OpenModalMenuItem
+            <h4>Answers {user !== null &&<OpenModalMenuItem
                 itemText="Add an Answer"
                 onItemClick={closeMenu}
+                className="QuestionDetails-buttons"
                 modalComponent={<AnswerCreatePage questionId = {question.id}/>}
-              />}
+              />}</h4>
+            {question.Answer.length < 1 && <span>No answers yet, add your own!</span>}
                 {question.Answer.map((answer, idx)=>{
                     console.log(answer, '<---------AAAA')
                     return (
-                        <div className="AnswerDiv" key={idx}>
-                            <hr/>
+                        <div key={idx}>
                             <div className="Answer">
 
                                 {answer.answer}
-                                <h4> - {answer.User.username}</h4>
+                                <div className="QuestionDetails-user"> Answered By {answer.User.username}</div>
                                 <>
                                 {user !== null &&<OpenModalMenuItem
                                 itemText="Add a Comment"
                                 onItemClick={closeMenu}
+                                className="QuestionDetails-buttons"
                                 modalComponent={<PostAnswerCommentModal questionId={question.id} answerId={answer.id}/>}
                                 />}
                                 </>
@@ -165,16 +176,18 @@ const QuestionDetails = () => {
                                     return(
                                         <div className="AnswerComments-comment" key={key}>
                                             <span className="comment">{comment.comment}</span>
-                                            <span className="comment-username"> - {comment.User.username}</span>
+                                            <span className="QuestionDetails-user"> - {comment.User.username}</span>
                                             {user === comment.User.id && <OpenModalMenuItem
                                                 itemText="Edit Comment"
                                                 onItemClick={closeMenu}
+                                                className="QuestionDetails-buttons"
                                                 modalComponent={<EditAnswerCommentModal
                                                   commentId={comment.id} oldComment={comment.comment}/>}
                             />}
                             {user === comment.User.id && <OpenModalMenuItem
                                 itemText="Delete Comment"
                                 onItemClick={closeMenu}
+                                className="QuestionDetails-buttons"
                                 modalComponent={<DeleteAnswerCommentModal commentId={comment.id} />}
                             />}
                                         </div>
