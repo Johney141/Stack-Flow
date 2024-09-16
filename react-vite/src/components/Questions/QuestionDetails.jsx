@@ -154,7 +154,9 @@ const QuestionDetails = () => {
                 {question.Answer.map((answer, idx)=>{
                     console.log(answer, '<---------AAAA')
                     return (
+
                         <div className='QuestionDetails-eachAnswer' key={idx}>
+
                             <div className="Answer">
 
                                 {answer.answer}
