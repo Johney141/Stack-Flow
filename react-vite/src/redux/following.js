@@ -8,6 +8,10 @@ const getAllFollowers = (payload) => ({
     payload
 })
 
+export const deleteFollowings = () => async (dispatch) => {
+    return dispatch(getAllFollowers({Following: []}))
+  };
+
 const follow = (payload) => ({
     type: LOAD_FOLLOW,
     payload
@@ -25,7 +29,8 @@ export const fetchFollowings = () => async (dispatch) => {
         const data = await res.json()
         dispatch(getAllFollowers(data))
     }
-    return res
+
+    return res;
 };
 
 export const fetchFollow = (questionId, payload) => async (dispatch) => {

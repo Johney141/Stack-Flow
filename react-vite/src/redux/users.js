@@ -20,7 +20,6 @@ const usersReducer = (state = initialState, action) => {
     let newState;
     switch (action.type) {
         case LOAD_USERS: {
-            console.log(action, '<--------USERS')
             newState = {...state};
             newState.allUsers = action.payload.users
             return newState

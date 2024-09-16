@@ -5,7 +5,7 @@ import * as answerActions from '../../redux/answers'
 import { useParams, useNavigate } from "react-router-dom";
 
 
-const DeleteAnswerCommentModal = () => {
+const DeleteAnswerCommentModal = (commentId) => {
     const { id } = useParams()
     const { closeModal } = useModal();
     const questionsById = useSelector(state => state.questionState.byId)
@@ -14,15 +14,14 @@ const DeleteAnswerCommentModal = () => {
     console.log(question, '<------ID'); // This will print the current URL to the console
 
     const handleSubmit = async (e) => {
-        dispatch(answerActions.deleteAnswerComment(4))
-        .then(() => {
-            dispatch(questionActions.fetchComments(parseInt(id)))
-            window.location.reload()
-        })
-        .then(() => {
-            closeModal()
-            console.log(id, '<-------commentID')
-        })
+        e.preventDefault()
+        dispatch(answerActions.deleteAnswerComment(commentId))
+            .then(() => {
+                dispatch(questionActions.getAllQuestionsThunk())
+            })
+            .then(() => {
+                closeModal()
+            })
     }
 
     return (

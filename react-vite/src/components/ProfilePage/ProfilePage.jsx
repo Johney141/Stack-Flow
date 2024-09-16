@@ -52,18 +52,18 @@ const ProfilePage = () => {
 
     useEffect(() => {
         if (!showMenu) return;
-    
+
         const closeMenu = (e) => {
           if (ulRef.current && !ulRef.current.contains(e.target)) {
             setShowMenu(false);
           }
         };
-    
+
         document.addEventListener("click", closeMenu);
-    
+
         return () => document.removeEventListener("click", closeMenu);
       }, [showMenu]);
-    
+
     const closeMenu = () => setShowMenu(false);
     const handleQuestionDeleted = () => {
         setQuestionDeleted(true);
@@ -85,29 +85,29 @@ const ProfilePage = () => {
             <h3>Questions</h3>
             <div className="questions-container">
                 {questions.map(question => (
-                    <div 
-                        className="user-question" 
+                    <div
+                        className="user-question"
                         key={question.id}
                         >
                         <p
                             onClick={() => navigate(`/questions/${question.id}`)}
                         >{question.question}</p>
-                        {isUsersProfile ? 
+                        {isUsersProfile ?
                             <>
-                                <OpenModalMenuItem 
+                                <OpenModalMenuItem
                                     itemText='Update'
                                     className='question-update'
                                     onItemClick={closeMenu}
                                     modalComponent={<UpdateQuestionModal question={question} questionUpdated={handleQuestionUpdated}/>}
                                 />
-                                <OpenModalMenuItem 
+                                <OpenModalMenuItem
                                     itemText='Delete'
                                     onItemClick={closeMenu}
                                     modalComponent={<DeleteQuestionModal questionId={question.id} questionDeleted={handleQuestionDeleted}/>}
                                 />
                             </>: null
                         }
-                        
+
 
                     </div>
                 ))}
@@ -122,16 +122,16 @@ const ProfilePage = () => {
                         <p
                             onClick={() => navigate(`/questions/${answer.questionId}`)}
                         >{answer.answer}</p>
-                        {isUsersProfile ? 
+                        {isUsersProfile ?
                             <>
-                                <OpenModalMenuItem 
+                                <OpenModalMenuItem
                                     itemText='Update'
                                     className='answer-update'
                                     onItemClick={closeMenu}
                                     modalComponent={<UpdateAnswerModal answer={answer} answerUpdated={handleAnswerUpdated}/>}
                                 />
 
-                                <OpenModalMenuItem 
+                                <OpenModalMenuItem
                                     itemText='Delete'
                                     onItemClick={closeMenu}
                                     modalComponent={<DeleteAnswerModal answerId={answer.id} answerDeleted={handleAnswerDeleted}/>}

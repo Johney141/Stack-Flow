@@ -3,6 +3,7 @@ import { thunkLogin } from "../../redux/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { FaStackOverflow } from "react-icons/fa6";
+import { fetchFollowings } from "../../redux/following";
 import "./LoginForm.css";
 
 function LoginFormModal() {
@@ -24,6 +25,7 @@ function LoginFormModal() {
 
     if (serverResponse) {
       setErrors(serverResponse);
+      dispatch(fetchFollowings())
     } else {
       closeModal();
     }
@@ -31,6 +33,7 @@ function LoginFormModal() {
 
   const handleDemoSubmit = () => {
     return dispatch(thunkLogin({ email: "demo@aa.io", password: "password" }))
+    .then(() => dispatch(fetchFollowings()))
       .then(closeModal);
   }
 
