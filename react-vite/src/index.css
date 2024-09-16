@@ -164,6 +164,7 @@ div#modal-content {
 
 .tag-page {
   font-size: larger;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .tag-label {
@@ -181,7 +182,7 @@ div#modal-content {
 
 .tag-anchor {
   width: 200px;
-  height: 110px;
+  height: 100px;
   margin: 5px;
   padding: 5px;
   border-radius: 5px;
@@ -194,11 +195,23 @@ div#modal-content {
   border-radius: 8px;
   font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   font-size: 17px;
+  font-weight: bold;
+}
+
+.tag-anchor:hover {
+  background: #cfa83a;
 }
 
 .tag-bubble {
   margin: 5px;
   color:#777;
+  text-decoration: none;
+  background-color: rgba(0,0,0,0.15);
+  color: #3a3a3a;
+}
+
+.tag-bubble:hover {
+  color: #131313;
 }
 
 @media (width < 400px) {
@@ -212,6 +225,69 @@ div#modal-content {
   }
 }
 
-.question-list-item {
+.question-page {
+  font-size: larger;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.question-list {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.question-anchor {
   cursor: pointer;
+  font-size: larger;
+  font-weight: bold;
+  color: #256aff;
+}
+.question-anchor:hover {
+  color: #1847ac;
+}
+
+.question-title {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid lightgrey;
+}
+
+.question-title h3 {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.question-title button {
+  color:#181818;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border: none;
+  background-color: rgb(133, 157, 221, 0.5);
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: large;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.question-title button:hover {
+  background-color: rgb(133, 157, 221);
+}
+
+.profile-page-container {
+  font-size: large;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.user-modify-button button {
+  color:#181818;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border: none;
+  background-color: rgb(133, 157, 221, 0.5);
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: large;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.user-modify-button button:hover {
+  background-color: rgb(133, 157, 221);
 }
