@@ -37,7 +37,7 @@ const LandingPage = () => {
     console.log(tags)
 
     return (
-        <div className="landing-container">
+        <div className="landing-container tag-page">
             <h1>Browse Questions by Category</h1>
             <div className='landing-button'>
             {user && <OpenModalMenuItem
@@ -46,17 +46,15 @@ const LandingPage = () => {
             modalComponent={<QuestionCreatePage/>}
             />}
             </div>
-            <div className="tag-container">
-                {tags.map(tag => (
-                    <div
-                        key={tag.id}
-                        className="tag-card"
-                        onClick={() => navigate(`/tags/${tag.id}`)}
-                    >
-                        <h4>{tag.tagName}</h4>
-
-                    </div>
-                ))}
+            <div className="tag-container tag-list">
+                {tags.map(tag => {
+                      return (
+                        <div className="tag-anchor" onClick={() => navigate(`/tags/${tag.id}`)}>
+                          <p>#{tag.tagName}</p>
+                          <p className="tag-numQuestion">Number of Questions: {tag.numQuestions}</p>
+                        </div>
+                      );
+                })}
             </div>
         </div>
 
