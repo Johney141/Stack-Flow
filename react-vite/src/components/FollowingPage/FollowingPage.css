@@ -1,0 +1,16 @@
+.followings{
+    width: 100%;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.followings-subject {
+font-size: 24px;
+  display: flex;
+  justify-content: space-between;
+  margin-right: 22px;
+  margin-bottom: 0;
+}
+
+.followings-question {
+    margin-bottom: 20px;
+}
