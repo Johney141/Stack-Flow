@@ -99,6 +99,7 @@ function QuestionCreatePage() {
         <button
           type="button"
           onClick={handleTagSubmit}
+          disabled={tagInput.length == 0}
         >
           Add Tag
         </button>
@@ -113,7 +114,14 @@ function QuestionCreatePage() {
       {tagError && <div className='error'>Name of the tag cannot have spaces, try replace using -</div>}
 
       <div>
-        {tags.map((tag) => (<label className='tag-label' key={tag}># {tag}</label>))}
+        {tags.map((tag, idx) => {
+            return (<label className='tag-label'
+              onClick={() => {
+              let newArr = JSON.parse(JSON.stringify(tags));
+              newArr.splice(idx, 1);
+              setTags(newArr);
+          }} key={tag}># {tag}</label>)
+        })}
       </div>
       {!(tags.length) && (<div className='error'>Need At Least One Tag</div>)}
       <div className='middle'>
